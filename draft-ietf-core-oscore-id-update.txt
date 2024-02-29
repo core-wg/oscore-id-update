@@ -23,7 +23,8 @@ Abstract
    and can thus be used to correlate messages exchanged between peers
    and have privacy implications.  This document details a procedure
    that two peers communicating using OSCORE can use to update their
-   identifiers.
+   identifiers.  This ID update procedure can also be ran embedded in an
+   execution of the KUDOS procedure.
 
 Discussion Venues
 
@@ -80,7 +81,9 @@ Table of Contents
    3.  Security Considerations
    4.  IANA Considerations
      4.1.  CoAP Option Numbers Registry
-   5.  Normative References
+   5.  References
+     5.1.  Normative References
+     5.2.  Informative References
    Appendix A.  Examples of OSCORE ID Updates Integrated in KUDOS
      A.1.  Forward Message Flow
      A.2.  Reverse Message Flow
@@ -127,6 +130,12 @@ Table of Contents
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
+   Readers are expected to be familiar with the terms and concepts
+   related to CoAP [RFC7252], Observe [RFC7641], CBOR [RFC8949], OSCORE
+   [RFC8613], and KUDOS [I-D.ietf-core-oscore-key-update].
+
+   This document additionally defines the following terminology.
+
    *  Initiator: the peer starting the ID update procedure, by sending
       the first message.
 
@@ -158,7 +167,7 @@ Table of Contents
 
    Furthermore, this procedure can be executed stand-alone, or instead
    seamlessly integrated in an execution of the KUDOS procedure for
-   updating OSCORE keying material (see Section 4.0 of
+   updating OSCORE keying material (see Section 4 of
    [I-D.ietf-core-oscore-key-update]) using its FS mode or no-FS mode
    (see Section 4.5 of [I-D.ietf-core-oscore-key-update]).
 
@@ -779,7 +788,9 @@ Table of Contents
    Number 24, please replace "TBD24" with "24" in the table above.
    Then, please delete this paragraph.
 
-5.  Normative References
+5.  References
+
+5.1.  Normative References
 
    [I-D.ietf-core-oscore-key-update]
               Höglund, R. and M. Tiloca, "Key Update for OSCORE
@@ -787,13 +798,6 @@ Table of Contents
               core-oscore-key-update-06, 23 October 2023,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
               oscore-key-update-06>.
-
-   [I-D.ietf-lake-edhoc]
-              Selander, G., Mattsson, J. P., and F. Palombini,
-              "Ephemeral Diffie-Hellman Over COSE (EDHOC)", Work in
-              Progress, Internet-Draft, draft-ietf-lake-edhoc-23, 22
-              January 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-lake-edhoc-23>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -819,7 +823,25 @@ Table of Contents
               (OSCORE)", RFC 8613, DOI 10.17487/RFC8613, July 2019,
               <https://www.rfc-editor.org/rfc/rfc8613>.
 
+   [RFC8949]  Bormann, C. and P. Hoffman, "Concise Binary Object
+              Representation (CBOR)", STD 94, RFC 8949,
+              DOI 10.17487/RFC8949, December 2020,
+              <https://www.rfc-editor.org/rfc/rfc8949>.
+
+5.2.  Informative References
+
+   [I-D.ietf-lake-edhoc]
+              Selander, G., Mattsson, J. P., and F. Palombini,
+              "Ephemeral Diffie-Hellman Over COSE (EDHOC)", Work in
+              Progress, Internet-Draft, draft-ietf-lake-edhoc-23, 22
+              January 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-lake-edhoc-23>.
+
 Appendix A.  Examples of OSCORE ID Updates Integrated in KUDOS
+
+   The following section shows two examples where the ID update
+   procedure is performed together with the KUDOS procedure for updating
+   OSCORE keying material.
 
 A.1.  Forward Message Flow
 
@@ -1043,8 +1065,13 @@ B.1.  Version -00
 
 Acknowledgments
 
-   The authors sincerely thank John Preuß Mattsson, Christian Amsüss,
-   Carsten Bormann, and Göran Selander for their feedback and comments.
+   The authors sincerely thank Christian Amsüss, Carsten Bormann, John
+   Preuß Mattsson, and Göran Selander for their feedback and comments.
+
+   The work on this document has been partly supported by VINNOVA and
+   the Celtic-Next project CRITISEC; and by the H2020 projects SIFIS-
+   Home (Grant agreement 952652) and ARCADIAN-IoT (Grant agreement
+   101020259).
 
 Authors' Addresses
 

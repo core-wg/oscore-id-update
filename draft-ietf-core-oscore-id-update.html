@@ -8,7 +8,7 @@
 <meta content="Rikard Höglund" name="author">
 <meta content="Marco Tiloca" name="author">
 <meta content="
-       The Object Security for Constrained RESTful Environments (OSCORE) protocol uses identifiers to identify the OSCORE security contexts of the communicating peers. For two peers communicating using OSCORE with each other, a peer has a Sender ID which identifies its own security context (Sender Context) and a Recipient ID identifying the other peer's security context (Recipient Context). These identifiers are sent on the wire in plaintext during communication using OSCORE and can thus be used to correlate messages exchanged between peers and have privacy implications. This document details a procedure that two peers communicating using OSCORE can use to update their identifiers. 
+       The Object Security for Constrained RESTful Environments (OSCORE) protocol uses identifiers to identify the OSCORE security contexts of the communicating peers. For two peers communicating using OSCORE with each other, a peer has a Sender ID which identifies its own security context (Sender Context) and a Recipient ID identifying the other peer's security context (Recipient Context). These identifiers are sent on the wire in plaintext during communication using OSCORE and can thus be used to correlate messages exchanged between peers and have privacy implications. This document details a procedure that two peers communicating using OSCORE can use to update their identifiers. This ID update procedure can also be ran embedded in an execution of the KUDOS procedure. 
     " name="description">
 <meta content="xml2rfc 3.19.4" name="generator">
 <meta content="draft-ietf-core-oscore-id-update-latest" name="ietf.draft">
@@ -1064,7 +1064,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">Identifier Update for OSCORE</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">The Object Security for Constrained RESTful Environments (OSCORE) protocol uses identifiers to identify the OSCORE security contexts of the communicating peers. For two peers communicating using OSCORE with each other, a peer has a Sender ID which identifies its own security context (Sender Context) and a Recipient ID identifying the other peer's security context (Recipient Context). These identifiers are sent on the wire in plaintext during communication using OSCORE and can thus be used to correlate messages exchanged between peers and have privacy implications. This document details a procedure that two peers communicating using OSCORE can use to update their identifiers.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">The Object Security for Constrained RESTful Environments (OSCORE) protocol uses identifiers to identify the OSCORE security contexts of the communicating peers. For two peers communicating using OSCORE with each other, a peer has a Sender ID which identifies its own security context (Sender Context) and a Recipient ID identifying the other peer's security context (Recipient Context). These identifiers are sent on the wire in plaintext during communication using OSCORE and can thus be used to correlate messages exchanged between peers and have privacy implications. This document details a procedure that two peers communicating using OSCORE can use to update their identifiers. This ID update procedure can also be ran embedded in an execution of the KUDOS procedure.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-discussion-venues">
@@ -1167,7 +1167,15 @@ svg :is([fill="white"], [fill^="#fff"]) {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-examples-of-oscore-id-updat" class="internal xref">Examples of OSCORE ID Updates Integrated in KUDOS</a></p>
@@ -1215,18 +1223,20 @@ svg :is([fill="white"], [fill^="#fff"]) {
 "<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
 described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
 appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.1-2">Readers are expected to be familiar with the terms and concepts related to CoAP <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, Observe <span>[<a href="#RFC7641" class="cite xref">RFC7641</a>]</span>, CBOR <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>, OSCORE <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, and KUDOS <span>[<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
+<p id="section-1.1-3">This document additionally defines the following terminology.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-1.1-2.1">
-            <p id="section-1.1-2.1.1">Initiator: the peer starting the ID update procedure, by sending the first message.<a href="#section-1.1-2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-1.1-4.1">
+            <p id="section-1.1-4.1.1">Initiator: the peer starting the ID update procedure, by sending the first message.<a href="#section-1.1-4.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-1.1-2.2">
-            <p id="section-1.1-2.2.1">Responder: the peer that receives the first message in an execution of the ID update procedure.<a href="#section-1.1-2.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-1.1-4.2">
+            <p id="section-1.1-4.2.1">Responder: the peer that receives the first message in an execution of the ID update procedure.<a href="#section-1.1-4.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-1.1-2.3">
-            <p id="section-1.1-2.3.1">Forward message flow: the execution workflow where the initiator acts as CoAP client (see <a href="#example-client-initiated-id-update" class="auto internal xref">Section 2.1.1</a>).<a href="#section-1.1-2.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-1.1-4.3">
+            <p id="section-1.1-4.3.1">Forward message flow: the execution workflow where the initiator acts as CoAP client (see <a href="#example-client-initiated-id-update" class="auto internal xref">Section 2.1.1</a>).<a href="#section-1.1-4.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-1.1-2.4">
-            <p id="section-1.1-2.4.1">Reverse message flow: the execution workflow where the initiator acts as CoAP server (see <a href="#example-server-initiated-id-update" class="auto internal xref">Section 2.1.2</a>).<a href="#section-1.1-2.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-1.1-4.4">
+            <p id="section-1.1-4.4.1">Reverse message flow: the execution workflow where the initiator acts as CoAP server (see <a href="#example-server-initiated-id-update" class="auto internal xref">Section 2.1.2</a>).<a href="#section-1.1-4.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1241,7 +1251,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-2-1">This section defines the procedure that two peers can perform, in order to update the OSCORE Sender/Recipient IDs that they use in their shared OSCORE Security Context.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-2-2">When performing an update of OSCORE Sender/Recipient IDs, a peer provides its new intended OSCORE Recipient ID to the other peer, by means of the Recipient-ID Option defined in <a href="#sec-recipient-id-option" class="auto internal xref">Section 2.1</a>. Hereafter, this document refers to a message including the Recipient-ID Option as an "OSCORE IDs update (request/response) message".<a href="#section-2-2" class="pilcrow">¶</a></p>
 <p id="section-2-3">This procedure can be initiated by either peer, i.e., the CoAP client or the CoAP server may start it by sending the first OSCORE IDs update message. The former case is denoted as the "forward message flow" and the latter as the "reverse message flow".<a href="#section-2-3" class="pilcrow">¶</a></p>
-<p id="section-2-4">Furthermore, this procedure can be executed stand-alone, or instead seamlessly integrated in an execution of the KUDOS procedure for updating OSCORE keying material (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-06#section-4.0" class="relref">Section 4.0</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>) using its FS mode or no-FS mode (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-06#section-4.5" class="relref">Section 4.5</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>).<a href="#section-2-4" class="pilcrow">¶</a></p>
+<p id="section-2-4">Furthermore, this procedure can be executed stand-alone, or instead seamlessly integrated in an execution of the KUDOS procedure for updating OSCORE keying material (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-06#section-4" class="relref">Section 4</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>) using its FS mode or no-FS mode (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-06#section-4.5" class="relref">Section 4.5</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>).<a href="#section-2-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2-5.1">
           <p id="section-2-5.1.1">In the former stand-alone case, updating the OSCORE Sender/Recipient IDs effectively results in updating part of the current OSCORE Security Context.<a href="#section-2-5.1.1" class="pilcrow">¶</a></p>
@@ -1662,48 +1672,67 @@ with CTX_B  | Encrypted Payload {               |
 </div>
 </section>
 </div>
-<div id="sec-normative-references">
 <section id="section-5">
-      <h2 id="name-normative-references">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+      <h2 id="name-references">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
+<div id="sec-normative-references">
+<section id="section-5.1">
+        <h3 id="name-normative-references">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
 <dl class="references">
 <dt id="I-D.ietf-core-oscore-key-update">[I-D.ietf-core-oscore-key-update]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Höglund, R.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Key Update for OSCORE (KUDOS)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-key-update-06</span>, <time datetime="2023-10-23" class="refDate">23 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-06">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-06</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="I-D.ietf-lake-edhoc">[I-D.ietf-lake-edhoc]</dt>
-      <dd>
-<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Mattsson, J. P.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Ephemeral Diffie-Hellman Over COSE (EDHOC)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lake-edhoc-23</span>, <time datetime="2024-01-22" class="refDate">22 January 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-23">https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-23</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC7252">[RFC7252]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Shelby, Z.</span>, <span class="refAuthor">Hartke, K.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"The Constrained Application Protocol (CoAP)"</span>, <span class="seriesInfo">RFC 7252</span>, <span class="seriesInfo">DOI 10.17487/RFC7252</span>, <time datetime="2014-06" class="refDate">June 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7252">https://www.rfc-editor.org/rfc/rfc7252</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC7641">[RFC7641]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Hartke, K.</span>, <span class="refTitle">"Observing Resources in the Constrained Application Protocol (CoAP)"</span>, <span class="seriesInfo">RFC 7641</span>, <span class="seriesInfo">DOI 10.17487/RFC7641</span>, <time datetime="2015-09" class="refDate">September 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7641">https://www.rfc-editor.org/rfc/rfc7641</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8613">[RFC8613]</dt>
-    <dd>
+        <dd>
 <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Mattsson, J.</span>, <span class="refAuthor">Palombini, F.</span>, and <span class="refAuthor">L. Seitz</span>, <span class="refTitle">"Object Security for Constrained RESTful Environments (OSCORE)"</span>, <span class="seriesInfo">RFC 8613</span>, <span class="seriesInfo">DOI 10.17487/RFC8613</span>, <time datetime="2019-07" class="refDate">July 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8613">https://www.rfc-editor.org/rfc/rfc8613</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8949">[RFC8949]</dt>
+      <dd>
+<span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">P. Hoffman</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR)"</span>, <span class="seriesInfo">STD 94</span>, <span class="seriesInfo">RFC 8949</span>, <span class="seriesInfo">DOI 10.17487/RFC8949</span>, <time datetime="2020-12" class="refDate">December 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8949">https://www.rfc-editor.org/rfc/rfc8949</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
 </div>
+<div id="sec-informative-references">
+<section id="section-5.2">
+        <h3 id="name-informative-references">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="I-D.ietf-lake-edhoc">[I-D.ietf-lake-edhoc]</dt>
+      <dd>
+<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Mattsson, J. P.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Ephemeral Diffie-Hellman Over COSE (EDHOC)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lake-edhoc-23</span>, <time datetime="2024-01-22" class="refDate">22 January 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-23">https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-23</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+</section>
 <div id="sec-id-update-in-kudos">
 <section id="appendix-A">
       <h2 id="name-examples-of-oscore-id-updat">
 <a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-examples-of-oscore-id-updat" class="section-name selfRef">Examples of OSCORE ID Updates Integrated in KUDOS</a>
       </h2>
+<p id="appendix-A-1">The following section shows two examples where the ID update procedure is performed together with the KUDOS procedure for updating OSCORE keying material.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 <div id="sec-id-update-in-kudos-forward">
 <section id="appendix-A.1">
         <h3 id="name-forward-message-flow-2">
@@ -1956,7 +1985,8 @@ Verify with CTX_NEW     | }                    |
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-C-1">The authors sincerely thank <span class="contact-name">John Preuß Mattsson</span>, <span class="contact-name">Christian Amsüss</span>, <span class="contact-name">Carsten Bormann</span>, and <span class="contact-name">Göran Selander</span> for their feedback and comments.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+<p id="appendix-C-1">The authors sincerely thank <span class="contact-name">Christian Amsüss</span>, <span class="contact-name">Carsten Bormann</span>, <span class="contact-name">John Preuß Mattsson</span>, and <span class="contact-name">Göran Selander</span> for their feedback and comments.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+<p id="appendix-C-2">The work on this document has been partly supported by VINNOVA and the Celtic-Next project CRITISEC; and by the H2020 projects SIFIS-Home (Grant agreement 952652) and ARCADIAN-IoT (Grant agreement 101020259).<a href="#appendix-C-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
