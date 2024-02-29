@@ -39,6 +39,7 @@ normative:
   RFC8174:
   RFC8613:
   I-D.ietf-core-oscore-key-update:
+  RFC8949:
 
 informative:
   I-D.ietf-lake-edhoc:
