@@ -38,17 +38,17 @@ normative:
   RFC7641:
   RFC8174:
   RFC8613:
-  I-D.ietf-lake-edhoc:
   I-D.ietf-core-oscore-key-update:
 
 informative:
+  I-D.ietf-lake-edhoc:
 
 entity:
   SELF: "[RFC-XXXX]"
 
 --- abstract
 
-The Object Security for Constrained RESTful Environments (OSCORE) protocol uses identifiers to identify the OSCORE security contexts of the communicating peers. For two peers communicating using OSCORE with each other, a peer has a Sender ID which identifies its own security context (Sender Context) and a Recipient ID identifying the other peer's security context (Recipient Context). These identifiers are sent on the wire in plaintext during communication using OSCORE and can thus be used to correlate messages exchanged between peers and have privacy implications. This document details a procedure that two peers communicating using OSCORE can use to update their identifiers.
+The Object Security for Constrained RESTful Environments (OSCORE) protocol uses identifiers to identify the OSCORE security contexts of the communicating peers. For two peers communicating using OSCORE with each other, a peer has a Sender ID which identifies its own security context (Sender Context) and a Recipient ID identifying the other peer's security context (Recipient Context). These identifiers are sent on the wire in plaintext during communication using OSCORE and can thus be used to correlate messages exchanged between peers and have privacy implications. This document details a procedure that two peers communicating using OSCORE can use to update their identifiers. This ID update procedure can also be ran embedded in an execution of the KUDOS procedure.
 
 --- middle
 
@@ -63,6 +63,10 @@ A way to mitigate this problem is to allow OSCORE peers to update their identifi
 ## Terminology ## {#terminology}
 
 {::boilerplate bcp14-tagged}
+
+Readers are expected to be familiar with the terms and concepts related to CoAP {{RFC7252}}, Observe {{RFC7641}}, CBOR {{RFC8949}}, OSCORE {{RFC8613}}, and KUDOS {{I-D.ietf-core-oscore-key-update}}.
+
+This document additionally defines the following terminology.
 
 * Initiator: the peer starting the ID update procedure, by sending the first message.
 
@@ -80,7 +84,7 @@ When performing an update of OSCORE Sender/Recipient IDs, a peer provides its ne
 
 This procedure can be initiated by either peer, i.e., the CoAP client or the CoAP server may start it by sending the first OSCORE IDs update message. The former case is denoted as the "forward message flow" and the latter as the "reverse message flow".
 
-Furthermore, this procedure can be executed stand-alone, or instead seamlessly integrated in an execution of the KUDOS procedure for updating OSCORE keying material (see {{Section 4.0 of I-D.ietf-core-oscore-key-update}}) using its FS mode or no-FS mode (see {{Section 4.5 of I-D.ietf-core-oscore-key-update}}).
+Furthermore, this procedure can be executed stand-alone, or instead seamlessly integrated in an execution of the KUDOS procedure for updating OSCORE keying material (see {{Section 4 of I-D.ietf-core-oscore-key-update}}) using its FS mode or no-FS mode (see {{Section 4.5 of I-D.ietf-core-oscore-key-update}}).
 
 * In the former stand-alone case, updating the OSCORE Sender/Recipient IDs effectively results in updating part of the current OSCORE Security Context.
 
@@ -469,6 +473,8 @@ Note to RFC Editor: Following the registration of the CoAP Option Number 24, ple
 
 # Examples of OSCORE ID Updates Integrated in KUDOS # {#sec-id-update-in-kudos}
 
+The following section shows two examples where the ID update procedure is performed together with the KUDOS procedure for updating OSCORE keying material.
+
 ## Forward Message Flow # {#sec-id-update-in-kudos-forward}
 
 {{fig-kudos-and-id-update-client-init}} provides an example of the OSCORE IDs update procedure, as run integrated in an execution of KUDOS and in the forward message flow (see {{Section 4.3.1 of I-D.ietf-core-oscore-key-update}}). On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
@@ -683,5 +689,7 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 # Acknowledgments # {#acknowledgment}
 {:unnumbered}
 
-The authors sincerely thank {{{John Preuß Mattsson}}}, {{{Christian Amsüss}}}, {{{Carsten Bormann}}}, and {{{Göran Selander}}} for their feedback and comments.
+The authors sincerely thank {{{Christian Amsüss}}}, {{{Carsten Bormann}}}, {{{John Preuß Mattsson}}}, and {{{Göran Selander}}} for their feedback and comments.
+
+The work on this document has been partly supported by VINNOVA and the Celtic-Next project CRITISEC; and by the H2020 projects SIFIS-Home (Grant agreement 952652) and ARCADIAN-IoT (Grant agreement 101020259).
 
