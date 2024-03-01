@@ -38,8 +38,8 @@ normative:
   RFC7641:
   RFC8174:
   RFC8613:
-  I-D.ietf-core-oscore-key-update:
   RFC8949:
+  I-D.ietf-core-oscore-key-update:
 
 informative:
   I-D.ietf-lake-edhoc:
@@ -49,7 +49,7 @@ entity:
 
 --- abstract
 
-The Object Security for Constrained RESTful Environments (OSCORE) protocol uses identifiers to identify the OSCORE security contexts of the communicating peers. For two peers communicating using OSCORE with each other, a peer has a Sender ID which identifies its own security context (Sender Context) and a Recipient ID identifying the other peer's security context (Recipient Context). These identifiers are sent on the wire in plaintext during communication using OSCORE and can thus be used to correlate messages exchanged between peers and have privacy implications. This document details a procedure that two peers communicating using OSCORE can use to update their identifiers. This ID update procedure can also be ran embedded in an execution of the KUDOS procedure.
+Two peers that communicate with the CoAP protocol can use the Object Security for Constrained RESTful Environments (OSCORE) protocol to protect their message exchanges end-to-end. To this end, the two peers share an OSCORE Security Context and a number of related identifiers. In particular, each of the two peers stores a Sender ID that identifies its own Sender Context within the Security Context, and a Recipient ID that identifies the Recipient Context associated with the other peer within the same Security Context. These identifiers are sent in plaintext within OSCORE-protected messages. Hence, they can be used to correlate messages exchanged between peers and track those peers, with consequent privacy implications. This document defines an ID update procedure that two peers can use to update their OSCORE identifiers. This procedure can be run independently or embedded in an execution of the Key Update for OSCORE (KUDOS) procedure.
 
 --- middle
 
