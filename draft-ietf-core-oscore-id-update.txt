@@ -798,7 +798,7 @@ Table of Contents
                   | TBD24  | Recipient-ID | [RFC-XXXX] |
                   +--------+--------------+------------+
 
-                                 Table 1
+                     Table 1: New CoAP Option Numbers
 
    Note to RFC Editor: Following the registration of the CoAP Option
    Number 24, please replace "TBD24" with "24" in the table above.
