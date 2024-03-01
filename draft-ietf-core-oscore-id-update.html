@@ -8,7 +8,7 @@
 <meta content="Rikard Höglund" name="author">
 <meta content="Marco Tiloca" name="author">
 <meta content="
-       Two peers that communicate with the CoAP protocol can use the Object Security for Constrained RESTful Environments (OSCORE) protocol to protect their message exchanges end-to-end. To this end, the two peers share an OSCORE Security Context and a number of related identifiers. In particular, each of the two peers stores a Sender ID that identifies its own Sender Context within the Security Context, and a Recipient ID that identifies the Recipient Context associated with the other peer within the same Security Context. These identifiers are sent in plaintext within OSCORE-protected messages. Hence, they can be used to correlate messages exchanged between peers and track those peers, with consequent privacy implications. This document defines an ID update procedure that two peers can use to update their OSCORE identifiers. This procedure can be run independently or embedded in an execution of the Key Update for OSCORE (KUDOS) procedure. 
+       Two peers that communicate with the CoAP protocol can use the Object Security for Constrained RESTful Environments (OSCORE) protocol to protect their message exchanges end-to-end. To this end, the two peers share an OSCORE Security Context and a number of related identifiers. In particular, each of the two peers stores a Sender ID that identifies its own Sender Context within the Security Context, and a Recipient ID that identifies the Recipient Context associated with the other peer within the same Security Context. These identifiers are sent in plaintext within OSCORE-protected messages. Hence, they can be used to correlate messages exchanged between peers and track those peers, with consequent privacy implications. This document defines an OSCORE ID update procedure that two peers can use to update their OSCORE identifiers. This procedure can be run stand-alone or seamlessly integrated in an execution of the Key Update for OSCORE (KUDOS) procedure. 
     " name="description">
 <meta content="xml2rfc 3.19.4" name="generator">
 <meta content="draft-ietf-core-oscore-id-update-latest" name="ietf.draft">
@@ -1064,7 +1064,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">Identifier Update for OSCORE</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">Two peers that communicate with the CoAP protocol can use the Object Security for Constrained RESTful Environments (OSCORE) protocol to protect their message exchanges end-to-end. To this end, the two peers share an OSCORE Security Context and a number of related identifiers. In particular, each of the two peers stores a Sender ID that identifies its own Sender Context within the Security Context, and a Recipient ID that identifies the Recipient Context associated with the other peer within the same Security Context. These identifiers are sent in plaintext within OSCORE-protected messages. Hence, they can be used to correlate messages exchanged between peers and track those peers, with consequent privacy implications. This document defines an ID update procedure that two peers can use to update their OSCORE identifiers. This procedure can be run independently or embedded in an execution of the Key Update for OSCORE (KUDOS) procedure.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">Two peers that communicate with the CoAP protocol can use the Object Security for Constrained RESTful Environments (OSCORE) protocol to protect their message exchanges end-to-end. To this end, the two peers share an OSCORE Security Context and a number of related identifiers. In particular, each of the two peers stores a Sender ID that identifies its own Sender Context within the Security Context, and a Recipient ID that identifies the Recipient Context associated with the other peer within the same Security Context. These identifiers are sent in plaintext within OSCORE-protected messages. Hence, they can be used to correlate messages exchanged between peers and track those peers, with consequent privacy implications. This document defines an OSCORE ID update procedure that two peers can use to update their OSCORE identifiers. This procedure can be run stand-alone or seamlessly integrated in an execution of the Key Update for OSCORE (KUDOS) procedure.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-discussion-venues">
@@ -1178,7 +1178,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-examples-of-oscore-id-updat" class="internal xref">Examples of OSCORE ID Updates Integrated in KUDOS</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-examples-of-oscore-id-updat" class="internal xref">Examples of OSCORE ID update procedure Integrated in KUDOS</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
                 <p id="section-toc.1-1.6.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-forward-message-flow-2" class="internal xref">Forward Message Flow</a></p>
@@ -1224,13 +1224,13 @@ svg :is([fill="white"], [fill^="#fff"]) {
 described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
 appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
 <p id="section-1.1-2">Readers are expected to be familiar with the terms and concepts related to CoAP <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, Observe <span>[<a href="#RFC7641" class="cite xref">RFC7641</a>]</span>, CBOR <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>, OSCORE <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, and KUDOS <span>[<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
-<p id="section-1.1-3">This document additionally defines the following terminology.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
+<p id="section-1.1-3">This document additionally uses the following terminology.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-1.1-4.1">
-            <p id="section-1.1-4.1.1">Initiator: the peer starting the ID update procedure, by sending the first message.<a href="#section-1.1-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-1.1-4.1.1">Initiator: the peer starting the OSCORE ID update procedure, by sending the first message.<a href="#section-1.1-4.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.1-4.2">
-            <p id="section-1.1-4.2.1">Responder: the peer that receives the first message in an execution of the ID update procedure.<a href="#section-1.1-4.2.1" class="pilcrow">¶</a></p>
+            <p id="section-1.1-4.2.1">Responder: the peer that receives the first message in an execution of the OSCORE ID update procedure.<a href="#section-1.1-4.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.1-4.3">
             <p id="section-1.1-4.3.1">Forward message flow: the execution workflow where the initiator acts as CoAP client (see <a href="#example-client-initiated-id-update" class="auto internal xref">Section 2.1.1</a>).<a href="#section-1.1-4.3.1" class="pilcrow">¶</a></p>
@@ -1249,44 +1249,44 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-update-of-oscore-sender-rec" class="section-name selfRef">Update of OSCORE Sender/Recipient IDs</a>
       </h2>
 <p id="section-2-1">This section defines the procedure that two peers can perform, in order to update the OSCORE Sender/Recipient IDs that they use in their shared OSCORE Security Context.<a href="#section-2-1" class="pilcrow">¶</a></p>
-<p id="section-2-2">When performing an update of OSCORE Sender/Recipient IDs, a peer provides its new intended OSCORE Recipient ID to the other peer, by means of the Recipient-ID Option defined in <a href="#sec-recipient-id-option" class="auto internal xref">Section 2.1</a>. Hereafter, this document refers to a message including the Recipient-ID Option as an "OSCORE IDs update (request/response) message".<a href="#section-2-2" class="pilcrow">¶</a></p>
+<p id="section-2-2">When performing an update of OSCORE Sender/Recipient IDs, a peer provides its new intended OSCORE Recipient ID to the other peer, by means of the Recipient-ID Option defined in <a href="#sec-recipient-id-option" class="auto internal xref">Section 2.1</a>. Hereafter, this document refers to a message including the Recipient-ID Option as an "ID update (request/response) message".<a href="#section-2-2" class="pilcrow">¶</a></p>
 <p id="section-2-3">This procedure can be initiated by either peer, i.e., the CoAP client or the CoAP server may start it by sending the first OSCORE IDs update message. The former case is denoted as the "forward message flow" and the latter as the "reverse message flow".<a href="#section-2-3" class="pilcrow">¶</a></p>
-<p id="section-2-4">Furthermore, this procedure can be executed stand-alone, or instead seamlessly integrated in an execution of the KUDOS procedure for updating OSCORE keying material (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-06#section-4" class="relref">Section 4</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>) using its FS mode or no-FS mode (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-06#section-4.5" class="relref">Section 4.5</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>).<a href="#section-2-4" class="pilcrow">¶</a></p>
+<p id="section-2-4">Furthermore, this procedure can be executed stand-alone, or instead seamlessly integrated in an execution of the KUDOS procedure for updating OSCORE keying material (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-06#section-4" class="relref">Section 4</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>) used in its FS mode or no-FS mode (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-06#section-4.5" class="relref">Section 4.5</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>).<a href="#section-2-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2-5.1">
           <p id="section-2-5.1.1">In the former stand-alone case, updating the OSCORE Sender/Recipient IDs effectively results in updating part of the current OSCORE Security Context.<a href="#section-2-5.1.1" class="pilcrow">¶</a></p>
 <p id="section-2-5.1.2">
-That is, both peers derive a new Sender Key, Recipient Key, and Common IV, as defined in <span><a href="https://rfc-editor.org/rfc/rfc8613#section-3.2" class="relref">Section 3.2</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>. Also, both peer re-initialize the Sender Sequence Number and the Replay Window accordingly, as defined in <span><a href="https://rfc-editor.org/rfc/rfc8613#section-3.2.2" class="relref">Section 3.2.2</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>. Since the same Master Secret is preserved, forward secrecy is not achieved.<a href="#section-2-5.1.2" class="pilcrow">¶</a></p>
+That is, both peers derive a new Sender Key, Recipient Key, and Common IV, as defined in <span><a href="https://rfc-editor.org/rfc/rfc8613#section-3.2" class="relref">Section 3.2</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>. Also, both peers re-initialize the Sender Sequence Number and the Replay Window accordingly, as defined in <span><a href="https://rfc-editor.org/rfc/rfc8613#section-3.2.2" class="relref">Section 3.2.2</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>. Since the same Master Secret is preserved, forward secrecy is not achieved.<a href="#section-2-5.1.2" class="pilcrow">¶</a></p>
 <p id="section-2-5.1.3">
-As defined in <a href="#id-update-additional-actions" class="auto internal xref">Section 2.1.3</a>, the two peers must take additional actions to ensure a safe execution of the OSCORE IDs update procedure.<a href="#section-2-5.1.3" class="pilcrow">¶</a></p>
+As defined in <a href="#id-update-additional-actions" class="auto internal xref">Section 2.1.3</a>, the two peers must take additional actions to ensure a safe execution of the OSCORE ID update procedure.<a href="#section-2-5.1.3" class="pilcrow">¶</a></p>
 <p id="section-2-5.1.4">
-A peer can safely discard the old OSCORE Security Context including the old Sender/Recipient IDs after the following two events have occurred, in this order: first, the peer has sent to the other peer a message protected with the new OSCORE Security Context including the new Sender/Recipient IDs; then, the peer has received from the other peer and successfully verified a message protected with that new OSCORE Security Context.<a href="#section-2-5.1.4" class="pilcrow">¶</a></p>
+A peer can safely discard the old OSCORE Security Context including the old OSCORE Sender/Recipient IDs after the following two events have occurred, in this order: first, the peer has sent to the other peer a message protected with the new OSCORE Security Context including the new OSCORE Sender/Recipient IDs; then, the peer has received from the other peer and successfully verified a message protected with that new OSCORE Security Context.<a href="#section-2-5.1.4" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-5.2">
-          <p id="section-2-5.2.1">In the latter integrated case, the KUDOS initiator (responder) also acts as initiator (responder) for the OSCORE IDs update procedure. That is, both KUDOS and the OSCORE IDs update procedure <span class="bcp14">MUST</span> be run either in their forward message flow or in their reverse message flow.<a href="#section-2-5.2.1" class="pilcrow">¶</a></p>
+          <p id="section-2-5.2.1">In the latter integrated case, the KUDOS initiator (responder) also acts as initiator (responder) for the OSCORE ID update procedure. That is, both KUDOS and the OSCORE ID update procedure <span class="bcp14">MUST</span> be run either in their forward message flow or in their reverse message flow.<a href="#section-2-5.2.1" class="pilcrow">¶</a></p>
 <p id="section-2-5.2.2">
-The new OSCORE Sender/Recipient IDs <span class="bcp14">MUST NOT</span> be used with the OSCORE Security Context CTX_OLD, and <span class="bcp14">MUST NOT</span> be used with the temporary OSCORE Security Context used to protect the first KUDOS message of a KUDOS execution.<a href="#section-2-5.2.2" class="pilcrow">¶</a></p>
+The new OSCORE Sender/Recipient IDs <span class="bcp14">MUST NOT</span> be used with the OSCORE Security Context CTX_OLD, and <span class="bcp14">MUST NOT</span> be used with the temporary OSCORE Security Context CTX_1 used to protect the first KUDOS message of a KUDOS execution.<a href="#section-2-5.2.2" class="pilcrow">¶</a></p>
 <p id="section-2-5.2.3">
 The first use of the new OSCORE Sender/Recipient IDs with the new OSCORE Security Context CTX_NEW occurs: for the KUDOS initiator, after having received from the KUDOS responder and successfully verified the second KUDOS message of the KUDOS execution in question; for the KUDOS responder, after having sent to the KUDOS initiator the second KUDOS message of the KUDOS execution in question.<a href="#section-2-5.2.3" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-2-6">An initiator terminates an ongoing OSCORE IDs procedure with another peer as failed, in case, after having sent the first OSCORE IDs update message for the procedure in question, a pre-defined amount of time has elapsed without receiving and successfully verifying the second OSCORE IDs update message from the other peer. It is <span class="bcp14">RECOMMENDED</span> that such an amount of time is equal to MAX_TRANSMIT_WAIT (see <span><a href="https://rfc-editor.org/rfc/rfc7252#section-4.8.2" class="relref">Section 4.8.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>).<a href="#section-2-6" class="pilcrow">¶</a></p>
-<p id="section-2-7">A peer terminates an ongoing OSCORE IDs procedure with another peer as successful, in any of the following two cases.<a href="#section-2-7" class="pilcrow">¶</a></p>
+<p id="section-2-6">An initiator terminates an ongoing OSCORE ID update procedure with another peer as failed, in case, after having sent the first ID update message for the procedure in question, a pre-defined amount of time has elapsed without receiving and successfully verifying the second ID update message from the other peer. It is <span class="bcp14">RECOMMENDED</span> that such an amount of time is equal to MAX_TRANSMIT_WAIT (see <span><a href="https://rfc-editor.org/rfc/rfc7252#section-4.8.2" class="relref">Section 4.8.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>).<a href="#section-2-6" class="pilcrow">¶</a></p>
+<p id="section-2-7">A peer terminates an ongoing OSCORE ID update procedure with another peer as successful, in any of the following two cases.<a href="#section-2-7" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2-8.1">
-          <p id="section-2-8.1.1">The peer is acting as initiator, and it has received and successfully verified the second OSCORE IDs update message from the other peer.<a href="#section-2-8.1.1" class="pilcrow">¶</a></p>
+          <p id="section-2-8.1.1">The peer is acting as initiator, and it has received and successfully verified the second ID update message from the other peer.<a href="#section-2-8.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-2-8.2">
-          <p id="section-2-8.2.1">The peer is acting as responder, and it has sent the second OSCORE IDs update message to the other peer.<a href="#section-2-8.2.1" class="pilcrow">¶</a></p>
+          <p id="section-2-8.2.1">The peer is acting as responder, and it has sent the second ID update message to the other peer.<a href="#section-2-8.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-2-9">A peer <span class="bcp14">MUST NOT</span> initiate an OSCORE IDs procedure with another peer, if it has another such procedure ongoing with that other peer.<a href="#section-2-9" class="pilcrow">¶</a></p>
-<p id="section-2-10">Upon receiving a valid OSCORE IDs update message, a responder that supports the OSCORE IDs update procedure <span class="bcp14">MUST</span> send the second OSCORE IDs update message, except in the following case.<a href="#section-2-10" class="pilcrow">¶</a></p>
+<p id="section-2-9">A peer <span class="bcp14">MUST NOT</span> initiate an OSCORE ID update procedure with another peer, if it has another such procedure ongoing with that other peer.<a href="#section-2-9" class="pilcrow">¶</a></p>
+<p id="section-2-10">Upon receiving a valid ID update message, a responder that supports the ID update update procedure <span class="bcp14">MUST</span> send the second ID update message, except in the following case.<a href="#section-2-10" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2-11.1">
-          <p id="section-2-11.1.1">The received OSCORE IDs update messages is not a KUDOS message (i.e., the OSCORE IDs update procedure is being performed stand-alone) and the responder has no eligible Recipient ID to offer to the initiator (see <a href="#id-update-additional-actions" class="auto internal xref">Section 2.1.3</a>).<a href="#section-2-11.1.1" class="pilcrow">¶</a></p>
+          <p id="section-2-11.1.1">The received ID update message is not a KUDOS message (i.e., the OSCORE ID update procedure is being performed stand-alone) and the responder has no eligible Recipient ID to offer to the initiator (see <a href="#id-update-additional-actions" class="auto internal xref">Section 2.1.3</a>).<a href="#section-2-11.1.1" class="pilcrow">¶</a></p>
 <p id="section-2-11.1.2">
-If the responder is a server, the responder <span class="bcp14">MUST</span> also reply to the received OSCORE IDs update request message with a protected 5.03 (Service Unavailable) error response. The error response <span class="bcp14">MUST NOT</span> include the Recipient-ID Option, and its diagnostic payload <span class="bcp14">MAY</span> provide additional information.<a href="#section-2-11.1.2" class="pilcrow">¶</a></p>
+If the responder is a server, the responder <span class="bcp14">MUST</span> also reply to the received ID update request message with a protected 5.03 (Service Unavailable) error response. The error response <span class="bcp14">MUST NOT</span> include the Recipient-ID Option, and its diagnostic payload <span class="bcp14">MAY</span> provide additional information.<a href="#section-2-11.1.2" class="pilcrow">¶</a></p>
 <p id="section-2-11.1.3">
 When receiving the error response, the initiator terminates the OSCORE IDs procedure as failed.<a href="#section-2-11.1.3" class="pilcrow">¶</a></p>
 </li>
@@ -1318,116 +1318,221 @@ When receiving the error response, the initiator terminates the OSCORE IDs proce
 <p id="section-2.1-3">Note to RFC Editor: Following the registration of the CoAP Option Number 24, please replace "TBD24" with "24" in the figure above. Then, please delete this paragraph.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
 <p id="section-2.1-4">The option value can have an arbitrary length. Implementations can limit its length to that of the longest supported Recipient ID.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
 <p id="section-2.1-5">This document particularly defines how this option is used in messages protected with OSCORE. That is, when the option is included in an outgoing message, the option value specifies the new OSCORE Recipient ID that the sender endpoint intends to use with the other endpoint sharing the OSCORE Security Context.<a href="#section-2.1-5" class="pilcrow">¶</a></p>
-<p id="section-2.1-6">Therefore, the maximum lenght of the option value is equal to the maximum lenght of OSCORE Sender/Recipient IDs. As defined in <span><a href="https://rfc-editor.org/rfc/rfc8613#section-3.3" class="relref">Section 3.3</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, this is determined by the size of the AEAD nonce of the used AEAD Algorithm in the OSCORE Security Context.<a href="#section-2.1-6" class="pilcrow">¶</a></p>
+<p id="section-2.1-6">Therefore, the maximum length of the option value is equal to the maximum length of OSCORE Sender/Recipient IDs. As defined in <span><a href="https://rfc-editor.org/rfc/rfc8613#section-3.3" class="relref">Section 3.3</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, this is determined by the size of the AEAD nonce of the used AEAD Algorithm in the OSCORE Security Context.<a href="#section-2.1-6" class="pilcrow">¶</a></p>
 <p id="section-2.1-7">The Recipient-ID Option is of class E in terms of OSCORE processing (see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-4.1" class="relref">Section 4.1</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>).<a href="#section-2.1-7" class="pilcrow">¶</a></p>
 <div id="example-client-initiated-id-update">
 <section id="section-2.1.1">
           <h4 id="name-forward-message-flow">
 <a href="#section-2.1.1" class="section-number selfRef">2.1.1. </a><a href="#name-forward-message-flow" class="section-name selfRef">Forward Message Flow</a>
           </h4>
-<p id="section-2.1.1-1"><a href="#fig-id-update-client-init" class="auto internal xref">Figure 2</a> shows an example of the OSCORE IDs update procedure, run stand-alone and in the forward message flow, with the client acting as initiator. On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.<a href="#section-2.1.1-1" class="pilcrow">¶</a></p>
-<p id="section-2.1.1-2"><a href="#sec-id-update-in-kudos-forward" class="auto internal xref">Appendix A.1</a> provides a different example of the OSCORE IDs update procedure, as run integrated in an execution of KUDOS and in the forward message flow (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-06#section-4.3.1" class="relref">Section 4.3.1</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>).<a href="#section-2.1.1-2" class="pilcrow">¶</a></p>
-<span id="name-example-of-the-oscore-ids-u"></span><div id="fig-id-update-client-init">
+<p id="section-2.1.1-1"><a href="#fig-id-update-client-init" class="auto internal xref">Figure 2</a> shows an example of the OSCORE ID update procedure, run stand-alone and in the forward message flow, with the client acting as initiator. On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.<a href="#section-2.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.1-2"><a href="#sec-id-update-in-kudos-forward" class="auto internal xref">Appendix A.1</a> provides a different example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the forward message flow (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-06#section-4.3.1" class="relref">Section 4.3.1</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>).<a href="#section-2.1.1-2" class="pilcrow">¶</a></p>
+<span id="name-example-of-the-oscore-id-up"></span><div id="fig-id-update-client-init">
 <figure id="figure-2">
-            <div class="alignCenter art-text artwork" id="section-2.1.1-3.1">
-<pre>
-          Client                             Server
-       (initiator)                         (responder)
-            |                                   |
-CTX_A {     |                                   | CTX_A {
- SID = 0x01 |                                   |  SID = 0x00
- RID = 0x00 |                                   |  RID = 0x01
-}           |                                   | }
-            |                                   |
-            |            Request #1             |
-Protect     |----------------------------------&gt;| /temp
-with CTX_A  | OSCORE {                          |
-            |  ...                              |
-            |  kid: 0x01                        | Verify
-            | }                                 | with CTX_A
-            | Encrypted Payload {               |
-            |  ...                              |
-            |  Recipient-ID: 0x42               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-            |            Response #1            |
-            |&lt;----------------------------------| Protect
-            | OSCORE {                          | with CTX_A
-            |  ...                              |
-Verify      | }                                 |
-with CTX_A  | Encrypted Payload {               |
-            |  ...                              |
-            |  Recipient-ID: 0x78               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-CTX_B {     |                                   | CTX_B {
- SID = 0x78 |                                   |  SID = 0x42
- RID = 0x42 |                                   |  RID = 0x78
-}           |                                   | }
-            |                                   |
-            |            Request #2             |
-Protect     |----------------------------------&gt;| /temp
-with CTX_B  | OSCORE {                          |
-            |  ...                              |
-            |  kid: 0x78                        | Verify
-            | }                                 | with CTX_B
-            | Encrypted Payload {               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-            |            Response #2            |
-            |&lt;----------------------------------| Protect
-            | OSCORE {                          | with CTX_B
-            |  ...                              |
-Verify      | }                                 |
-with CTX_B  | Encrypted Payload {               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-Discard     |                                   |
-CTX_A       |                                   |
-            |                                   |
-            |            Request #3             |
-Protect     |----------------------------------&gt;| /temp
-with CTX_B  | OSCORE {                          |
-            |  ...                              |
-            |  kid: 0x78                        | Verify
-            | }                                 | with CTX_B
-            | Encrypted Payload {               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-            |                                   | Discard
-            |                                   | CTX_A
-            |                                   |
-            |            Response #3            |
-            |&lt;----------------------------------| Protect
-            | OSCORE {                          | with CTX_B
-            |  ...                              |
-Verify      | }                                 |
-with CTX_B  | Encrypted Payload {               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-</pre>
+            <div id="section-2.1.1-3.1">
+              <div class="alignCenter art-svg artwork" id="section-2.1.1-3.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1408" width="496" viewBox="0 0 496 1408" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 104,64 L 104,1392" fill="none" stroke="black"></path>
+                  <path d="M 392,64 L 392,1392" fill="none" stroke="black"></path>
+                  <path d="M 112,176 L 384,176" fill="none" stroke="black"></path>
+                  <path d="M 112,384 L 384,384" fill="none" stroke="black"></path>
+                  <path d="M 112,656 L 384,656" fill="none" stroke="black"></path>
+                  <path d="M 112,832 L 384,832" fill="none" stroke="black"></path>
+                  <path d="M 112,1040 L 384,1040" fill="none" stroke="black"></path>
+                  <path d="M 112,1264 L 384,1264" fill="none" stroke="black"></path>
+                  <polygon class="arrowhead" points="392,1040 380,1034.4 380,1045.6" fill="black" transform="rotate(0,384,1040)"></polygon>
+                  <polygon class="arrowhead" points="392,656 380,650.4 380,661.6" fill="black" transform="rotate(0,384,656)"></polygon>
+                  <polygon class="arrowhead" points="392,176 380,170.4 380,181.6" fill="black" transform="rotate(0,384,176)"></polygon>
+                  <polygon class="arrowhead" points="120,1264 108,1258.4 108,1269.6" fill="black" transform="rotate(180,112,1264)"></polygon>
+                  <polygon class="arrowhead" points="120,832 108,826.4 108,837.6" fill="black" transform="rotate(180,112,832)"></polygon>
+                  <polygon class="arrowhead" points="120,384 108,378.4 108,389.6" fill="black" transform="rotate(180,112,384)"></polygon>
+                  <g class="text">
+                    <text x="108" y="36">Client</text>
+                    <text x="388" y="36">Server</text>
+                    <text x="104" y="52">(initiator)</text>
+                    <text x="392" y="52">(responder)</text>
+                    <text x="24" y="84">CTX_A</text>
+                    <text x="56" y="84">{</text>
+                    <text x="424" y="84">CTX_A</text>
+                    <text x="456" y="84">{</text>
+                    <text x="24" y="100">SID</text>
+                    <text x="48" y="100">=</text>
+                    <text x="76" y="100">0x01</text>
+                    <text x="424" y="100">SID</text>
+                    <text x="448" y="100">=</text>
+                    <text x="476" y="100">0x00</text>
+                    <text x="24" y="116">RID</text>
+                    <text x="48" y="116">=</text>
+                    <text x="76" y="116">0x00</text>
+                    <text x="424" y="116">RID</text>
+                    <text x="448" y="116">=</text>
+                    <text x="476" y="116">0x01</text>
+                    <text x="8" y="132">}</text>
+                    <text x="408" y="132">}</text>
+                    <text x="232" y="164">Request</text>
+                    <text x="276" y="164">#1</text>
+                    <text x="32" y="180">Protect</text>
+                    <text x="424" y="180">/temp</text>
+                    <text x="20" y="196">with</text>
+                    <text x="64" y="196">CTX_A</text>
+                    <text x="140" y="196">OSCORE</text>
+                    <text x="176" y="196">{</text>
+                    <text x="136" y="212">...</text>
+                    <text x="140" y="228">kid:</text>
+                    <text x="180" y="228">0x01</text>
+                    <text x="428" y="228">Verify</text>
+                    <text x="120" y="244">}</text>
+                    <text x="420" y="244">with</text>
+                    <text x="464" y="244">CTX_A</text>
+                    <text x="152" y="260">Encrypted</text>
+                    <text x="224" y="260">Payload</text>
+                    <text x="264" y="260">{</text>
+                    <text x="136" y="276">...</text>
+                    <text x="176" y="292">Recipient-ID:</text>
+                    <text x="252" y="292">0x42</text>
+                    <text x="136" y="308">...</text>
+                    <text x="168" y="324">Application</text>
+                    <text x="248" y="324">Payload</text>
+                    <text x="120" y="340">}</text>
+                    <text x="236" y="372">Response</text>
+                    <text x="284" y="372">#1</text>
+                    <text x="432" y="388">Protect</text>
+                    <text x="140" y="404">OSCORE</text>
+                    <text x="176" y="404">{</text>
+                    <text x="420" y="404">with</text>
+                    <text x="464" y="404">CTX_A</text>
+                    <text x="136" y="420">...</text>
+                    <text x="28" y="436">Verify</text>
+                    <text x="120" y="436">}</text>
+                    <text x="20" y="452">with</text>
+                    <text x="64" y="452">CTX_A</text>
+                    <text x="152" y="452">Encrypted</text>
+                    <text x="224" y="452">Payload</text>
+                    <text x="264" y="452">{</text>
+                    <text x="136" y="468">...</text>
+                    <text x="176" y="484">Recipient-ID:</text>
+                    <text x="252" y="484">0x78</text>
+                    <text x="136" y="500">...</text>
+                    <text x="168" y="516">Application</text>
+                    <text x="248" y="516">Payload</text>
+                    <text x="120" y="532">}</text>
+                    <text x="24" y="564">CTX_B</text>
+                    <text x="56" y="564">{</text>
+                    <text x="424" y="564">CTX_B</text>
+                    <text x="456" y="564">{</text>
+                    <text x="24" y="580">SID</text>
+                    <text x="48" y="580">=</text>
+                    <text x="76" y="580">0x78</text>
+                    <text x="424" y="580">SID</text>
+                    <text x="448" y="580">=</text>
+                    <text x="476" y="580">0x42</text>
+                    <text x="24" y="596">RID</text>
+                    <text x="48" y="596">=</text>
+                    <text x="76" y="596">0x42</text>
+                    <text x="424" y="596">RID</text>
+                    <text x="448" y="596">=</text>
+                    <text x="476" y="596">0x78</text>
+                    <text x="8" y="612">}</text>
+                    <text x="408" y="612">}</text>
+                    <text x="232" y="644">Request</text>
+                    <text x="276" y="644">#2</text>
+                    <text x="32" y="660">Protect</text>
+                    <text x="424" y="660">/temp</text>
+                    <text x="20" y="676">with</text>
+                    <text x="64" y="676">CTX_B</text>
+                    <text x="140" y="676">OSCORE</text>
+                    <text x="176" y="676">{</text>
+                    <text x="136" y="692">...</text>
+                    <text x="140" y="708">kid:</text>
+                    <text x="180" y="708">0x78</text>
+                    <text x="428" y="708">Verify</text>
+                    <text x="120" y="724">}</text>
+                    <text x="420" y="724">with</text>
+                    <text x="464" y="724">CTX_B</text>
+                    <text x="152" y="740">Encrypted</text>
+                    <text x="224" y="740">Payload</text>
+                    <text x="264" y="740">{</text>
+                    <text x="136" y="756">...</text>
+                    <text x="168" y="772">Application</text>
+                    <text x="248" y="772">Payload</text>
+                    <text x="120" y="788">}</text>
+                    <text x="236" y="820">Response</text>
+                    <text x="284" y="820">#2</text>
+                    <text x="432" y="836">Protect</text>
+                    <text x="140" y="852">OSCORE</text>
+                    <text x="176" y="852">{</text>
+                    <text x="420" y="852">with</text>
+                    <text x="464" y="852">CTX_B</text>
+                    <text x="136" y="868">...</text>
+                    <text x="28" y="884">Verify</text>
+                    <text x="120" y="884">}</text>
+                    <text x="20" y="900">with</text>
+                    <text x="64" y="900">CTX_B</text>
+                    <text x="152" y="900">Encrypted</text>
+                    <text x="224" y="900">Payload</text>
+                    <text x="264" y="900">{</text>
+                    <text x="136" y="916">...</text>
+                    <text x="168" y="932">Application</text>
+                    <text x="248" y="932">Payload</text>
+                    <text x="120" y="948">}</text>
+                    <text x="32" y="980">Discard</text>
+                    <text x="24" y="996">CTX_A</text>
+                    <text x="232" y="1028">Request</text>
+                    <text x="276" y="1028">#3</text>
+                    <text x="32" y="1044">Protect</text>
+                    <text x="424" y="1044">/temp</text>
+                    <text x="20" y="1060">with</text>
+                    <text x="64" y="1060">CTX_B</text>
+                    <text x="140" y="1060">OSCORE</text>
+                    <text x="176" y="1060">{</text>
+                    <text x="136" y="1076">...</text>
+                    <text x="140" y="1092">kid:</text>
+                    <text x="180" y="1092">0x78</text>
+                    <text x="428" y="1092">Verify</text>
+                    <text x="120" y="1108">}</text>
+                    <text x="420" y="1108">with</text>
+                    <text x="464" y="1108">CTX_B</text>
+                    <text x="152" y="1124">Encrypted</text>
+                    <text x="224" y="1124">Payload</text>
+                    <text x="264" y="1124">{</text>
+                    <text x="136" y="1140">...</text>
+                    <text x="168" y="1156">Application</text>
+                    <text x="248" y="1156">Payload</text>
+                    <text x="120" y="1172">}</text>
+                    <text x="432" y="1204">Discard</text>
+                    <text x="424" y="1220">CTX_A</text>
+                    <text x="236" y="1252">Response</text>
+                    <text x="284" y="1252">#3</text>
+                    <text x="432" y="1268">Protect</text>
+                    <text x="140" y="1284">OSCORE</text>
+                    <text x="176" y="1284">{</text>
+                    <text x="420" y="1284">with</text>
+                    <text x="464" y="1284">CTX_B</text>
+                    <text x="136" y="1300">...</text>
+                    <text x="28" y="1316">Verify</text>
+                    <text x="120" y="1316">}</text>
+                    <text x="20" y="1332">with</text>
+                    <text x="64" y="1332">CTX_B</text>
+                    <text x="152" y="1332">Encrypted</text>
+                    <text x="224" y="1332">Payload</text>
+                    <text x="264" y="1332">{</text>
+                    <text x="136" y="1348">...</text>
+                    <text x="168" y="1364">Application</text>
+                    <text x="248" y="1364">Payload</text>
+                    <text x="120" y="1380">}</text>
+                  </g>
+                </svg><a href="#section-2.1.1-3.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
-<a href="#name-example-of-the-oscore-ids-u" class="selfRef">Example of the OSCORE IDs Update forward message flow</a>
+<a href="#name-example-of-the-oscore-id-up" class="selfRef">Example of the OSCORE ID update procedure with Forward Message Flow</a>
             </figcaption></figure>
 </div>
-<p id="section-2.1.1-4">Before the OSCORE IDs update procedure starts, the client (the server) shares with the server (the client) an OSCORE Security Context CTX_A with Sender ID 0x01 (0x00) and Recipient ID 0x00 (0x01).<a href="#section-2.1.1-4" class="pilcrow">¶</a></p>
-<p id="section-2.1.1-5">When starting the OSCORE IDs update procedure, the client determines its new intended OSCORE Recipient ID 0x42. Then, the client prepares a CoAP request targeting an application resource at the server. The request includes the Recipient-ID Option, with value the client's new Recipient ID 0x42.<a href="#section-2.1.1-5" class="pilcrow">¶</a></p>
-<p id="section-2.1.1-6">The client protects the request with CTX_A, i.e., by using the keying material derived from the current client's Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request #1.<a href="#section-2.1.1-6" class="pilcrow">¶</a></p>
+<p id="section-2.1.1-4">Before the OSCORE ID update procedure starts, the client (the server) shares with the server (the client) an OSCORE Security Context CTX_A with Sender ID 0x01 (0x00) and Recipient ID 0x00 (0x01).<a href="#section-2.1.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.1.1-5">When starting the OSCORE ID update procedure, the client determines its new intended OSCORE Recipient ID 0x42. Then, the client prepares a CoAP request targeting an application resource at the server. The request includes the Recipient-ID Option, with value the client's new Recipient ID 0x42.<a href="#section-2.1.1-5" class="pilcrow">¶</a></p>
+<p id="section-2.1.1-6">The client protects the request with CTX_A, i.e., by using the keying material derived from the client's current Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request #1.<a href="#section-2.1.1-6" class="pilcrow">¶</a></p>
 <p id="section-2.1.1-7">Upon receiving, decrypting, and successfully verifying the OSCORE message Request #1, the server retrieves the value 0x42 from the Recipient-ID Option, and determines its new intended OSCORE Recipient ID 0x78. Then, the server prepares a CoAP response including the Recipient-ID Option, with value the server's new Recipient ID 0x78.<a href="#section-2.1.1-7" class="pilcrow">¶</a></p>
-<p id="section-2.1.1-8">The server protects the response with CTX_A, i.e., by using the keying material derived from the current server's Sender ID 0x00. After that, the server sends the response to the client.<a href="#section-2.1.1-8" class="pilcrow">¶</a></p>
+<p id="section-2.1.1-8">The server protects the response with CTX_A, i.e., by using the keying material derived from the server's current Sender ID 0x00. After that, the server sends the response to the client.<a href="#section-2.1.1-8" class="pilcrow">¶</a></p>
 <p id="section-2.1.1-9">Then, the server considers 0x42 and 0x78 as its new Sender ID and Recipient ID to use with the client, respectively. As shown in the example, the server practically installs a new OSCORE Security Context CTX_B where: i) its Sender ID and Recipient ID are 0x42 and 0x78, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-3.2.2" class="relref">Section 3.2.2</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>); iii) anything else is like in the OSCORE Security Context used to encrypt the OSCORE message Response #1.<a href="#section-2.1.1-9" class="pilcrow">¶</a></p>
 <p id="section-2.1.1-10">Upon receiving, decrypting, and successfully verifying the OSCORE message Response #1, the client considers 0x78 and 0x42 as the new Sender ID and Recipient ID to use with the server, respectively. As shown in the example, the client practically installs a new OSCORE Security Context CTX_B where: i) its Sender ID and Recipient ID are 0x78 and 0x42, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-3.2.2" class="relref">Section 3.2.2</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>); iii) anything else is like in the OSCORE Security Context used to decrypt the OSCORE message Response #1.<a href="#section-2.1.1-10" class="pilcrow">¶</a></p>
 <p id="section-2.1.1-11">From then on, the client and the server can exchange messages protected with the OSCORE Security Context CTX_B, i.e., according to the new OSCORE Sender/Recipient IDs and using new keying material derived from those.<a href="#section-2.1.1-11" class="pilcrow">¶</a></p>
@@ -1442,138 +1547,262 @@ with CTX_B  | Encrypted Payload {               |
           <h4 id="name-reverse-message-flow">
 <a href="#section-2.1.2" class="section-number selfRef">2.1.2. </a><a href="#name-reverse-message-flow" class="section-name selfRef">Reverse Message Flow</a>
           </h4>
-<p id="section-2.1.2-1"><a href="#fig-id-update-server-init" class="auto internal xref">Figure 3</a> shows an example of the OSCORE IDs update procedure, run stand-alone and in the reverse message flow, with the server acting as initiator. On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.<a href="#section-2.1.2-1" class="pilcrow">¶</a></p>
-<p id="section-2.1.2-2"><a href="#sec-id-update-in-kudos-reverse" class="auto internal xref">Appendix A.2</a> provides a different example of the OSCORE IDs update procedure, as run integrated in an execution of KUDOS and in the reverse message flow (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-06#section-4.3.2" class="relref">Section 4.3.2</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>).<a href="#section-2.1.2-2" class="pilcrow">¶</a></p>
-<span id="name-example-of-the-oscore-ids-up"></span><div id="fig-id-update-server-init">
+<p id="section-2.1.2-1"><a href="#fig-id-update-server-init" class="auto internal xref">Figure 3</a> shows an example of the OSCORE ID update procedure, run stand-alone and in the reverse message flow, with the server acting as initiator. On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.<a href="#section-2.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.2-2"><a href="#sec-id-update-in-kudos-reverse" class="auto internal xref">Appendix A.2</a> provides a different example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the reverse message flow (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-06#section-4.3.2" class="relref">Section 4.3.2</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>).<a href="#section-2.1.2-2" class="pilcrow">¶</a></p>
+<span id="name-example-of-the-oscore-id-upd"></span><div id="fig-id-update-server-init">
 <figure id="figure-3">
-            <div class="alignCenter art-text artwork" id="section-2.1.2-3.1">
-<pre>
-          Client                             Server
-       (responder)                         (initiator)
-            |                                   |
-CTX_A {     |                                   | CTX_A {
- SID = 0x01 |                                   |  SID = 0x00
- RID = 0x00 |                                   |  RID = 0x01
-}           |                                   | }
-            |                                   |
-            |            Request #1             |
-Protect     |----------------------------------&gt;| /temp
-with CTX_A  | OSCORE {                          |
-            |  ...                              |
-            |  kid: 0x01                        | Verify
-            | }                                 | with CTX_A
-            | Encrypted Payload {               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-            |            Response #1            |
-            |&lt;----------------------------------| Protect
-            | OSCORE {                          | with CTX_A
-            |  ...                              |
-Verify      | }                                 |
-with CTX_A  | Encrypted Payload {               |
-            |  ...                              |
-            |  Recipient-ID: 0x78               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-            |            Request #2             |
-Protect     |----------------------------------&gt;| /temp
-with CTX_A  | OSCORE {                          |
-            |  ...                              |
-            |  kid: 0x01                        | Verify
-            | }                                 | with CTX_A
-            | Encrypted Payload {               |
-            |  ...                              |
-            |  Recipient-ID: 0x42               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-            |                                   | CTX_B {
-            |                                   |  SID = 0x42
-            |                                   |  RID = 0x78
-            |                                   | }
-            |                                   |
-            |            Response #2            |
-            |&lt;----------------------------------| Protect
-            | OSCORE {                          | with CTX_A
-            |  ...                              |
-Verify      | }                                 |
-with CTX_A  | Encrypted Payload {               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-CTX_B {     |                                   |
- SID = 0x78 |                                   |
- RID = 0x42 |                                   |
-}           |                                   |
-            |                                   |
-            |            Request #3             |
-Protect     |----------------------------------&gt;| /temp
-with CTX_B  | OSCORE {                          |
-            |  ...                              |
-            |  kid: 0x78                        | Verify
-            | }                                 | with CTX_B
-            | Encrypted Payload {               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-            |            Response #3            |
-            |&lt;----------------------------------| Protect
-            | OSCORE {                          | with CTX_B
-            |  ...                              |
-Verify      | }                                 |
-with CTX_B  | Encrypted Payload {               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-Discard     |                                   |
-CTX_A       |                                   |
-            |                                   |
-            |            Request #4             |
-Protect     |----------------------------------&gt;| /temp
-with CTX_B  | OSCORE {                          |
-            |  ...                              |
-            |  kid: 0x78                        | Verify
-            | }                                 | with CTX_B
-            | Encrypted Payload {               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-            |                                   | Discard
-            |                                   | CTX_A
-            |                                   |
-            |            Response #4            |
-            |&lt;----------------------------------| Protect
-            | OSCORE {                          | with CTX_B
-            |  ...                              |
-Verify      | }                                 |
-with CTX_B  | Encrypted Payload {               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-</pre>
+            <div id="section-2.1.2-3.1">
+              <div class="alignCenter art-svg artwork" id="section-2.1.2-3.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1824" width="496" viewBox="0 0 496 1824" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 104,64 L 104,1808" fill="none" stroke="black"></path>
+                  <path d="M 392,64 L 392,1808" fill="none" stroke="black"></path>
+                  <path d="M 112,176 L 384,176" fill="none" stroke="black"></path>
+                  <path d="M 112,352 L 384,352" fill="none" stroke="black"></path>
+                  <path d="M 112,544 L 384,544" fill="none" stroke="black"></path>
+                  <path d="M 112,832 L 384,832" fill="none" stroke="black"></path>
+                  <path d="M 112,1072 L 384,1072" fill="none" stroke="black"></path>
+                  <path d="M 112,1248 L 384,1248" fill="none" stroke="black"></path>
+                  <path d="M 112,1456 L 384,1456" fill="none" stroke="black"></path>
+                  <path d="M 112,1680 L 384,1680" fill="none" stroke="black"></path>
+                  <polygon class="arrowhead" points="392,1456 380,1450.4 380,1461.6" fill="black" transform="rotate(0,384,1456)"></polygon>
+                  <polygon class="arrowhead" points="392,1072 380,1066.4 380,1077.6" fill="black" transform="rotate(0,384,1072)"></polygon>
+                  <polygon class="arrowhead" points="392,544 380,538.4 380,549.6" fill="black" transform="rotate(0,384,544)"></polygon>
+                  <polygon class="arrowhead" points="392,176 380,170.4 380,181.6" fill="black" transform="rotate(0,384,176)"></polygon>
+                  <polygon class="arrowhead" points="120,1680 108,1674.4 108,1685.6" fill="black" transform="rotate(180,112,1680)"></polygon>
+                  <polygon class="arrowhead" points="120,1248 108,1242.4 108,1253.6" fill="black" transform="rotate(180,112,1248)"></polygon>
+                  <polygon class="arrowhead" points="120,832 108,826.4 108,837.6" fill="black" transform="rotate(180,112,832)"></polygon>
+                  <polygon class="arrowhead" points="120,352 108,346.4 108,357.6" fill="black" transform="rotate(180,112,352)"></polygon>
+                  <g class="text">
+                    <text x="108" y="36">Client</text>
+                    <text x="388" y="36">Server</text>
+                    <text x="104" y="52">(responder)</text>
+                    <text x="392" y="52">(initiator)</text>
+                    <text x="24" y="84">CTX_A</text>
+                    <text x="56" y="84">{</text>
+                    <text x="424" y="84">CTX_A</text>
+                    <text x="456" y="84">{</text>
+                    <text x="24" y="100">SID</text>
+                    <text x="48" y="100">=</text>
+                    <text x="76" y="100">0x01</text>
+                    <text x="424" y="100">SID</text>
+                    <text x="448" y="100">=</text>
+                    <text x="476" y="100">0x00</text>
+                    <text x="24" y="116">RID</text>
+                    <text x="48" y="116">=</text>
+                    <text x="76" y="116">0x00</text>
+                    <text x="424" y="116">RID</text>
+                    <text x="448" y="116">=</text>
+                    <text x="476" y="116">0x01</text>
+                    <text x="8" y="132">}</text>
+                    <text x="408" y="132">}</text>
+                    <text x="232" y="164">Request</text>
+                    <text x="276" y="164">#1</text>
+                    <text x="32" y="180">Protect</text>
+                    <text x="424" y="180">/temp</text>
+                    <text x="20" y="196">with</text>
+                    <text x="64" y="196">CTX_A</text>
+                    <text x="140" y="196">OSCORE</text>
+                    <text x="176" y="196">{</text>
+                    <text x="136" y="212">...</text>
+                    <text x="140" y="228">kid:</text>
+                    <text x="180" y="228">0x01</text>
+                    <text x="428" y="228">Verify</text>
+                    <text x="120" y="244">}</text>
+                    <text x="420" y="244">with</text>
+                    <text x="464" y="244">CTX_A</text>
+                    <text x="152" y="260">Encrypted</text>
+                    <text x="224" y="260">Payload</text>
+                    <text x="264" y="260">{</text>
+                    <text x="136" y="276">...</text>
+                    <text x="168" y="292">Application</text>
+                    <text x="248" y="292">Payload</text>
+                    <text x="120" y="308">}</text>
+                    <text x="236" y="340">Response</text>
+                    <text x="284" y="340">#1</text>
+                    <text x="432" y="356">Protect</text>
+                    <text x="140" y="372">OSCORE</text>
+                    <text x="176" y="372">{</text>
+                    <text x="420" y="372">with</text>
+                    <text x="464" y="372">CTX_A</text>
+                    <text x="136" y="388">...</text>
+                    <text x="28" y="404">Verify</text>
+                    <text x="120" y="404">}</text>
+                    <text x="20" y="420">with</text>
+                    <text x="64" y="420">CTX_A</text>
+                    <text x="152" y="420">Encrypted</text>
+                    <text x="224" y="420">Payload</text>
+                    <text x="264" y="420">{</text>
+                    <text x="136" y="436">...</text>
+                    <text x="176" y="452">Recipient-ID:</text>
+                    <text x="252" y="452">0x78</text>
+                    <text x="136" y="468">...</text>
+                    <text x="168" y="484">Application</text>
+                    <text x="248" y="484">Payload</text>
+                    <text x="120" y="500">}</text>
+                    <text x="232" y="532">Request</text>
+                    <text x="276" y="532">#2</text>
+                    <text x="32" y="548">Protect</text>
+                    <text x="424" y="548">/temp</text>
+                    <text x="20" y="564">with</text>
+                    <text x="64" y="564">CTX_A</text>
+                    <text x="140" y="564">OSCORE</text>
+                    <text x="176" y="564">{</text>
+                    <text x="136" y="580">...</text>
+                    <text x="140" y="596">kid:</text>
+                    <text x="180" y="596">0x01</text>
+                    <text x="428" y="596">Verify</text>
+                    <text x="120" y="612">}</text>
+                    <text x="420" y="612">with</text>
+                    <text x="464" y="612">CTX_A</text>
+                    <text x="152" y="628">Encrypted</text>
+                    <text x="224" y="628">Payload</text>
+                    <text x="264" y="628">{</text>
+                    <text x="136" y="644">...</text>
+                    <text x="176" y="660">Recipient-ID:</text>
+                    <text x="252" y="660">0x42</text>
+                    <text x="136" y="676">...</text>
+                    <text x="168" y="692">Application</text>
+                    <text x="248" y="692">Payload</text>
+                    <text x="120" y="708">}</text>
+                    <text x="424" y="740">CTX_B</text>
+                    <text x="456" y="740">{</text>
+                    <text x="424" y="756">SID</text>
+                    <text x="448" y="756">=</text>
+                    <text x="476" y="756">0x42</text>
+                    <text x="424" y="772">RID</text>
+                    <text x="448" y="772">=</text>
+                    <text x="476" y="772">0x78</text>
+                    <text x="408" y="788">}</text>
+                    <text x="236" y="820">Response</text>
+                    <text x="284" y="820">#2</text>
+                    <text x="432" y="836">Protect</text>
+                    <text x="140" y="852">OSCORE</text>
+                    <text x="176" y="852">{</text>
+                    <text x="420" y="852">with</text>
+                    <text x="464" y="852">CTX_A</text>
+                    <text x="136" y="868">...</text>
+                    <text x="28" y="884">Verify</text>
+                    <text x="120" y="884">}</text>
+                    <text x="20" y="900">with</text>
+                    <text x="64" y="900">CTX_A</text>
+                    <text x="152" y="900">Encrypted</text>
+                    <text x="224" y="900">Payload</text>
+                    <text x="264" y="900">{</text>
+                    <text x="136" y="916">...</text>
+                    <text x="168" y="932">Application</text>
+                    <text x="248" y="932">Payload</text>
+                    <text x="120" y="948">}</text>
+                    <text x="24" y="980">CTX_B</text>
+                    <text x="56" y="980">{</text>
+                    <text x="24" y="996">SID</text>
+                    <text x="48" y="996">=</text>
+                    <text x="76" y="996">0x78</text>
+                    <text x="24" y="1012">RID</text>
+                    <text x="48" y="1012">=</text>
+                    <text x="76" y="1012">0x42</text>
+                    <text x="8" y="1028">}</text>
+                    <text x="232" y="1060">Request</text>
+                    <text x="276" y="1060">#3</text>
+                    <text x="32" y="1076">Protect</text>
+                    <text x="424" y="1076">/temp</text>
+                    <text x="20" y="1092">with</text>
+                    <text x="64" y="1092">CTX_B</text>
+                    <text x="140" y="1092">OSCORE</text>
+                    <text x="176" y="1092">{</text>
+                    <text x="136" y="1108">...</text>
+                    <text x="140" y="1124">kid:</text>
+                    <text x="180" y="1124">0x78</text>
+                    <text x="428" y="1124">Verify</text>
+                    <text x="120" y="1140">}</text>
+                    <text x="420" y="1140">with</text>
+                    <text x="464" y="1140">CTX_B</text>
+                    <text x="152" y="1156">Encrypted</text>
+                    <text x="224" y="1156">Payload</text>
+                    <text x="264" y="1156">{</text>
+                    <text x="136" y="1172">...</text>
+                    <text x="168" y="1188">Application</text>
+                    <text x="248" y="1188">Payload</text>
+                    <text x="120" y="1204">}</text>
+                    <text x="236" y="1236">Response</text>
+                    <text x="284" y="1236">#3</text>
+                    <text x="432" y="1252">Protect</text>
+                    <text x="140" y="1268">OSCORE</text>
+                    <text x="176" y="1268">{</text>
+                    <text x="420" y="1268">with</text>
+                    <text x="464" y="1268">CTX_B</text>
+                    <text x="136" y="1284">...</text>
+                    <text x="28" y="1300">Verify</text>
+                    <text x="120" y="1300">}</text>
+                    <text x="20" y="1316">with</text>
+                    <text x="64" y="1316">CTX_B</text>
+                    <text x="152" y="1316">Encrypted</text>
+                    <text x="224" y="1316">Payload</text>
+                    <text x="264" y="1316">{</text>
+                    <text x="136" y="1332">...</text>
+                    <text x="168" y="1348">Application</text>
+                    <text x="248" y="1348">Payload</text>
+                    <text x="120" y="1364">}</text>
+                    <text x="32" y="1396">Discard</text>
+                    <text x="24" y="1412">CTX_A</text>
+                    <text x="232" y="1444">Request</text>
+                    <text x="276" y="1444">#4</text>
+                    <text x="32" y="1460">Protect</text>
+                    <text x="424" y="1460">/temp</text>
+                    <text x="20" y="1476">with</text>
+                    <text x="64" y="1476">CTX_B</text>
+                    <text x="140" y="1476">OSCORE</text>
+                    <text x="176" y="1476">{</text>
+                    <text x="136" y="1492">...</text>
+                    <text x="140" y="1508">kid:</text>
+                    <text x="180" y="1508">0x78</text>
+                    <text x="428" y="1508">Verify</text>
+                    <text x="120" y="1524">}</text>
+                    <text x="420" y="1524">with</text>
+                    <text x="464" y="1524">CTX_B</text>
+                    <text x="152" y="1540">Encrypted</text>
+                    <text x="224" y="1540">Payload</text>
+                    <text x="264" y="1540">{</text>
+                    <text x="136" y="1556">...</text>
+                    <text x="168" y="1572">Application</text>
+                    <text x="248" y="1572">Payload</text>
+                    <text x="120" y="1588">}</text>
+                    <text x="432" y="1620">Discard</text>
+                    <text x="424" y="1636">CTX_A</text>
+                    <text x="236" y="1668">Response</text>
+                    <text x="284" y="1668">#4</text>
+                    <text x="432" y="1684">Protect</text>
+                    <text x="140" y="1700">OSCORE</text>
+                    <text x="176" y="1700">{</text>
+                    <text x="420" y="1700">with</text>
+                    <text x="464" y="1700">CTX_B</text>
+                    <text x="136" y="1716">...</text>
+                    <text x="28" y="1732">Verify</text>
+                    <text x="120" y="1732">}</text>
+                    <text x="20" y="1748">with</text>
+                    <text x="64" y="1748">CTX_B</text>
+                    <text x="152" y="1748">Encrypted</text>
+                    <text x="224" y="1748">Payload</text>
+                    <text x="264" y="1748">{</text>
+                    <text x="136" y="1764">...</text>
+                    <text x="168" y="1780">Application</text>
+                    <text x="248" y="1780">Payload</text>
+                    <text x="120" y="1796">}</text>
+                  </g>
+                </svg><a href="#section-2.1.2-3.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
-<a href="#name-example-of-the-oscore-ids-up" class="selfRef">Example of the OSCORE IDs Update reverse message flow</a>
+<a href="#name-example-of-the-oscore-id-upd" class="selfRef">Example of the OSCORE ID update procedure with Reverse Message Flow</a>
             </figcaption></figure>
 </div>
-<p id="section-2.1.2-4">Before the OSCORE IDs update procedure starts, the client (the server) shares with the server (the client) an OSCORE Security Context CTX_A with Sender ID 0x01 (0x00) and Recipient ID 0x00 (0x01).<a href="#section-2.1.2-4" class="pilcrow">¶</a></p>
-<p id="section-2.1.2-5">At first, the client prepares a CoAP Request #1 targeting an application resource at the server. The client protects the request with CTX_A, i.e., by using the keying material derived from the current client's Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request #1.<a href="#section-2.1.2-5" class="pilcrow">¶</a></p>
-<p id="section-2.1.2-6">Upon receiving, decrypting, and successfully verifying the OSCORE message Request #1, the server decides to start an OSCORE IDs update procedure. To this end, the server determines its new intended OSCORE Recipient ID 0x78. Then, the server prepares a CoAP response as a reply to the just received request and including the Recipient-ID Option, with value the server's new Recipient ID 0x78.<a href="#section-2.1.2-6" class="pilcrow">¶</a></p>
-<p id="section-2.1.2-7">The server protects the response with CTX_A, i.e., by using the keying material derived from the current server's Sender ID 0x00. After that, the server sends the response to the client as Response #1.<a href="#section-2.1.2-7" class="pilcrow">¶</a></p>
+<p id="section-2.1.2-4">Before the OSCORE ID update procedure starts, the client (the server) shares with the server (the client) an OSCORE Security Context CTX_A with Sender ID 0x01 (0x00) and Recipient ID 0x00 (0x01).<a href="#section-2.1.2-4" class="pilcrow">¶</a></p>
+<p id="section-2.1.2-5">At first, the client prepares a CoAP Request #1 targeting an application resource at the server. The client protects the request with CTX_A, i.e., by using the keying material derived from the client's current Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request #1.<a href="#section-2.1.2-5" class="pilcrow">¶</a></p>
+<p id="section-2.1.2-6">Upon receiving, decrypting, and successfully verifying the OSCORE message Request #1, the server decides to start an OSCORE ID update procedure. To this end, the server determines its new intended OSCORE Recipient ID 0x78. Then, the server prepares a CoAP response as a reply to the just received request and including the Recipient-ID Option, with value the server's new Recipient ID 0x78.<a href="#section-2.1.2-6" class="pilcrow">¶</a></p>
+<p id="section-2.1.2-7">The server protects the response with CTX_A, i.e., by using the keying material derived from the server's current Sender ID 0x00. After that, the server sends the response to the client as Response #1.<a href="#section-2.1.2-7" class="pilcrow">¶</a></p>
 <p id="section-2.1.2-8">Upon receiving, decrypting, and successfully verifying the OSCORE message Response #1, the client retrieves the value 0x78 from the Recipient-ID Option, and determines its new intended OSCORE Recipient ID 0x42. Then, the client prepares a CoAP request targeting an application resource at the server. The request includes the Recipient-ID Option, with value the client's new Recipient ID 0x42.<a href="#section-2.1.2-8" class="pilcrow">¶</a></p>
-<p id="section-2.1.2-9">The client protects the request with CTX_A, i.e., by using the keying material derived from the current client's Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request #2.<a href="#section-2.1.2-9" class="pilcrow">¶</a></p>
+<p id="section-2.1.2-9">The client protects the request with CTX_A, i.e., by using the keying material derived from the client's current Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request #2.<a href="#section-2.1.2-9" class="pilcrow">¶</a></p>
 <p id="section-2.1.2-10">Upon receiving, decrypting, and successfully verifying the OSCORE message Request #2, the server retrieves the value 0x42 from the Recipient-ID Option. Then the server considers 0x42 and 0x78 as the new Sender ID and Recipient ID to use with the client, respectively. As shown in the example, the server practically installs a new OSCORE Security Context CTX_B where: i) its Sender ID and Recipient ID are 0x42 and 0x78, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-3.2.2" class="relref">Section 3.2.2</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>); iii) anything else is like in the OSCORE Security Context used to encrypt the OSCORE message Request #2.<a href="#section-2.1.2-10" class="pilcrow">¶</a></p>
-<p id="section-2.1.2-11">Then, the server prepares a CoAP response, as a reply to the just received request, and protects it with CTX_A, i.e., by using the keying material derived from the current server's Sender ID 0x00. After that, the server sends the response to the client as Response #2.<a href="#section-2.1.2-11" class="pilcrow">¶</a></p>
+<p id="section-2.1.2-11">Then, the server prepares a CoAP response, as a reply to the just received request, and protects it with CTX_A, i.e., by using the keying material derived from the server's current Sender ID 0x00. After that, the server sends the response to the client as Response #2.<a href="#section-2.1.2-11" class="pilcrow">¶</a></p>
 <p id="section-2.1.2-12">Upon receiving, decrypting, and successfully verifying the OSCORE message Response #2, the client considers 0x78 and 0x42 as the new Sender ID and Recipient ID to use with the server, respectively. As shown in the example, the client practically installs a new OSCORE Security Context CTX_B where: i) its Sender ID and Recipient ID are 0x78 and 0x42, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-3.2.2" class="relref">Section 3.2.2</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>); iii) anything else is like in the OSCORE Security Context used to decrypt the OSCORE response.<a href="#section-2.1.2-12" class="pilcrow">¶</a></p>
 <p id="section-2.1.2-13">From then on, the client and the server can exchange messages protected with the OSCORE Security Context CTX_B, i.e., according to the new OSCORE Sender/Recipient IDs and using new keying material derived from those.<a href="#section-2.1.2-13" class="pilcrow">¶</a></p>
 <p id="section-2.1.2-14">That is, the client sends the OSCORE message Request #3, which is protected with CTX_B and specifies the new client's Sender ID 0x78 in the 'kid' field of the OSCORE Option.<a href="#section-2.1.2-14" class="pilcrow">¶</a></p>
@@ -1587,15 +1816,15 @@ with CTX_B  | Encrypted Payload {               |
           <h4 id="name-additional-actions-for-exec">
 <a href="#section-2.1.3" class="section-number selfRef">2.1.3. </a><a href="#name-additional-actions-for-exec" class="section-name selfRef">Additional Actions for Execution</a>
           </h4>
-<p id="section-2.1.3-1">After having experienced a loss of state, a peer <span class="bcp14">MUST NOT</span> participate in a stand-alone OSCORE IDs update procedure with another peer, until having performed a full-fledged establishment/renewal of an OSCORE Security Context with the other peer (e.g., by running KUDOS <span>[<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span> or the EDHOC protocol <span>[<a href="#I-D.ietf-lake-edhoc" class="cite xref">I-D.ietf-lake-edhoc</a>]</span>).<a href="#section-2.1.3-1" class="pilcrow">¶</a></p>
-<p id="section-2.1.3-2">More precisely, a peer has experienced a loss of state if it cannot access the latest snapshot of the latest OSCORE Security Context CTX_OLD or the whole set of OSCORE Sender/Recipient IDs that have been used with the triplet (Master Secret, Master Salt, ID Context) of CTX_OLD. This can happen, for instance, after a device reboot.<a href="#section-2.1.3-2" class="pilcrow">¶</a></p>
-<p id="section-2.1.3-3">Furthermore, when participating in a stand-alone OSCORE IDs update procedure, a peer performs the following additional steps.<a href="#section-2.1.3-3" class="pilcrow">¶</a></p>
+<p id="section-2.1.3-1">After having experienced a loss of state, a peer <span class="bcp14">MUST NOT</span> participate in a stand-alone OSCORE ID update procedure with another peer, until having performed a full-fledged establishment/renewal of an OSCORE Security Context with the other peer (e.g., by running KUDOS <span>[<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span> or the authenticated key establishment protocol EDHOC <span>[<a href="#I-D.ietf-lake-edhoc" class="cite xref">I-D.ietf-lake-edhoc</a>]</span>).<a href="#section-2.1.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.3-2">More precisely, a peer has experienced a loss of state if it cannot access the latest snapshot of the latest OSCORE Security Context CTX_OLD or the whole set of OSCORE Sender/Recipient IDs that have been used with the triplet (Master Secret, Master Salt, ID Context) of CTX_OLD. This can happen, for instance, after a device reboots.<a href="#section-2.1.3-2" class="pilcrow">¶</a></p>
+<p id="section-2.1.3-3">Furthermore, when participating in a stand-alone OSCORE ID update procedure, a peer performs the following additional steps.<a href="#section-2.1.3-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.1.3-4.1">
-              <p id="section-2.1.3-4.1.1">When a peer sends an OSCORE IDs update message, the value of the Recipient-ID Option that the peer specifies as its new intended OSCORE Recipient ID <span class="bcp14">MUST</span> fulfill both the following conditions: it is currently available as Recipient ID to use for the peer (see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-3.3" class="relref">Section 3.3</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>); and the peer has never used it as Recipient ID with the current triplet (Master Secret, Master Salt, ID Context).<a href="#section-2.1.3-4.1.1" class="pilcrow">¶</a></p>
+              <p id="section-2.1.3-4.1.1">When a peer sends an ID update message, the value of the Recipient-ID Option that the peer specifies as its new intended OSCORE Recipient ID <span class="bcp14">MUST</span> fulfill both the following conditions: it is currently available as Recipient ID to use for the peer (see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-3.3" class="relref">Section 3.3</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>); and the peer has never used it as Recipient ID with the current triplet (Master Secret, Master Salt, ID Context).<a href="#section-2.1.3-4.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-2.1.3-4.2">
-              <p id="section-2.1.3-4.2.1">When receiving an OSCORE IDs update message, the peer <span class="bcp14">MUST</span> abort the procedure if it has already used the identifier specified in the Recipient-ID Option as its own Sender ID with the current triplet (Master Secret, Master Salt, ID Context).<a href="#section-2.1.3-4.2.1" class="pilcrow">¶</a></p>
+              <p id="section-2.1.3-4.2.1">When receiving an ID update message, the peer <span class="bcp14">MUST</span> abort the procedure if it has already used the identifier specified in the Recipient-ID Option as its own Sender ID with the current triplet (Master Secret, Master Salt, ID Context).<a href="#section-2.1.3-4.2.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-2.1.3-5">In order to fulfill the conditions above, a peer has to keep track of the OSCORE Sender/Recipient IDs that it has used with the current triplet (Master Secret, Master Salt, ID Context) since the latest update of the OSCORE Master Secret (e.g., performed by running KUDOS).<a href="#section-2.1.3-5" class="pilcrow">¶</a></p>
@@ -1608,7 +1837,7 @@ with CTX_B  | Encrypted Payload {               |
         <h3 id="name-preserving-observations-acr">
 <a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-preserving-observations-acr" class="section-name selfRef">Preserving Observations Across ID Updates</a>
         </h3>
-<p id="section-2.2-1">When running the OSCORE IDs Update procedure stand-alone or integrated in an execution of KUDOS, the following holds if Observe <span>[<a href="#RFC7641" class="cite xref">RFC7641</a>]</span> is supported, in order to preserve ongoing observations beyond a change of OSCORE identifiers.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.2-1">When running the OSCORE ID update procedure stand-alone or integrated in an execution of KUDOS, the following holds if Observe <span>[<a href="#RFC7641" class="cite xref">RFC7641</a>]</span> is supported, in order to preserve ongoing observations beyond a change of OSCORE identifiers.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.2-2.1">
             <p id="section-2.2-2.1.1">If a peer intends to keep active beyond an update of its Sender ID the observations where it is acting as CoAP client, then the peer:<a href="#section-2.2-2.1.1" class="pilcrow">¶</a></p>
@@ -1657,16 +1886,24 @@ with CTX_B  | Encrypted Payload {               |
         <h3 id="name-coap-option-numbers-registr">
 <a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-coap-option-numbers-registr" class="section-name selfRef">CoAP Option Numbers Registry</a>
         </h3>
-<p id="section-4.1-1">IANA is asked to enter the following option number to the "CoAP Option Numbers" registry within the "CoRE Parameters" registry group.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
-<div class="alignCenter art-text artwork" id="section-4.1-2">
-<pre>
-+--------+--------------+------------+
-| Number |     Name     | Reference  |
-+--------+--------------+------------+
-| TBD24  | Recipient-ID | [RFC-XXXX] |
-+--------+--------------+------------+
-</pre><a href="#section-4.1-2" class="pilcrow">¶</a>
-</div>
+<p id="section-4.1-1">IANA is asked to enter the following option number to the "CoAP Option Numbers" registry within the "Constrained RESTful Environments (CoRE) Parameters" registry group.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<table class="center" id="table-1">
+          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Number</th>
+              <th class="text-left" rowspan="1" colspan="1">Name</th>
+              <th class="text-left" rowspan="1" colspan="1">Reference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">TBD24</td>
+              <td class="text-left" rowspan="1" colspan="1">Recipient-ID</td>
+              <td class="text-left" rowspan="1" colspan="1">[RFC-XXXX]</td>
+            </tr>
+          </tbody>
+        </table>
 <p id="section-4.1-3">Note to RFC Editor: Following the registration of the CoAP Option Number 24, please replace "TBD24" with "24" in the table above. Then, please delete this paragraph.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1730,103 +1967,251 @@ with CTX_B  | Encrypted Payload {               |
 <div id="sec-id-update-in-kudos">
 <section id="appendix-A">
       <h2 id="name-examples-of-oscore-id-updat">
-<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-examples-of-oscore-id-updat" class="section-name selfRef">Examples of OSCORE ID Updates Integrated in KUDOS</a>
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-examples-of-oscore-id-updat" class="section-name selfRef">Examples of OSCORE ID update procedure Integrated in KUDOS</a>
       </h2>
-<p id="appendix-A-1">The following section shows two examples where the ID update procedure is performed together with the KUDOS procedure for updating OSCORE keying material.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-1">The following section shows two examples where the OSCORE ID update procedure is performed together with the KUDOS procedure for updating OSCORE keying material.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 <div id="sec-id-update-in-kudos-forward">
 <section id="appendix-A.1">
         <h3 id="name-forward-message-flow-2">
 <a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-forward-message-flow-2" class="section-name selfRef">Forward Message Flow</a>
         </h3>
-<p id="appendix-A.1-1"><a href="#fig-kudos-and-id-update-client-init" class="auto internal xref">Figure 4</a> provides an example of the OSCORE IDs update procedure, as run integrated in an execution of KUDOS and in the forward message flow (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-06#section-4.3.1" class="relref">Section 4.3.1</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>). On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
-<span id="name-example-of-the-oscore-ids-upd"></span><div id="fig-kudos-and-id-update-client-init">
+<p id="appendix-A.1-1"><a href="#fig-kudos-and-id-update-client-init" class="auto internal xref">Figure 4</a> provides an example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the forward message flow (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-06#section-4.3.1" class="relref">Section 4.3.1</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>). On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
+<span id="name-example-of-the-oscore-id-upda"></span><div id="fig-kudos-and-id-update-client-init">
 <figure id="figure-4">
-          <div class="alignCenter art-text artwork" id="appendix-A.1-2.1">
-<pre>
-                     Client                  Server
-                   (initiator)            (responder)
-                        |                      |
-CTX_OLD {               |                      | CTX_OLD {
- SID = 0x01             |                      |  SID = 0x00
- RID = 0x00             |                      |  RID = 0x01
-}                       |                      | }
-                        |                      |
-Generate N1             |                      |
-                        |                      |
-CTX_1 = updateCtx(      |                      |
-        X1,             |                      |
-        N1,             |                      |
-        CTX_OLD)        |                      |
-                        |                      |
-                        |      Request #1      |
-Protect with CTX_1      |---------------------&gt;| /.well-known/kudos
-                        | OSCORE {             |
-                        |  ...                 |
-                        |  d flag: 1           | CTX_1 = updateCtx(
-                        |  x: X1               |         X1,
-                        |  nonce: N1           |         N1,
-                        |  ...                 |         CTX_OLD)
-                        |  kid: 0x01           |
-                        | }                    | Verify with CTX_1
-                        | Encrypted Payload {  |
-                        |  ...                 | Generate N2
-                        |  Recipient-ID: 0x42  |
-                        |  ...                 | CTX_NEW = updateCtx(
-                        | }                    |           Comb(X1,X2),
-                        |                      |           Comb(N1,N2),
-                        |                      |           CTX_OLD)
-                        |                      |
-                        |      Response #1     |
-                        |&lt;---------------------| Protect with CTX_NEW
-                        | OSCORE {             |
-                        |  ...                 |
-CTX_NEW = updateCtx(    |  Partial IV: 0       |
-          Comb(X1,X2),  |  ...                 |
-          Comb(N1,N2),  |                      |
-          CTX_OLD)      |  d flag: 1           |
-                        |  x: X2               |
-Verify with CTX_NEW     |  nonce: N2           |
-                        |  ...                 |
-Discard CTX_OLD         | }                    |
-                        | Encrypted Payload {  |
-Update SID and          |  ...                 | Update SID and
-RID in CTX_NEW          |  Recipient-ID: 0x78  | RID in CTX_NEW
-                        |  ...                 |
-CTX_NEW {               | }                    | CTX_NEW {
- SID = 0x78             |                      |  SID = 0x42
- RID = 0x42             |                      |  RID = 0x78
-}                       |                      | }
-                        |                      |
-
-// The actual key update process ends here.
-// The two peers can use the new Security Context CTX_NEW.
-
-                        |                      |
-                        |      Request #2      |
-Protect with CTX_NEW    |---------------------&gt;| /temp
-                        | OSCORE {             |
-                        |  ...                 |
-                        |  kid: 0x78           | Verify with CTX_NEW
-                        | }                    |
-                        | Encrypted Payload {  | Discard CTX_OLD
-                        |  ...                 |
-                        |  Application Payload |
-                        | }                    |
-                        |                      |
-                        |      Response #2     |
-                        |&lt;---------------------| Protect with CTX_NEW
-                        | OSCORE {             |
-                        |  ...                 |
-Verify with CTX_NEW     | }                    |
-                        | Encrypted Payload {  |
-                        |  ...                 |
-                        |  Application Payload |
-                        | }                    |
-                        |                      |
-</pre>
+          <div id="appendix-A.1-2.1">
+            <div class="alignCenter art-svg artwork" id="appendix-A.1-2.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1312" width="576" viewBox="0 0 576 1312" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 144,656 L 144,664" fill="none" stroke="black"></path>
+                <path d="M 200,64 L 200,880" fill="none" stroke="black"></path>
+                <path d="M 200,960 L 200,1296" fill="none" stroke="black"></path>
+                <path d="M 384,64 L 384,880" fill="none" stroke="black"></path>
+                <path d="M 384,960 L 384,1296" fill="none" stroke="black"></path>
+                <path d="M 536,512 L 536,520" fill="none" stroke="black"></path>
+                <path d="M 208,288 L 376,288" fill="none" stroke="black"></path>
+                <path d="M 208,576 L 376,576" fill="none" stroke="black"></path>
+                <path d="M 208,992 L 376,992" fill="none" stroke="black"></path>
+                <path d="M 208,1168 L 376,1168" fill="none" stroke="black"></path>
+                <path d="M 8,928 L 16,912" fill="none" stroke="black"></path>
+                <polygon class="arrowhead" points="384,992 372,986.4 372,997.6" fill="black" transform="rotate(0,376,992)"></polygon>
+                <polygon class="arrowhead" points="384,288 372,282.4 372,293.6" fill="black" transform="rotate(0,376,288)"></polygon>
+                <polygon class="arrowhead" points="216,1168 204,1162.4 204,1173.6" fill="black" transform="rotate(180,208,1168)"></polygon>
+                <polygon class="arrowhead" points="216,576 204,570.4 204,581.6" fill="black" transform="rotate(180,208,576)"></polygon>
+                <g class="text">
+                  <text x="196" y="36">Client</text>
+                  <text x="388" y="36">Server</text>
+                  <text x="200" y="52">(initiator)</text>
+                  <text x="384" y="52">(responder)</text>
+                  <text x="32" y="84">CTX_OLD</text>
+                  <text x="72" y="84">{</text>
+                  <text x="424" y="84">CTX_OLD</text>
+                  <text x="464" y="84">{</text>
+                  <text x="24" y="100">SID</text>
+                  <text x="48" y="100">=</text>
+                  <text x="76" y="100">0x01</text>
+                  <text x="416" y="100">SID</text>
+                  <text x="440" y="100">=</text>
+                  <text x="468" y="100">0x00</text>
+                  <text x="24" y="116">RID</text>
+                  <text x="48" y="116">=</text>
+                  <text x="76" y="116">0x00</text>
+                  <text x="416" y="116">RID</text>
+                  <text x="440" y="116">=</text>
+                  <text x="468" y="116">0x01</text>
+                  <text x="8" y="132">}</text>
+                  <text x="400" y="132">}</text>
+                  <text x="36" y="164">Generate</text>
+                  <text x="84" y="164">N1</text>
+                  <text x="24" y="196">CTX_1</text>
+                  <text x="56" y="196">=</text>
+                  <text x="108" y="196">updateCtx(</text>
+                  <text x="80" y="212">X1,</text>
+                  <text x="80" y="228">N1,</text>
+                  <text x="100" y="244">CTX_OLD)</text>
+                  <text x="280" y="276">Request</text>
+                  <text x="324" y="276">#1</text>
+                  <text x="32" y="292">Protect</text>
+                  <text x="84" y="292">with</text>
+                  <text x="128" y="292">CTX_1</text>
+                  <text x="468" y="292">/.well-known/kudos</text>
+                  <text x="236" y="308">OSCORE</text>
+                  <text x="272" y="308">{</text>
+                  <text x="232" y="324">...</text>
+                  <text x="224" y="340">d</text>
+                  <text x="256" y="340">flag:</text>
+                  <text x="288" y="340">1</text>
+                  <text x="416" y="340">CTX_1</text>
+                  <text x="448" y="340">=</text>
+                  <text x="500" y="340">updateCtx(</text>
+                  <text x="228" y="356">x:</text>
+                  <text x="252" y="356">X1</text>
+                  <text x="472" y="356">X1,</text>
+                  <text x="244" y="372">nonce:</text>
+                  <text x="284" y="372">N1</text>
+                  <text x="472" y="372">N1,</text>
+                  <text x="232" y="388">...</text>
+                  <text x="492" y="388">CTX_OLD)</text>
+                  <text x="236" y="404">kid:</text>
+                  <text x="276" y="404">0x01</text>
+                  <text x="216" y="420">}</text>
+                  <text x="420" y="420">Verify</text>
+                  <text x="468" y="420">with</text>
+                  <text x="512" y="420">CTX_1</text>
+                  <text x="248" y="436">Encrypted</text>
+                  <text x="320" y="436">Payload</text>
+                  <text x="360" y="436">{</text>
+                  <text x="232" y="452">...</text>
+                  <text x="428" y="452">Generate</text>
+                  <text x="476" y="452">N2</text>
+                  <text x="272" y="468">Recipient-ID:</text>
+                  <text x="348" y="468">0x42</text>
+                  <text x="232" y="484">...</text>
+                  <text x="424" y="484">CTX_NEW</text>
+                  <text x="464" y="484">=</text>
+                  <text x="516" y="484">updateCtx(</text>
+                  <text x="216" y="500">}</text>
+                  <text x="524" y="500">Comb(X1,X2),</text>
+                  <text x="504" y="516">Comb(N1</text>
+                  <text x="556" y="516">N2),</text>
+                  <text x="508" y="532">CTX_OLD)</text>
+                  <text x="284" y="564">Response</text>
+                  <text x="332" y="564">#1</text>
+                  <text x="424" y="580">Protect</text>
+                  <text x="476" y="580">with</text>
+                  <text x="528" y="580">CTX_NEW</text>
+                  <text x="236" y="596">OSCORE</text>
+                  <text x="272" y="596">{</text>
+                  <text x="232" y="612">...</text>
+                  <text x="32" y="628">CTX_NEW</text>
+                  <text x="72" y="628">=</text>
+                  <text x="124" y="628">updateCtx(</text>
+                  <text x="248" y="628">Partial</text>
+                  <text x="296" y="628">IV:</text>
+                  <text x="320" y="628">0</text>
+                  <text x="132" y="644">Comb(X1,X2),</text>
+                  <text x="232" y="644">...</text>
+                  <text x="112" y="660">Comb(N1</text>
+                  <text x="164" y="660">N2),</text>
+                  <text x="116" y="676">CTX_OLD)</text>
+                  <text x="224" y="676">d</text>
+                  <text x="256" y="676">flag:</text>
+                  <text x="288" y="676">1</text>
+                  <text x="228" y="692">x:</text>
+                  <text x="252" y="692">X2</text>
+                  <text x="28" y="708">Verify</text>
+                  <text x="76" y="708">with</text>
+                  <text x="128" y="708">CTX_NEW</text>
+                  <text x="244" y="708">nonce:</text>
+                  <text x="284" y="708">N2</text>
+                  <text x="232" y="724">...</text>
+                  <text x="32" y="740">Discard</text>
+                  <text x="96" y="740">CTX_OLD</text>
+                  <text x="216" y="740">}</text>
+                  <text x="248" y="756">Encrypted</text>
+                  <text x="320" y="756">Payload</text>
+                  <text x="360" y="756">{</text>
+                  <text x="28" y="772">Update</text>
+                  <text x="72" y="772">SID</text>
+                  <text x="104" y="772">and</text>
+                  <text x="232" y="772">...</text>
+                  <text x="420" y="772">Update</text>
+                  <text x="464" y="772">SID</text>
+                  <text x="496" y="772">and</text>
+                  <text x="16" y="788">RID</text>
+                  <text x="44" y="788">in</text>
+                  <text x="88" y="788">CTX_NEW</text>
+                  <text x="272" y="788">Recipient-ID:</text>
+                  <text x="348" y="788">0x78</text>
+                  <text x="408" y="788">RID</text>
+                  <text x="436" y="788">in</text>
+                  <text x="480" y="788">CTX_NEW</text>
+                  <text x="232" y="804">...</text>
+                  <text x="32" y="820">CTX_NEW</text>
+                  <text x="72" y="820">{</text>
+                  <text x="216" y="820">}</text>
+                  <text x="424" y="820">CTX_NEW</text>
+                  <text x="464" y="820">{</text>
+                  <text x="24" y="836">SID</text>
+                  <text x="48" y="836">=</text>
+                  <text x="76" y="836">0x78</text>
+                  <text x="416" y="836">SID</text>
+                  <text x="440" y="836">=</text>
+                  <text x="468" y="836">0x42</text>
+                  <text x="24" y="852">RID</text>
+                  <text x="48" y="852">=</text>
+                  <text x="76" y="852">0x42</text>
+                  <text x="416" y="852">RID</text>
+                  <text x="440" y="852">=</text>
+                  <text x="468" y="852">0x78</text>
+                  <text x="8" y="868">}</text>
+                  <text x="400" y="868">}</text>
+                  <text x="8" y="916">/</text>
+                  <text x="40" y="916">The</text>
+                  <text x="84" y="916">actual</text>
+                  <text x="128" y="916">key</text>
+                  <text x="172" y="916">update</text>
+                  <text x="232" y="916">process</text>
+                  <text x="284" y="916">ends</text>
+                  <text x="328" y="916">here.</text>
+                  <text x="16" y="932">/</text>
+                  <text x="40" y="932">The</text>
+                  <text x="72" y="932">two</text>
+                  <text x="112" y="932">peers</text>
+                  <text x="152" y="932">can</text>
+                  <text x="184" y="932">use</text>
+                  <text x="216" y="932">the</text>
+                  <text x="248" y="932">new</text>
+                  <text x="300" y="932">Security</text>
+                  <text x="368" y="932">Context</text>
+                  <text x="436" y="932">CTX_NEW.</text>
+                  <text x="280" y="980">Request</text>
+                  <text x="324" y="980">#2</text>
+                  <text x="32" y="996">Protect</text>
+                  <text x="84" y="996">with</text>
+                  <text x="136" y="996">CTX_NEW</text>
+                  <text x="416" y="996">/temp</text>
+                  <text x="236" y="1012">OSCORE</text>
+                  <text x="272" y="1012">{</text>
+                  <text x="232" y="1028">...</text>
+                  <text x="236" y="1044">kid:</text>
+                  <text x="276" y="1044">0x78</text>
+                  <text x="420" y="1044">Verify</text>
+                  <text x="468" y="1044">with</text>
+                  <text x="520" y="1044">CTX_NEW</text>
+                  <text x="216" y="1060">}</text>
+                  <text x="248" y="1076">Encrypted</text>
+                  <text x="320" y="1076">Payload</text>
+                  <text x="360" y="1076">{</text>
+                  <text x="424" y="1076">Discard</text>
+                  <text x="488" y="1076">CTX_OLD</text>
+                  <text x="232" y="1092">...</text>
+                  <text x="264" y="1108">Application</text>
+                  <text x="344" y="1108">Payload</text>
+                  <text x="216" y="1124">}</text>
+                  <text x="284" y="1156">Response</text>
+                  <text x="332" y="1156">#2</text>
+                  <text x="424" y="1172">Protect</text>
+                  <text x="476" y="1172">with</text>
+                  <text x="528" y="1172">CTX_NEW</text>
+                  <text x="236" y="1188">OSCORE</text>
+                  <text x="272" y="1188">{</text>
+                  <text x="232" y="1204">...</text>
+                  <text x="28" y="1220">Verify</text>
+                  <text x="76" y="1220">with</text>
+                  <text x="128" y="1220">CTX_NEW</text>
+                  <text x="216" y="1220">}</text>
+                  <text x="248" y="1236">Encrypted</text>
+                  <text x="320" y="1236">Payload</text>
+                  <text x="360" y="1236">{</text>
+                  <text x="232" y="1252">...</text>
+                  <text x="264" y="1268">Application</text>
+                  <text x="344" y="1268">Payload</text>
+                  <text x="216" y="1284">}</text>
+                </g>
+              </svg><a href="#appendix-A.1-2.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
-<a href="#name-example-of-the-oscore-ids-upd" class="selfRef">Example of the OSCORE IDs Update forward message flow integrated in a KUDOS execution.</a>
+<a href="#name-example-of-the-oscore-id-upda" class="selfRef">Example of the OSCORE ID update procedure with Forward Message Flow and Integrated in a KUDOS Execution.</a>
           </figcaption></figure>
 </div>
 </section>
@@ -1836,118 +2221,294 @@ Verify with CTX_NEW     | }                    |
         <h3 id="name-reverse-message-flow-2">
 <a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-reverse-message-flow-2" class="section-name selfRef">Reverse Message Flow</a>
         </h3>
-<p id="appendix-A.2-1"><a href="#fig-kudos-and-id-update-server-init" class="auto internal xref">Figure 5</a> provides an example of the OSCORE IDs update procedure, as run integrated in an execution of KUDOS and in the reverse message flow (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-06#section-4.3.2" class="relref">Section 4.3.2</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>). On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
-<span id="name-example-of-the-oscore-ids-upda"></span><div id="fig-kudos-and-id-update-server-init">
+<p id="appendix-A.2-1"><a href="#fig-kudos-and-id-update-server-init" class="auto internal xref">Figure 5</a> provides an example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the reverse message flow (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-06#section-4.3.2" class="relref">Section 4.3.2</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>). On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
+<span id="name-example-of-the-oscore-id-updat"></span><div id="fig-kudos-and-id-update-server-init">
 <figure id="figure-5">
-          <div class="alignCenter art-text artwork" id="appendix-A.2-2.1">
-<pre>
-                      Client                 Server
-                   (responder)            (initiator)
-                        |                      |
-CTX_OLD {               |                      | CTX_OLD {
- SID = 0x01             |                      |  SID = 0x00
- RID = 0x00             |                      |  RID = 0x01
-}                       |                      | }
-                        |                      |
-                        |      Request #1      |
-Protect with CTX_OLD    |---------------------&gt;| /temp
-                        | OSCORE {             |
-                        |  ...                 |
-                        |  kid: 0x01           |
-                        | }                    | Verify with CTX_OLD
-                        | Encrypted Payload {  |
-                        |  ...                 | Generate N1
-                        |  Application Payload |
-                        | }                    | CTX_1 = updateCtx(
-                        |                      |         X1,
-                        |                      |         N1,
-                        |                      |         CTX_OLD)
-                        |                      |
-                        |      Response #1     |
-                        |&lt;---------------------| Protect with CTX_1
-                        | OSCORE {             |
-                        |  ...                 |
-CTX_1 = updateCtx(      |  Partial IV: 0       |
-        X1,             |  ...                 |
-        N1,             |  d flag: 1           |
-        CTX_OLD)        |  x: X1               |
-                        |  nonce: N1           |
-Verify with CTX_1       |  ...                 |
-                        | }                    |
-Generate N2             | Encrypted Payload {  |
-                        |  ...                 |
-CTX_NEW = updateCtx(    |  Recipient-ID: 0x78  |
-          Comb(X1,X2),  |  ...                 |
-          Comb(N1,N2),  | }                    |
-          CTX_OLD)      |                      |
-                        |                      |
-                        |      Request #2      |
-Protect with CTX_NEW    |---------------------&gt;| /.well-known/kudos
-                        | OSCORE {             |
-                        |  ...                 |
-                        |  d flag: 1           | CTX_NEW = updateCtx(
-                        |  x: X2               |           Comb(X1,X2),
-                        |  nonce: N2           |           Comb(N1,N2),
-                        |  y: w                |           CTX_OLD)
-                        |  old_nonce: N1       |
-                        |  kid: 0x01           |
-                        |  ...                 |
-                        | }                    | Verify with CTX_NEW
-                        | Encrypted Payload {  |
-                        |  ...                 | Discard CTX_OLD
-                        |  Recipient-ID: 0x42  |
-                        |  ...                 |
-                        |  Application Payload |
-                        | }                    |
-                        |                      |
-Update SID and          |                      | Update SID and
-RID in CTX_NEW          |                      | RID in CTX_NEW
-                        |                      |
- CTX_NEW {              |                      | CTX_NEW {
-  SID = 0x78            |                      |  SID = 0x42
-  RID = 0x42            |                      |  RID = 0x78
- }                      |                      | }
-                        |                      |
-
-// The actual key update process ends here.
-// The two peers can use the new Security Context CTX_NEW.
-
-                        |                      |
-                        |      Response #2     |
-                        |&lt;---------------------| Protect with CTX_NEW
-                        | OSCORE {             |
-                        |  ...                 |
-Verify with CTX_NEW     | }                    |
-                        | Encrypted Payload {  |
-Discard CTX_OLD         |  ...                 |
-                        |  Application Payload |
-                        | }                    |
-                        |                      |
-                        |      Request #3      |
-Protect with CTX_NEW    |---------------------&gt;| /temp
-                        | OSCORE {             |
-                        |  ...                 |
-                        |  kid: 0x78           | Verify with CTX_NEW
-                        | }                    |
-                        | Encrypted Payload {  |
-                        |  ...                 |
-                        |  Application Payload |
-                        | }                    |
-                        |                      |
-                        |      Response #3     |
-                        |&lt;---------------------| Protect with CTX_NEW
-                        | OSCORE {             |
-                        |  ...                 |
-Verify with CTX_NEW     | }                    |
-                        | Encrypted Payload {  |
-                        |  ...                 |
-                        |  Application Payload |
-                        | }                    |
-                        |                      |
-</pre>
+          <div id="appendix-A.2-2.1">
+            <div class="alignCenter art-svg artwork" id="appendix-A.2-2.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1680" width="576" viewBox="0 0 576 1680" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 144,624 L 144,632" fill="none" stroke="black"></path>
+                <path d="M 200,64 L 200,1088" fill="none" stroke="black"></path>
+                <path d="M 200,1168 L 200,1664" fill="none" stroke="black"></path>
+                <path d="M 384,64 L 384,1088" fill="none" stroke="black"></path>
+                <path d="M 384,1168 L 384,1664" fill="none" stroke="black"></path>
+                <path d="M 536,768 L 536,776" fill="none" stroke="black"></path>
+                <path d="M 208,176 L 376,176" fill="none" stroke="black"></path>
+                <path d="M 208,400 L 376,400" fill="none" stroke="black"></path>
+                <path d="M 208,688 L 376,688" fill="none" stroke="black"></path>
+                <path d="M 208,1200 L 376,1200" fill="none" stroke="black"></path>
+                <path d="M 208,1360 L 376,1360" fill="none" stroke="black"></path>
+                <path d="M 208,1536 L 376,1536" fill="none" stroke="black"></path>
+                <path d="M 8,1136 L 16,1120" fill="none" stroke="black"></path>
+                <polygon class="arrowhead" points="384,1360 372,1354.4 372,1365.6" fill="black" transform="rotate(0,376,1360)"></polygon>
+                <polygon class="arrowhead" points="384,688 372,682.4 372,693.6" fill="black" transform="rotate(0,376,688)"></polygon>
+                <polygon class="arrowhead" points="384,176 372,170.4 372,181.6" fill="black" transform="rotate(0,376,176)"></polygon>
+                <polygon class="arrowhead" points="216,1536 204,1530.4 204,1541.6" fill="black" transform="rotate(180,208,1536)"></polygon>
+                <polygon class="arrowhead" points="216,1200 204,1194.4 204,1205.6" fill="black" transform="rotate(180,208,1200)"></polygon>
+                <polygon class="arrowhead" points="216,400 204,394.4 204,405.6" fill="black" transform="rotate(180,208,400)"></polygon>
+                <g class="text">
+                  <text x="204" y="36">Client</text>
+                  <text x="388" y="36">Server</text>
+                  <text x="200" y="52">(responder)</text>
+                  <text x="384" y="52">(initiator)</text>
+                  <text x="32" y="84">CTX_OLD</text>
+                  <text x="72" y="84">{</text>
+                  <text x="424" y="84">CTX_OLD</text>
+                  <text x="464" y="84">{</text>
+                  <text x="24" y="100">SID</text>
+                  <text x="48" y="100">=</text>
+                  <text x="76" y="100">0x01</text>
+                  <text x="416" y="100">SID</text>
+                  <text x="440" y="100">=</text>
+                  <text x="468" y="100">0x00</text>
+                  <text x="24" y="116">RID</text>
+                  <text x="48" y="116">=</text>
+                  <text x="76" y="116">0x00</text>
+                  <text x="416" y="116">RID</text>
+                  <text x="440" y="116">=</text>
+                  <text x="468" y="116">0x01</text>
+                  <text x="8" y="132">}</text>
+                  <text x="400" y="132">}</text>
+                  <text x="280" y="164">Request</text>
+                  <text x="324" y="164">#1</text>
+                  <text x="32" y="180">Protect</text>
+                  <text x="84" y="180">with</text>
+                  <text x="136" y="180">CTX_OLD</text>
+                  <text x="416" y="180">/temp</text>
+                  <text x="236" y="196">OSCORE</text>
+                  <text x="272" y="196">{</text>
+                  <text x="232" y="212">...</text>
+                  <text x="236" y="228">kid:</text>
+                  <text x="276" y="228">0x01</text>
+                  <text x="216" y="244">}</text>
+                  <text x="420" y="244">Verify</text>
+                  <text x="468" y="244">with</text>
+                  <text x="520" y="244">CTX_OLD</text>
+                  <text x="248" y="260">Encrypted</text>
+                  <text x="320" y="260">Payload</text>
+                  <text x="360" y="260">{</text>
+                  <text x="232" y="276">...</text>
+                  <text x="428" y="276">Generate</text>
+                  <text x="476" y="276">N1</text>
+                  <text x="264" y="292">Application</text>
+                  <text x="344" y="292">Payload</text>
+                  <text x="216" y="308">}</text>
+                  <text x="416" y="308">CTX_1</text>
+                  <text x="448" y="308">=</text>
+                  <text x="500" y="308">updateCtx(</text>
+                  <text x="472" y="324">X1,</text>
+                  <text x="472" y="340">N1,</text>
+                  <text x="492" y="356">CTX_OLD)</text>
+                  <text x="284" y="388">Response</text>
+                  <text x="332" y="388">#1</text>
+                  <text x="424" y="404">Protect</text>
+                  <text x="476" y="404">with</text>
+                  <text x="520" y="404">CTX_1</text>
+                  <text x="236" y="420">OSCORE</text>
+                  <text x="272" y="420">{</text>
+                  <text x="232" y="436">...</text>
+                  <text x="24" y="452">CTX_1</text>
+                  <text x="56" y="452">=</text>
+                  <text x="108" y="452">updateCtx(</text>
+                  <text x="248" y="452">Partial</text>
+                  <text x="296" y="452">IV:</text>
+                  <text x="320" y="452">0</text>
+                  <text x="80" y="468">X1,</text>
+                  <text x="232" y="468">...</text>
+                  <text x="80" y="484">N1,</text>
+                  <text x="224" y="484">d</text>
+                  <text x="256" y="484">flag:</text>
+                  <text x="288" y="484">1</text>
+                  <text x="100" y="500">CTX_OLD)</text>
+                  <text x="228" y="500">x:</text>
+                  <text x="252" y="500">X1</text>
+                  <text x="244" y="516">nonce:</text>
+                  <text x="284" y="516">N1</text>
+                  <text x="28" y="532">Verify</text>
+                  <text x="76" y="532">with</text>
+                  <text x="120" y="532">CTX_1</text>
+                  <text x="232" y="532">...</text>
+                  <text x="216" y="548">}</text>
+                  <text x="36" y="564">Generate</text>
+                  <text x="84" y="564">N2</text>
+                  <text x="248" y="564">Encrypted</text>
+                  <text x="320" y="564">Payload</text>
+                  <text x="360" y="564">{</text>
+                  <text x="232" y="580">...</text>
+                  <text x="32" y="596">CTX_NEW</text>
+                  <text x="72" y="596">=</text>
+                  <text x="124" y="596">updateCtx(</text>
+                  <text x="272" y="596">Recipient-ID:</text>
+                  <text x="348" y="596">0x78</text>
+                  <text x="132" y="612">Comb(X1,X2),</text>
+                  <text x="232" y="612">...</text>
+                  <text x="112" y="628">Comb(N1</text>
+                  <text x="164" y="628">N2),</text>
+                  <text x="216" y="628">}</text>
+                  <text x="116" y="644">CTX_OLD)</text>
+                  <text x="280" y="676">Request</text>
+                  <text x="324" y="676">#2</text>
+                  <text x="32" y="692">Protect</text>
+                  <text x="84" y="692">with</text>
+                  <text x="136" y="692">CTX_NEW</text>
+                  <text x="468" y="692">/.well-known/kudos</text>
+                  <text x="236" y="708">OSCORE</text>
+                  <text x="272" y="708">{</text>
+                  <text x="232" y="724">...</text>
+                  <text x="224" y="740">d</text>
+                  <text x="256" y="740">flag:</text>
+                  <text x="288" y="740">1</text>
+                  <text x="424" y="740">CTX_NEW</text>
+                  <text x="464" y="740">=</text>
+                  <text x="516" y="740">updateCtx(</text>
+                  <text x="228" y="756">x:</text>
+                  <text x="252" y="756">X2</text>
+                  <text x="524" y="756">Comb(X1,X2),</text>
+                  <text x="244" y="772">nonce:</text>
+                  <text x="284" y="772">N2</text>
+                  <text x="504" y="772">Comb(N1</text>
+                  <text x="556" y="772">N2),</text>
+                  <text x="228" y="788">y:</text>
+                  <text x="248" y="788">w</text>
+                  <text x="508" y="788">CTX_OLD)</text>
+                  <text x="260" y="804">old_nonce:</text>
+                  <text x="316" y="804">N1</text>
+                  <text x="236" y="820">kid:</text>
+                  <text x="276" y="820">0x01</text>
+                  <text x="232" y="836">...</text>
+                  <text x="216" y="852">}</text>
+                  <text x="420" y="852">Verify</text>
+                  <text x="468" y="852">with</text>
+                  <text x="520" y="852">CTX_NEW</text>
+                  <text x="248" y="868">Encrypted</text>
+                  <text x="320" y="868">Payload</text>
+                  <text x="360" y="868">{</text>
+                  <text x="232" y="884">...</text>
+                  <text x="424" y="884">Discard</text>
+                  <text x="488" y="884">CTX_OLD</text>
+                  <text x="272" y="900">Recipient-ID:</text>
+                  <text x="348" y="900">0x42</text>
+                  <text x="232" y="916">...</text>
+                  <text x="264" y="932">Application</text>
+                  <text x="344" y="932">Payload</text>
+                  <text x="216" y="948">}</text>
+                  <text x="28" y="980">Update</text>
+                  <text x="72" y="980">SID</text>
+                  <text x="104" y="980">and</text>
+                  <text x="420" y="980">Update</text>
+                  <text x="464" y="980">SID</text>
+                  <text x="496" y="980">and</text>
+                  <text x="16" y="996">RID</text>
+                  <text x="44" y="996">in</text>
+                  <text x="88" y="996">CTX_NEW</text>
+                  <text x="408" y="996">RID</text>
+                  <text x="436" y="996">in</text>
+                  <text x="480" y="996">CTX_NEW</text>
+                  <text x="40" y="1028">CTX_NEW</text>
+                  <text x="80" y="1028">{</text>
+                  <text x="424" y="1028">CTX_NEW</text>
+                  <text x="464" y="1028">{</text>
+                  <text x="32" y="1044">SID</text>
+                  <text x="56" y="1044">=</text>
+                  <text x="84" y="1044">0x78</text>
+                  <text x="416" y="1044">SID</text>
+                  <text x="440" y="1044">=</text>
+                  <text x="468" y="1044">0x42</text>
+                  <text x="32" y="1060">RID</text>
+                  <text x="56" y="1060">=</text>
+                  <text x="84" y="1060">0x42</text>
+                  <text x="416" y="1060">RID</text>
+                  <text x="440" y="1060">=</text>
+                  <text x="468" y="1060">0x78</text>
+                  <text x="16" y="1076">}</text>
+                  <text x="400" y="1076">}</text>
+                  <text x="8" y="1124">/</text>
+                  <text x="40" y="1124">The</text>
+                  <text x="84" y="1124">actual</text>
+                  <text x="128" y="1124">key</text>
+                  <text x="172" y="1124">update</text>
+                  <text x="232" y="1124">process</text>
+                  <text x="284" y="1124">ends</text>
+                  <text x="328" y="1124">here.</text>
+                  <text x="16" y="1140">/</text>
+                  <text x="40" y="1140">The</text>
+                  <text x="72" y="1140">two</text>
+                  <text x="112" y="1140">peers</text>
+                  <text x="152" y="1140">can</text>
+                  <text x="184" y="1140">use</text>
+                  <text x="216" y="1140">the</text>
+                  <text x="248" y="1140">new</text>
+                  <text x="300" y="1140">Security</text>
+                  <text x="368" y="1140">Context</text>
+                  <text x="436" y="1140">CTX_NEW.</text>
+                  <text x="284" y="1188">Response</text>
+                  <text x="332" y="1188">#2</text>
+                  <text x="424" y="1204">Protect</text>
+                  <text x="476" y="1204">with</text>
+                  <text x="528" y="1204">CTX_NEW</text>
+                  <text x="236" y="1220">OSCORE</text>
+                  <text x="272" y="1220">{</text>
+                  <text x="232" y="1236">...</text>
+                  <text x="28" y="1252">Verify</text>
+                  <text x="76" y="1252">with</text>
+                  <text x="128" y="1252">CTX_NEW</text>
+                  <text x="216" y="1252">}</text>
+                  <text x="248" y="1268">Encrypted</text>
+                  <text x="320" y="1268">Payload</text>
+                  <text x="360" y="1268">{</text>
+                  <text x="32" y="1284">Discard</text>
+                  <text x="96" y="1284">CTX_OLD</text>
+                  <text x="232" y="1284">...</text>
+                  <text x="264" y="1300">Application</text>
+                  <text x="344" y="1300">Payload</text>
+                  <text x="216" y="1316">}</text>
+                  <text x="280" y="1348">Request</text>
+                  <text x="324" y="1348">#3</text>
+                  <text x="32" y="1364">Protect</text>
+                  <text x="84" y="1364">with</text>
+                  <text x="136" y="1364">CTX_NEW</text>
+                  <text x="416" y="1364">/temp</text>
+                  <text x="236" y="1380">OSCORE</text>
+                  <text x="272" y="1380">{</text>
+                  <text x="232" y="1396">...</text>
+                  <text x="236" y="1412">kid:</text>
+                  <text x="276" y="1412">0x78</text>
+                  <text x="420" y="1412">Verify</text>
+                  <text x="468" y="1412">with</text>
+                  <text x="520" y="1412">CTX_NEW</text>
+                  <text x="216" y="1428">}</text>
+                  <text x="248" y="1444">Encrypted</text>
+                  <text x="320" y="1444">Payload</text>
+                  <text x="360" y="1444">{</text>
+                  <text x="232" y="1460">...</text>
+                  <text x="264" y="1476">Application</text>
+                  <text x="344" y="1476">Payload</text>
+                  <text x="216" y="1492">}</text>
+                  <text x="284" y="1524">Response</text>
+                  <text x="332" y="1524">#3</text>
+                  <text x="424" y="1540">Protect</text>
+                  <text x="476" y="1540">with</text>
+                  <text x="528" y="1540">CTX_NEW</text>
+                  <text x="236" y="1556">OSCORE</text>
+                  <text x="272" y="1556">{</text>
+                  <text x="232" y="1572">...</text>
+                  <text x="28" y="1588">Verify</text>
+                  <text x="76" y="1588">with</text>
+                  <text x="128" y="1588">CTX_NEW</text>
+                  <text x="216" y="1588">}</text>
+                  <text x="248" y="1604">Encrypted</text>
+                  <text x="320" y="1604">Payload</text>
+                  <text x="360" y="1604">{</text>
+                  <text x="232" y="1620">...</text>
+                  <text x="264" y="1636">Application</text>
+                  <text x="344" y="1636">Payload</text>
+                  <text x="216" y="1652">}</text>
+                </g>
+              </svg><a href="#appendix-A.2-2.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
-<a href="#name-example-of-the-oscore-ids-upda" class="selfRef">Example of the OSCORE IDs Update reverse message flow integrated in a KUDOS execution.</a>
+<a href="#name-example-of-the-oscore-id-updat" class="selfRef">Example of the OSCORE ID update procedure with Reverse Message Flow and Integrated in a KUDOS Execution.</a>
           </figcaption></figure>
 </div>
 </section>
@@ -1959,7 +2520,7 @@ Verify with CTX_NEW     | }                    |
       <h2 id="name-document-updates">
 <a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-document-updates" class="section-name selfRef">Document Updates</a>
       </h2>
-<p id="appendix-B-1">RFC EDITOR: PLEASE REMOVE THIS SECTION.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<p id="appendix-B-1">This section is to be removed before publishing as an RFC.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 <div id="sec-00">
 <section id="appendix-B.1">
         <h3 id="name-version-00">
