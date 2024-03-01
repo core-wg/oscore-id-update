@@ -468,7 +468,7 @@ IANA is asked to enter the following option number to the "CoAP Option Numbers" 
 | Number |     Name     | Reference  |
 |--------|--------------|------------|
 | TBD24  | Recipient-ID | {{&SELF}}  |
-{: #tab-iana-recipient-id-option title="New CoAP Option Numbers" align="center"}
+{: #tab-iana-recipient-id-option title="New CoAP Option Number" align="center"}
 
 Note to RFC Editor: Following the registration of the CoAP Option Number 24, please replace "TBD24" with "24" in the table above. Then, please delete this paragraph.
 
