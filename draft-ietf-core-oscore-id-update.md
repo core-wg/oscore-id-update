@@ -49,7 +49,7 @@ entity:
 
 --- abstract
 
-Two peers that communicate with the CoAP protocol can use the Object Security for Constrained RESTful Environments (OSCORE) protocol to protect their message exchanges end-to-end. To this end, the two peers share an OSCORE Security Context and a number of related identifiers. In particular, each of the two peers stores a Sender ID that identifies its own Sender Context within the Security Context, and a Recipient ID that identifies the Recipient Context associated with the other peer within the same Security Context. These identifiers are sent in plaintext within OSCORE-protected messages. Hence, they can be used to correlate messages exchanged between peers and track those peers, with consequent privacy implications. This document defines an ID update procedure that two peers can use to update their OSCORE identifiers. This procedure can be run independently or embedded in an execution of the Key Update for OSCORE (KUDOS) procedure.
+Two peers that communicate with the CoAP protocol can use the Object Security for Constrained RESTful Environments (OSCORE) protocol to protect their message exchanges end-to-end. To this end, the two peers share an OSCORE Security Context and a number of related identifiers. In particular, each of the two peers stores a Sender ID that identifies its own Sender Context within the Security Context, and a Recipient ID that identifies the Recipient Context associated with the other peer within the same Security Context. These identifiers are sent in plaintext within OSCORE-protected messages. Hence, they can be used to correlate messages exchanged between peers and track those peers, with consequent privacy implications. This document defines an OSCORE ID update procedure that two peers can use to update their OSCORE identifiers. This procedure can be run stand-alone or seamlessly integrated in an execution of the Key Update for OSCORE (KUDOS) procedure.
 
 --- middle
 
@@ -67,11 +67,11 @@ A way to mitigate this problem is to allow OSCORE peers to update their identifi
 
 Readers are expected to be familiar with the terms and concepts related to CoAP {{RFC7252}}, Observe {{RFC7641}}, CBOR {{RFC8949}}, OSCORE {{RFC8613}}, and KUDOS {{I-D.ietf-core-oscore-key-update}}.
 
-This document additionally defines the following terminology.
+This document additionally uses the following terminology.
 
-* Initiator: the peer starting the ID update procedure, by sending the first message.
+* Initiator: the peer starting the OSCORE ID update procedure, by sending the first message.
 
-* Responder: the peer that receives the first message in an execution of the ID update procedure.
+* Responder: the peer that receives the first message in an execution of the OSCORE ID update procedure.
 
 * Forward message flow: the execution workflow where the initiator acts as CoAP client (see {{example-client-initiated-id-update}}).
 
@@ -81,41 +81,41 @@ This document additionally defines the following terminology.
 
 This section defines the procedure that two peers can perform, in order to update the OSCORE Sender/Recipient IDs that they use in their shared OSCORE Security Context.
 
-When performing an update of OSCORE Sender/Recipient IDs, a peer provides its new intended OSCORE Recipient ID to the other peer, by means of the Recipient-ID Option defined in {{sec-recipient-id-option}}. Hereafter, this document refers to a message including the Recipient-ID Option as an "OSCORE IDs update (request/response) message".
+When performing an update of OSCORE Sender/Recipient IDs, a peer provides its new intended OSCORE Recipient ID to the other peer, by means of the Recipient-ID Option defined in {{sec-recipient-id-option}}. Hereafter, this document refers to a message including the Recipient-ID Option as an "ID update (request/response) message".
 
 This procedure can be initiated by either peer, i.e., the CoAP client or the CoAP server may start it by sending the first OSCORE IDs update message. The former case is denoted as the "forward message flow" and the latter as the "reverse message flow".
 
-Furthermore, this procedure can be executed stand-alone, or instead seamlessly integrated in an execution of the KUDOS procedure for updating OSCORE keying material (see {{Section 4 of I-D.ietf-core-oscore-key-update}}) using its FS mode or no-FS mode (see {{Section 4.5 of I-D.ietf-core-oscore-key-update}}).
+Furthermore, this procedure can be executed stand-alone, or instead seamlessly integrated in an execution of the KUDOS procedure for updating OSCORE keying material (see {{Section 4 of I-D.ietf-core-oscore-key-update}}) used in its FS mode or no-FS mode (see {{Section 4.5 of I-D.ietf-core-oscore-key-update}}).
 
 * In the former stand-alone case, updating the OSCORE Sender/Recipient IDs effectively results in updating part of the current OSCORE Security Context.
 
-   That is, both peers derive a new Sender Key, Recipient Key, and Common IV, as defined in {{Section 3.2 of RFC8613}}. Also, both peer re-initialize the Sender Sequence Number and the Replay Window accordingly, as defined in {{Section 3.2.2 of RFC8613}}. Since the same Master Secret is preserved, forward secrecy is not achieved.
+   That is, both peers derive a new Sender Key, Recipient Key, and Common IV, as defined in {{Section 3.2 of RFC8613}}. Also, both peers re-initialize the Sender Sequence Number and the Replay Window accordingly, as defined in {{Section 3.2.2 of RFC8613}}. Since the same Master Secret is preserved, forward secrecy is not achieved.
 
-   As defined in {{id-update-additional-actions}}, the two peers must take additional actions to ensure a safe execution of the OSCORE IDs update procedure.
+   As defined in {{id-update-additional-actions}}, the two peers must take additional actions to ensure a safe execution of the OSCORE ID update procedure.
 
-   A peer can safely discard the old OSCORE Security Context including the old Sender/Recipient IDs after the following two events have occurred, in this order: first, the peer has sent to the other peer a message protected with the new OSCORE Security Context including the new Sender/Recipient IDs; then, the peer has received from the other peer and successfully verified a message protected with that new OSCORE Security Context.
+   A peer can safely discard the old OSCORE Security Context including the old OSCORE Sender/Recipient IDs after the following two events have occurred, in this order: first, the peer has sent to the other peer a message protected with the new OSCORE Security Context including the new OSCORE Sender/Recipient IDs; then, the peer has received from the other peer and successfully verified a message protected with that new OSCORE Security Context.
 
-* In the latter integrated case, the KUDOS initiator (responder) also acts as initiator (responder) for the OSCORE IDs update procedure. That is, both KUDOS and the OSCORE IDs update procedure MUST be run either in their forward message flow or in their reverse message flow.
+* In the latter integrated case, the KUDOS initiator (responder) also acts as initiator (responder) for the OSCORE ID update procedure. That is, both KUDOS and the OSCORE ID update procedure MUST be run either in their forward message flow or in their reverse message flow.
 
-   The new OSCORE Sender/Recipient IDs MUST NOT be used with the OSCORE Security Context CTX_OLD, and MUST NOT be used with the temporary OSCORE Security Context used to protect the first KUDOS message of a KUDOS execution.
+   The new OSCORE Sender/Recipient IDs MUST NOT be used with the OSCORE Security Context CTX_OLD, and MUST NOT be used with the temporary OSCORE Security Context CTX_1 used to protect the first KUDOS message of a KUDOS execution.
 
    The first use of the new OSCORE Sender/Recipient IDs with the new OSCORE Security Context CTX_NEW occurs: for the KUDOS initiator, after having received from the KUDOS responder and successfully verified the second KUDOS message of the KUDOS execution in question; for the KUDOS responder, after having sent to the KUDOS initiator the second KUDOS message of the KUDOS execution in question.
 
-An initiator terminates an ongoing OSCORE IDs procedure with another peer as failed, in case, after having sent the first OSCORE IDs update message for the procedure in question, a pre-defined amount of time has elapsed without receiving and successfully verifying the second OSCORE IDs update message from the other peer. It is RECOMMENDED that such an amount of time is equal to MAX_TRANSMIT_WAIT (see {{Section 4.8.2 of RFC7252}}).
+An initiator terminates an ongoing OSCORE ID update procedure with another peer as failed, in case, after having sent the first ID update message for the procedure in question, a pre-defined amount of time has elapsed without receiving and successfully verifying the second ID update message from the other peer. It is RECOMMENDED that such an amount of time is equal to MAX_TRANSMIT_WAIT (see {{Section 4.8.2 of RFC7252}}).
 
-A peer terminates an ongoing OSCORE IDs procedure with another peer as successful, in any of the following two cases.
+A peer terminates an ongoing OSCORE ID update procedure with another peer as successful, in any of the following two cases.
 
-* The peer is acting as initiator, and it has received and successfully verified the second OSCORE IDs update message from the other peer.
+* The peer is acting as initiator, and it has received and successfully verified the second ID update message from the other peer.
 
-* The peer is acting as responder, and it has sent the second OSCORE IDs update message to the other peer.
+* The peer is acting as responder, and it has sent the second ID update message to the other peer.
 
-A peer MUST NOT initiate an OSCORE IDs procedure with another peer, if it has another such procedure ongoing with that other peer.
+A peer MUST NOT initiate an OSCORE ID update procedure with another peer, if it has another such procedure ongoing with that other peer.
 
-Upon receiving a valid OSCORE IDs update message, a responder that supports the OSCORE IDs update procedure MUST send the second OSCORE IDs update message, except in the following case.
+Upon receiving a valid ID update message, a responder that supports the ID update update procedure MUST send the second ID update message, except in the following case.
 
-* The received OSCORE IDs update messages is not a KUDOS message (i.e., the OSCORE IDs update procedure is being performed stand-alone) and the responder has no eligible Recipient ID to offer to the initiator (see {{id-update-additional-actions}}).
+* The received ID update message is not a KUDOS message (i.e., the OSCORE ID update procedure is being performed stand-alone) and the responder has no eligible Recipient ID to offer to the initiator (see {{id-update-additional-actions}}).
 
-   If the responder is a server, the responder MUST also reply to the received OSCORE IDs update request message with a protected 5.03 (Service Unavailable) error response. The error response MUST NOT include the Recipient-ID Option, and its diagnostic payload MAY provide additional information.
+   If the responder is a server, the responder MUST also reply to the received ID update request message with a protected 5.03 (Service Unavailable) error response. The error response MUST NOT include the Recipient-ID Option, and its diagnostic payload MAY provide additional information.
 
    When receiving the error response, the initiator terminates the OSCORE IDs procedure as failed.
 
@@ -141,17 +141,17 @@ The option value can have an arbitrary length. Implementations can limit its len
 
 This document particularly defines how this option is used in messages protected with OSCORE. That is, when the option is included in an outgoing message, the option value specifies the new OSCORE Recipient ID that the sender endpoint intends to use with the other endpoint sharing the OSCORE Security Context.
 
-Therefore, the maximum lenght of the option value is equal to the maximum lenght of OSCORE Sender/Recipient IDs. As defined in {{Section 3.3 of RFC8613}}, this is determined by the size of the AEAD nonce of the used AEAD Algorithm in the OSCORE Security Context.
+Therefore, the maximum length of the option value is equal to the maximum length of OSCORE Sender/Recipient IDs. As defined in {{Section 3.3 of RFC8613}}, this is determined by the size of the AEAD nonce of the used AEAD Algorithm in the OSCORE Security Context.
 
 The Recipient-ID Option is of class E in terms of OSCORE processing (see {{Section 4.1 of RFC8613}}).
 
 ### Forward Message Flow {#example-client-initiated-id-update}
 
-{{fig-id-update-client-init}} shows an example of the OSCORE IDs update procedure, run stand-alone and in the forward message flow, with the client acting as initiator. On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
+{{fig-id-update-client-init}} shows an example of the OSCORE ID update procedure, run stand-alone and in the forward message flow, with the client acting as initiator. On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
 
-{{sec-id-update-in-kudos-forward}} provides a different example of the OSCORE IDs update procedure, as run integrated in an execution of KUDOS and in the forward message flow (see {{Section 4.3.1 of I-D.ietf-core-oscore-key-update}}).
+{{sec-id-update-in-kudos-forward}} provides a different example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the forward message flow (see {{Section 4.3.1 of I-D.ietf-core-oscore-key-update}}).
 
-~~~~~~~~~~~
+~~~~~~~~~~~ aasvg
           Client                             Server
        (initiator)                         (responder)
             |                                   |
@@ -239,17 +239,17 @@ with CTX_B  | Encrypted Payload {               |
             | }                                 |
             |                                   |
 ~~~~~~~~~~~
-{: #fig-id-update-client-init title="Example of the OSCORE IDs Update forward message flow" artwork-align="center"}
+{: #fig-id-update-client-init title="Example of the OSCORE ID update procedure with Forward Message Flow" artwork-align="center"}
 
-Before the OSCORE IDs update procedure starts, the client (the server) shares with the server (the client) an OSCORE Security Context CTX_A with Sender ID 0x01 (0x00) and Recipient ID 0x00 (0x01).
+Before the OSCORE ID update procedure starts, the client (the server) shares with the server (the client) an OSCORE Security Context CTX_A with Sender ID 0x01 (0x00) and Recipient ID 0x00 (0x01).
 
-When starting the OSCORE IDs update procedure, the client determines its new intended OSCORE Recipient ID 0x42. Then, the client prepares a CoAP request targeting an application resource at the server. The request includes the Recipient-ID Option, with value the client's new Recipient ID 0x42.
+When starting the OSCORE ID update procedure, the client determines its new intended OSCORE Recipient ID 0x42. Then, the client prepares a CoAP request targeting an application resource at the server. The request includes the Recipient-ID Option, with value the client's new Recipient ID 0x42.
 
-The client protects the request with CTX_A, i.e., by using the keying material derived from the current client's Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request \#1.
+The client protects the request with CTX_A, i.e., by using the keying material derived from the client's current Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request \#1.
 
 Upon receiving, decrypting, and successfully verifying the OSCORE message Request \#1, the server retrieves the value 0x42 from the Recipient-ID Option, and determines its new intended OSCORE Recipient ID 0x78. Then, the server prepares a CoAP response including the Recipient-ID Option, with value the server's new Recipient ID 0x78.
 
-The server protects the response with CTX_A, i.e., by using the keying material derived from the current server's Sender ID 0x00. After that, the server sends the response to the client.
+The server protects the response with CTX_A, i.e., by using the keying material derived from the server's current Sender ID 0x00. After that, the server sends the response to the client.
 
 Then, the server considers 0x42 and 0x78 as its new Sender ID and Recipient ID to use with the client, respectively. As shown in the example, the server practically installs a new OSCORE Security Context CTX_B where: i) its Sender ID and Recipient ID are 0x42 and 0x78, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see {{Section 3.2.2 of RFC8613}}); iii) anything else is like in the OSCORE Security Context used to encrypt the OSCORE message Response \#1.
 
@@ -267,11 +267,11 @@ After that, one further exchange occurs, where both the CoAP request and the CoA
 
 ### Reverse Message Flow {#example-server-initiated-id-update}
 
-{{fig-id-update-server-init}} shows an example of the OSCORE IDs update procedure, run stand-alone and in the reverse message flow, with the server acting as initiator. On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
+{{fig-id-update-server-init}} shows an example of the OSCORE ID update procedure, run stand-alone and in the reverse message flow, with the server acting as initiator. On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
 
-{{sec-id-update-in-kudos-reverse}} provides a different example of the OSCORE IDs update procedure, as run integrated in an execution of KUDOS and in the reverse message flow (see {{Section 4.3.2 of I-D.ietf-core-oscore-key-update}}).
+{{sec-id-update-in-kudos-reverse}} provides a different example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the reverse message flow (see {{Section 4.3.2 of I-D.ietf-core-oscore-key-update}}).
 
-~~~~~~~~~~~
+~~~~~~~~~~~ aasvg
           Client                             Server
        (responder)                         (initiator)
             |                                   |
@@ -385,23 +385,23 @@ with CTX_B  | Encrypted Payload {               |
             | }                                 |
             |                                   |
 ~~~~~~~~~~~
-{: #fig-id-update-server-init title="Example of the OSCORE IDs Update reverse message flow" artwork-align="center"}
+{: #fig-id-update-server-init title="Example of the OSCORE ID update procedure with Reverse Message Flow" artwork-align="center"}
 
-Before the OSCORE IDs update procedure starts, the client (the server) shares with the server (the client) an OSCORE Security Context CTX_A with Sender ID 0x01 (0x00) and Recipient ID 0x00 (0x01).
+Before the OSCORE ID update procedure starts, the client (the server) shares with the server (the client) an OSCORE Security Context CTX_A with Sender ID 0x01 (0x00) and Recipient ID 0x00 (0x01).
 
-At first, the client prepares a CoAP Request \#1 targeting an application resource at the server. The client protects the request with CTX_A, i.e., by using the keying material derived from the current client's Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request \#1.
+At first, the client prepares a CoAP Request \#1 targeting an application resource at the server. The client protects the request with CTX_A, i.e., by using the keying material derived from the client's current Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request \#1.
 
-Upon receiving, decrypting, and successfully verifying the OSCORE message Request \#1, the server decides to start an OSCORE IDs update procedure. To this end, the server determines its new intended OSCORE Recipient ID 0x78. Then, the server prepares a CoAP response as a reply to the just received request and including the Recipient-ID Option, with value the server's new Recipient ID 0x78.
+Upon receiving, decrypting, and successfully verifying the OSCORE message Request \#1, the server decides to start an OSCORE ID update procedure. To this end, the server determines its new intended OSCORE Recipient ID 0x78. Then, the server prepares a CoAP response as a reply to the just received request and including the Recipient-ID Option, with value the server's new Recipient ID 0x78.
 
-The server protects the response with CTX_A, i.e., by using the keying material derived from the current server's Sender ID 0x00. After that, the server sends the response to the client as Response \#1.
+The server protects the response with CTX_A, i.e., by using the keying material derived from the server's current Sender ID 0x00. After that, the server sends the response to the client as Response \#1.
 
 Upon receiving, decrypting, and successfully verifying the OSCORE message Response \#1, the client retrieves the value 0x78 from the Recipient-ID Option, and determines its new intended OSCORE Recipient ID 0x42. Then, the client prepares a CoAP request targeting an application resource at the server. The request includes the Recipient-ID Option, with value the client's new Recipient ID 0x42.
 
-The client protects the request with CTX_A, i.e., by using the keying material derived from the current client's Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request \#2.
+The client protects the request with CTX_A, i.e., by using the keying material derived from the client's current Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request \#2.
 
 Upon receiving, decrypting, and successfully verifying the OSCORE message Request \#2, the server retrieves the value 0x42 from the Recipient-ID Option. Then the server considers 0x42 and 0x78 as the new Sender ID and Recipient ID to use with the client, respectively. As shown in the example, the server practically installs a new OSCORE Security Context CTX_B where: i) its Sender ID and Recipient ID are 0x42 and 0x78, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see {{Section 3.2.2 of RFC8613}}); iii) anything else is like in the OSCORE Security Context used to encrypt the OSCORE message Request \#2.
 
-Then, the server prepares a CoAP response, as a reply to the just received request, and protects it with CTX_A, i.e., by using the keying material derived from the current server's Sender ID 0x00. After that, the server sends the response to the client as Response \#2.
+Then, the server prepares a CoAP response, as a reply to the just received request, and protects it with CTX_A, i.e., by using the keying material derived from the server's current Sender ID 0x00. After that, the server sends the response to the client as Response \#2.
 
 Upon receiving, decrypting, and successfully verifying the OSCORE message Response \#2, the client considers 0x78 and 0x42 as the new Sender ID and Recipient ID to use with the server, respectively. As shown in the example, the client practically installs a new OSCORE Security Context CTX_B where: i) its Sender ID and Recipient ID are 0x78 and 0x42, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see {{Section 3.2.2 of RFC8613}}); iii) anything else is like in the OSCORE Security Context used to decrypt the OSCORE response.
 
@@ -417,21 +417,21 @@ After that, one further exchange occurs, where both the CoAP request and the CoA
 
 ### Additional Actions for Execution {#id-update-additional-actions}
 
-After having experienced a loss of state, a peer MUST NOT participate in a stand-alone OSCORE IDs update procedure with another peer, until having performed a full-fledged establishment/renewal of an OSCORE Security Context with the other peer (e.g., by running KUDOS {{I-D.ietf-core-oscore-key-update}} or the EDHOC protocol {{I-D.ietf-lake-edhoc}}).
+After having experienced a loss of state, a peer MUST NOT participate in a stand-alone OSCORE ID update procedure with another peer, until having performed a full-fledged establishment/renewal of an OSCORE Security Context with the other peer (e.g., by running KUDOS {{I-D.ietf-core-oscore-key-update}} or the authenticated key establishment protocol EDHOC {{I-D.ietf-lake-edhoc}}).
 
-More precisely, a peer has experienced a loss of state if it cannot access the latest snapshot of the latest OSCORE Security Context CTX\_OLD or the whole set of OSCORE Sender/Recipient IDs that have been used with the triplet (Master Secret, Master Salt, ID Context) of CTX\_OLD. This can happen, for instance, after a device reboot.
+More precisely, a peer has experienced a loss of state if it cannot access the latest snapshot of the latest OSCORE Security Context CTX\_OLD or the whole set of OSCORE Sender/Recipient IDs that have been used with the triplet (Master Secret, Master Salt, ID Context) of CTX\_OLD. This can happen, for instance, after a device reboots.
 
-Furthermore, when participating in a stand-alone OSCORE IDs update procedure, a peer performs the following additional steps.
+Furthermore, when participating in a stand-alone OSCORE ID update procedure, a peer performs the following additional steps.
 
-* When a peer sends an OSCORE IDs update message, the value of the Recipient-ID Option that the peer specifies as its new intended OSCORE Recipient ID MUST fulfill both the following conditions: it is currently available as Recipient ID to use for the peer (see {{Section 3.3 of RFC8613}}); and the peer has never used it as Recipient ID with the current triplet (Master Secret, Master Salt, ID Context).
+* When a peer sends an ID update message, the value of the Recipient-ID Option that the peer specifies as its new intended OSCORE Recipient ID MUST fulfill both the following conditions: it is currently available as Recipient ID to use for the peer (see {{Section 3.3 of RFC8613}}); and the peer has never used it as Recipient ID with the current triplet (Master Secret, Master Salt, ID Context).
 
-* When receiving an OSCORE IDs update message, the peer MUST abort the procedure if it has already used the identifier specified in the Recipient-ID Option as its own Sender ID with the current triplet (Master Secret, Master Salt, ID Context).
+* When receiving an ID update message, the peer MUST abort the procedure if it has already used the identifier specified in the Recipient-ID Option as its own Sender ID with the current triplet (Master Secret, Master Salt, ID Context).
 
 In order to fulfill the conditions above, a peer has to keep track of the OSCORE Sender/Recipient IDs that it has used with the current triplet (Master Secret, Master Salt, ID Context) since the latest update of the OSCORE Master Secret (e.g., performed by running KUDOS).
 
 ## Preserving Observations Across ID Updates
 
-When running the OSCORE IDs Update procedure stand-alone or integrated in an execution of KUDOS, the following holds if Observe {{RFC7641}} is supported, in order to preserve ongoing observations beyond a change of OSCORE identifiers.
+When running the OSCORE ID update procedure stand-alone or integrated in an execution of KUDOS, the following holds if Observe {{RFC7641}} is supported, in order to preserve ongoing observations beyond a change of OSCORE identifiers.
 
 * If a peer intends to keep active beyond an update of its Sender ID the observations where it is acting as CoAP client, then the peer:
 
@@ -457,30 +457,26 @@ Note to RFC Editor: Please replace all occurrences of "{{&SELF}}" with the RFC n
 
 ## CoAP Option Numbers Registry ## {#iana-coap-options}
 
-IANA is asked to enter the following option number to the "CoAP Option Numbers" registry within the "CoRE Parameters" registry group.
+IANA is asked to enter the following option number to the "CoAP Option Numbers" registry within the "Constrained RESTful Environments (CoRE) Parameters" registry group.
 
-~~~~~~~~~~~
-+--------+--------------+------------+
 | Number |     Name     | Reference  |
-+--------+--------------+------------+
-| TBD24  | Recipient-ID | [RFC-XXXX] |
-+--------+--------------+------------+
-~~~~~~~~~~~
-{: artwork-align="center"}
+|--------|--------------|------------|
+| TBD24  | Recipient-ID | {{&SELF}}  |
+
 
 Note to RFC Editor: Following the registration of the CoAP Option Number 24, please replace "TBD24" with "24" in the table above. Then, please delete this paragraph.
 
 --- back
 
-# Examples of OSCORE ID Updates Integrated in KUDOS # {#sec-id-update-in-kudos}
+# Examples of OSCORE ID update procedure Integrated in KUDOS # {#sec-id-update-in-kudos}
 
-The following section shows two examples where the ID update procedure is performed together with the KUDOS procedure for updating OSCORE keying material.
+The following section shows two examples where the OSCORE ID update procedure is performed together with the KUDOS procedure for updating OSCORE keying material.
 
 ## Forward Message Flow # {#sec-id-update-in-kudos-forward}
 
-{{fig-kudos-and-id-update-client-init}} provides an example of the OSCORE IDs update procedure, as run integrated in an execution of KUDOS and in the forward message flow (see {{Section 4.3.1 of I-D.ietf-core-oscore-key-update}}). On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
+{{fig-kudos-and-id-update-client-init}} provides an example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the forward message flow (see {{Section 4.3.1 of I-D.ietf-core-oscore-key-update}}). On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
 
-~~~~~~~~~~~
+~~~~~~~~~~~ aasvg
                      Client                  Server
                    (initiator)            (responder)
                         |                      |
@@ -562,13 +558,13 @@ Verify with CTX_NEW     | }                    |
                         | }                    |
                         |                      |
 ~~~~~~~~~~~
-{: #fig-kudos-and-id-update-client-init title="Example of the OSCORE IDs Update forward message flow integrated in a KUDOS execution." artwork-align="center"}
+{: #fig-kudos-and-id-update-client-init title="Example of the OSCORE ID update procedure with Forward Message Flow and Integrated in a KUDOS Execution." artwork-align="center"}
 
 ## Reverse Message Flow # {#sec-id-update-in-kudos-reverse}
 
-{{fig-kudos-and-id-update-server-init}} provides an example of the OSCORE IDs update procedure, as run integrated in an execution of KUDOS and in the reverse message flow (see {{Section 4.3.2 of I-D.ietf-core-oscore-key-update}}). On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
+{{fig-kudos-and-id-update-server-init}} provides an example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the reverse message flow (see {{Section 4.3.2 of I-D.ietf-core-oscore-key-update}}). On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
 
-~~~~~~~~~~~
+~~~~~~~~~~~ aasvg
                       Client                 Server
                    (responder)            (initiator)
                         |                      |
@@ -673,11 +669,10 @@ Verify with CTX_NEW     | }                    |
                         | }                    |
                         |                      |
 ~~~~~~~~~~~
-{: #fig-kudos-and-id-update-server-init title="Example of the OSCORE IDs Update reverse message flow integrated in a KUDOS execution." artwork-align="center"}
+{: #fig-kudos-and-id-update-server-init title="Example of the OSCORE ID update procedure with Reverse Message Flow and Integrated in a KUDOS Execution." artwork-align="center"}
 
 # Document Updates # {#sec-document-updates}
-
-RFC EDITOR: PLEASE REMOVE THIS SECTION.
+{:removeinrfc}
 
 ## Version -00 ## {#sec-00}
 
@@ -693,4 +688,3 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 The authors sincerely thank {{{Christian Amsüss}}}, {{{Carsten Bormann}}}, {{{John Preuß Mattsson}}}, and {{{Göran Selander}}} for their feedback and comments.
 
 The work on this document has been partly supported by VINNOVA and the Celtic-Next project CRITISEC; and by the H2020 projects SIFIS-Home (Grant agreement 952652) and ARCADIAN-IoT (Grant agreement 101020259).
-
