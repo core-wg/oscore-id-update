@@ -55,11 +55,17 @@ Two peers that communicate with the CoAP protocol can use the Object Security fo
 
 # Introduction
 
-OSCORE {{RFC8613}} peers protect messages to send using the Sender Context and verify messages received using the Recipient Context. The contexts include information a peer needs to protect or unprotect an OSCORE message. To identify a specific context to use, identifiers are used in the form of a Sender ID and a Recipient ID. These identifiers are included in the OSCORE option to provide information to the other peer about what OSCORE Recipient Context to use to unprotect an incoming message.
+When using the CoAP protocol {{RFC7252}}, two peers can use Object Security for Constrained RESTful Environments (OSCORE) protocol to protect their message exchanges end-to-end. To this end, the two peers share an OSCORE Security Context and a number of related identifiers.
 
-Since these identifiers are sent as cleartext over the wire, an adversary can use these to correlate communication flows between peers. Even in the case when peers change networks or other addressing information, the identifiers may still be possible to use to understand that observed communication is between these same two peers.
+As part of the shared Security Context, each peer stores one Sender Context identified by a Sender ID and used to protect its outgoing messages. Also, it stores a Recipient Context identified by a Recipient ID and used to unprotect the incoming messages from the other peer. That is, one's peer Sender ID (Recipient ID) is equal to the other peer's Recipient ID (Sender ID).
 
-A way to mitigate this problem is to allow OSCORE peers to update their identifiers. This document introduces such a procedure, allowing two peers to execute a message exchange which results in updated identifiers, and thus continued communication with new Sender and Recipient IDs. This results in privacy benefits, as it helps mitigate the ability of an adversary to correlate the two peers' communication between two points in time or between paths. For instance, two peers may want to use this procedure before switching to a different network for their communication, in order to make it more difficult to understand that the continued communication over the new network is taking place between the same two peers.
+When receiving an OSCORE-protected message, the recipient peer uses its Recipient ID conveyed within the message or otherwise implied, in order to retrieve the correct Security Context and unprotect the message.
+
+These identifiers are sent in plaintext within OSCORE-protected messages and are immutable throughout the lifetime of a Security Context, even in case the two peers migrate to a different network or simply change their addressing information. Therefore, the identifiers can be used to correlate messages that the two peers exchange at different points in time or through different paths, hence allowing for track them with consequent privacy implications.
+
+In order to address this issue, this document defines an OSCORE ID update procedure that two peers can use to update their OSCORE Sender and Recipient IDs. For instance, two peers may want to use this procedure before switching to a different network, in order to make it more difficult to understand that their communication is continuing in the new network.
+
+Th OSCORE ID update procedure can be run stand-alone or seamlessly integrated in an execution of the Key Update for OSCORE (KUDOS) procedure {{I-D.ietf-core-oscore-key-update}}.
 
 ## Terminology ## {#terminology}
 
