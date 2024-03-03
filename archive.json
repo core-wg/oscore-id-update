@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-02-29T00:38:40.100113+00:00",
+  "timestamp": "2024-03-03T00:41:16.124750+00:00",
   "repo": "core-wg/oscore-id-update",
   "labels": [
     {
@@ -49,6 +49,55 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
+  "issues": [
+    {
+      "number": 1,
+      "id": "I_kwDOLZNAsc6A1iyI",
+      "title": "Enforce maximum size for IDs",
+      "url": "https://github.com/core-wg/oscore-id-update/issues/1",
+      "state": "OPEN",
+      "author": "rikard-sics",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Considering the AEAD algorithm used.",
+      "createdAt": "2024-02-29T15:25:52Z",
+      "updatedAt": "2024-02-29T15:25:52Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 2,
+      "id": "I_kwDOLZNAsc6A1jqw",
+      "title": "Considerations on running it together with KUDOS if ID update fails",
+      "url": "https://github.com/core-wg/oscore-id-update/issues/2",
+      "state": "OPEN",
+      "author": "rikard-sics",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Shall we let KUDOS succeed and if the ID update procedure fails?",
+      "createdAt": "2024-02-29T15:27:41Z",
+      "updatedAt": "2024-02-29T15:27:41Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 3,
+      "id": "I_kwDOLZNAsc6A1mnN",
+      "title": "Consider that the Recipient-ID option may need to be empty",
+      "url": "https://github.com/core-wg/oscore-id-update/issues/3",
+      "state": "OPEN",
+      "author": "rikard-sics",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "See for instance here for inspiration:\r\nhttps://datatracker.ietf.org/doc/html/rfc8613#section-2",
+      "createdAt": "2024-02-29T15:33:36Z",
+      "updatedAt": "2024-02-29T15:33:36Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
   "pulls": []
 }
