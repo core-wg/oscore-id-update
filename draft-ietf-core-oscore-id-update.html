@@ -10,11 +10,11 @@
 <meta content="
        Two peers that communicate with the CoAP protocol can use the Object Security for Constrained RESTful Environments (OSCORE) protocol to protect their message exchanges end-to-end. To this end, the two peers share an OSCORE Security Context and a number of related identifiers. In particular, each of the two peers stores a Sender ID that identifies its own Sender Context within the Security Context, and a Recipient ID that identifies the Recipient Context associated with the other peer within the same Security Context. These identifiers are sent in plaintext within OSCORE-protected messages. Hence, they can be used to correlate messages exchanged between peers and track those peers, with consequent privacy implications. This document defines an OSCORE ID update procedure that two peers can use to update their OSCORE identifiers. This procedure can be run stand-alone or seamlessly integrated in an execution of the Key Update for OSCORE (KUDOS) procedure. 
     " name="description">
-<meta content="xml2rfc 3.19.4" name="generator">
+<meta content="xml2rfc 3.20.0" name="generator">
 <meta content="draft-ietf-core-oscore-id-update-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.19.4
-    Python 3.11.6
+  xml2rfc 3.20.0
+    Python 3.11.8
     ConfigArgParse 1.7
     google-i18n-address 3.1.0
     intervaltree 3.1.0
@@ -1029,7 +1029,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Höglund &amp; Tiloca</td>
-<td class="center">Expires 2 September 2024</td>
+<td class="center">Expires 4 September 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1042,12 +1042,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-core-oscore-id-update-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-03-01" class="published">1 March 2024</time>
+<time datetime="2024-03-03" class="published">3 March 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-09-02">2 September 2024</time></dd>
+<dd class="expires"><time datetime="2024-09-04">4 September 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1096,7 +1096,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 2 September 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 4 September 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1216,7 +1216,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <p id="section-1-3">When receiving an OSCORE-protected message, the recipient peer uses its Recipient ID conveyed within the message or otherwise implied, in order to retrieve the correct Security Context and unprotect the message.<a href="#section-1-3" class="pilcrow">¶</a></p>
 <p id="section-1-4">These identifiers are sent in plaintext within OSCORE-protected messages and are immutable throughout the lifetime of a Security Context, even in case the two peers migrate to a different network or simply change their addressing information. Therefore, the identifiers can be used to correlate messages that the two peers exchange at different points in time or through different paths, hence allowing for track them with consequent privacy implications.<a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">In order to address this issue, this document defines an OSCORE ID update procedure that two peers can use to update their OSCORE Sender and Recipient IDs. For instance, two peers may want to use this procedure before switching to a different network, in order to make it more difficult to understand that their communication is continuing in the new network.<a href="#section-1-5" class="pilcrow">¶</a></p>
-<p id="section-1-6">Th OSCORE ID update procedure can be run stand-alone or seamlessly integrated in an execution of the Key Update for OSCORE (KUDOS) procedure <span>[<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>.<a href="#section-1-6" class="pilcrow">¶</a></p>
+<p id="section-1-6">The OSCORE ID update procedure can be run stand-alone or seamlessly integrated in an execution of the Key Update for OSCORE (KUDOS) procedure <span>[<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>.<a href="#section-1-6" class="pilcrow">¶</a></p>
 <div id="terminology">
 <section id="section-1.1">
         <h3 id="name-terminology">
@@ -1541,7 +1541,7 @@ When receiving the error response, the initiator terminates the OSCORE IDs proce
 <p id="section-2.1.1-11">From then on, the client and the server can exchange messages protected with the OSCORE Security Context CTX_B, i.e., according to the new OSCORE Sender/Recipient IDs and using new keying material derived from those.<a href="#section-2.1.1-11" class="pilcrow">¶</a></p>
 <p id="section-2.1.1-12">That is, the client sends the OSCORE message Request #2, which is protected with CTX_B and specifies the new client's Sender ID 0x78 in the 'kid' field of the OSCORE Option.<a href="#section-2.1.1-12" class="pilcrow">¶</a></p>
 <p id="section-2.1.1-13">Upon receiving the OSCORE message Request #2, the server retrieves the OSCORE Security Context CTX_B, according to its new Recipient ID 0x78 specified in the 'kid' field of the OSCORE Option. Then, the server decrypts and verifies the response by using CTX_B. Finally, the server prepares a CoAP response Response #2, protects it with CTX_B, and sends it to the client.<a href="#section-2.1.1-13" class="pilcrow">¶</a></p>
-<p id="section-2.1.1-14">Upon receiving the OSCORE message Response #2, the client decrypts and verifies it with the OSCORE Security Context CTX_B. In case of successfull verification, the client confirms that the server is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX_A.<a href="#section-2.1.1-14" class="pilcrow">¶</a></p>
+<p id="section-2.1.1-14">Upon receiving the OSCORE message Response #2, the client decrypts and verifies it with the OSCORE Security Context CTX_B. In case of successful verification, the client confirms that the server is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX_A.<a href="#section-2.1.1-14" class="pilcrow">¶</a></p>
 <p id="section-2.1.1-15">After that, one further exchange occurs, where both the CoAP request and the CoAP response are protected with the OSCORE Security Context CTX_B. In particular, upon receiving, decrypting, and successfully verifying the OSCORE message Request #3, the server confirms that the client is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX_A.<a href="#section-2.1.1-15" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1810,7 +1810,7 @@ When receiving the error response, the initiator terminates the OSCORE IDs proce
 <p id="section-2.1.2-13">From then on, the client and the server can exchange messages protected with the OSCORE Security Context CTX_B, i.e., according to the new OSCORE Sender/Recipient IDs and using new keying material derived from those.<a href="#section-2.1.2-13" class="pilcrow">¶</a></p>
 <p id="section-2.1.2-14">That is, the client sends the OSCORE message Request #3, which is protected with CTX_B and specifies the new client's Sender ID 0x78 in the 'kid' field of the OSCORE Option.<a href="#section-2.1.2-14" class="pilcrow">¶</a></p>
 <p id="section-2.1.2-15">Upon receiving the OSCORE message Request #3, the server retrieves the OSCORE Security Context CTX_B, according to its new Recipient ID 0x78 specified in the 'kid' field of the OSCORE Option. Then, the server decrypts and verifies the response by using CTX_B. Finally, the server prepares a CoAP response, protects it with CTX_B, and sends it to the client as Response #3.<a href="#section-2.1.2-15" class="pilcrow">¶</a></p>
-<p id="section-2.1.2-16">Upon receiving the OSCORE message Response #3, the client decrypts and verifies it with the OSCORE Security Context CTX_B. In case of successfull verification, the client confirms that the server is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX_A.<a href="#section-2.1.2-16" class="pilcrow">¶</a></p>
+<p id="section-2.1.2-16">Upon receiving the OSCORE message Response #3, the client decrypts and verifies it with the OSCORE Security Context CTX_B. In case of successful verification, the client confirms that the server is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX_A.<a href="#section-2.1.2-16" class="pilcrow">¶</a></p>
 <p id="section-2.1.2-17">After that, one further exchange occurs, where both the CoAP request and the CoAP response are protected with the OSCORE Security Context CTX_B. In particular, upon receiving, decrypting, and successfully verifying the OSCORE message Request #4, the server confirms that the client is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX_A.<a href="#section-2.1.2-17" class="pilcrow">¶</a></p>
 </section>
 </div>

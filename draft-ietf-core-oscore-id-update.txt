@@ -5,7 +5,7 @@
 CoRE Working Group                                            R. Höglund
 Internet-Draft                                                 M. Tiloca
 Intended status: Standards Track                                 RISE AB
-Expires: 2 September 2024                                   1 March 2024
+Expires: 4 September 2024                                   3 March 2024
 
 
                       Identifier Update for OSCORE
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 September 2024.
+   This Internet-Draft will expire on 4 September 2024.
 
 Copyright Notice
 
@@ -131,7 +131,7 @@ Table of Contents
    it more difficult to understand that their communication is
    continuing in the new network.
 
-   Th OSCORE ID update procedure can be run stand-alone or seamlessly
+   The OSCORE ID update procedure can be run stand-alone or seamlessly
    integrated in an execution of the Key Update for OSCORE (KUDOS)
    procedure [I-D.ietf-core-oscore-key-update].
 
@@ -469,7 +469,7 @@ Table of Contents
 
    Upon receiving the OSCORE message Response #2, the client decrypts
    and verifies it with the OSCORE Security Context CTX_B.  In case of
-   successfull verification, the client confirms that the server is
+   successful verification, the client confirms that the server is
    aligned with the new OSCORE Sender/Recipient IDs, and thus discards
    the OSCORE Security Context CTX_A.
 
@@ -690,7 +690,7 @@ Table of Contents
 
    Upon receiving the OSCORE message Response #3, the client decrypts
    and verifies it with the OSCORE Security Context CTX_B.  In case of
-   successfull verification, the client confirms that the server is
+   successful verification, the client confirms that the server is
    aligned with the new OSCORE Sender/Recipient IDs, and thus discards
    the OSCORE Security Context CTX_A.
 
