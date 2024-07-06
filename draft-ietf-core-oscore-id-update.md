@@ -42,7 +42,7 @@ normative:
   I-D.ietf-core-oscore-key-update:
 
 informative:
-  I-D.ietf-lake-edhoc:
+  RFC9528:
 
 entity:
   SELF: "[RFC-XXXX]"
@@ -423,7 +423,7 @@ After that, one further exchange occurs, where both the CoAP request and the CoA
 
 ### Additional Actions for Execution {#id-update-additional-actions}
 
-After having experienced a loss of state, a peer MUST NOT participate in a stand-alone OSCORE ID update procedure with another peer, until having performed a full-fledged establishment/renewal of an OSCORE Security Context with the other peer (e.g., by running KUDOS {{I-D.ietf-core-oscore-key-update}} or the authenticated key establishment protocol EDHOC {{I-D.ietf-lake-edhoc}}).
+After having experienced a loss of state, a peer MUST NOT participate in a stand-alone OSCORE ID update procedure with another peer, until having performed a full-fledged establishment/renewal of an OSCORE Security Context with the other peer (e.g., by running KUDOS {{I-D.ietf-core-oscore-key-update}} or the authenticated key establishment protocol EDHOC {{RFC9528}}).
 
 More precisely, a peer has experienced a loss of state if it cannot access the latest snapshot of the latest OSCORE Security Context CTX\_OLD or the whole set of OSCORE Sender/Recipient IDs that have been used with the triplet (Master Secret, Master Salt, ID Context) of CTX\_OLD. This can happen, for instance, after a device reboots.
 
