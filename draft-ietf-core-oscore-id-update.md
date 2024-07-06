@@ -680,6 +680,10 @@ Verify with CTX_NEW     | }                    |
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
 
+## Version -00 to -01 ## {#sec-00-01}
+
+* Editorial improvements
+
 ## Version -00 ## {#sec-00}
 
 * Split out material from Key Update for OSCORE draft into this new document.
@@ -689,7 +693,7 @@ Verify with CTX_NEW     | }                    |
 * Editorial improvements
 
 # Acknowledgments # {#acknowledgment}
-{:unnumbered}
+{:numbered="false"}
 
 The authors sincerely thank {{{Christian Amsüss}}}, {{{Carsten Bormann}}}, {{{John Preuß Mattsson}}}, and {{{Göran Selander}}} for their feedback and comments.
 
