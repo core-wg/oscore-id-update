@@ -5,7 +5,7 @@
 CoRE Working Group                                            R. Höglund
 Internet-Draft                                                 M. Tiloca
 Intended status: Standards Track                                 RISE AB
-Expires: 4 September 2024                                   3 March 2024
+Expires: 7 January 2025                                      6 July 2024
 
 
                       Identifier Update for OSCORE
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 September 2024.
+   This Internet-Draft will expire on 7 January 2025.
 
 Copyright Notice
 
@@ -708,7 +708,7 @@ Table of Contents
    having performed a full-fledged establishment/renewal of an OSCORE
    Security Context with the other peer (e.g., by running KUDOS
    [I-D.ietf-core-oscore-key-update] or the authenticated key
-   establishment protocol EDHOC [I-D.ietf-lake-edhoc]).
+   establishment protocol EDHOC [RFC9528]).
 
    More precisely, a peer has experienced a loss of state if it cannot
    access the latest snapshot of the latest OSCORE Security Context
@@ -811,9 +811,9 @@ Table of Contents
    [I-D.ietf-core-oscore-key-update]
               Höglund, R. and M. Tiloca, "Key Update for OSCORE
               (KUDOS)", Work in Progress, Internet-Draft, draft-ietf-
-              core-oscore-key-update-06, 23 October 2023,
+              core-oscore-key-update-07, 4 March 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              oscore-key-update-06>.
+              oscore-key-update-07>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -846,12 +846,10 @@ Table of Contents
 
 5.2.  Informative References
 
-   [I-D.ietf-lake-edhoc]
-              Selander, G., Mattsson, J. P., and F. Palombini,
-              "Ephemeral Diffie-Hellman Over COSE (EDHOC)", Work in
-              Progress, Internet-Draft, draft-ietf-lake-edhoc-23, 22
-              January 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-lake-edhoc-23>.
+   [RFC9528]  Selander, G., Preuß Mattsson, J., and F. Palombini,
+              "Ephemeral Diffie-Hellman Over COSE (EDHOC)", RFC 9528,
+              DOI 10.17487/RFC9528, March 2024,
+              <https://www.rfc-editor.org/rfc/rfc9528>.
 
 Appendix A.  Examples of OSCORE ID update procedure Integrated in KUDOS
 
