@@ -92,7 +92,8 @@ Table of Contents
      A.1.  Forward Message Flow
      A.2.  Reverse Message Flow
    Appendix B.  Document Updates
-     B.1.  Version -00
+     B.1.  Version -00 to -01
+     B.2.  Version -00
    Acknowledgments
    Authors' Addresses
 
@@ -1068,7 +1069,11 @@ Appendix B.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-B.1.  Version -00
+B.1.  Version -00 to -01
+
+   *  Editorial improvements
+
+B.2.  Version -00
 
    *  Split out material from Key Update for OSCORE draft into this new
       document.
