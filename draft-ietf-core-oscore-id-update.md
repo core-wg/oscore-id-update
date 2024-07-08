@@ -117,13 +117,13 @@ A peer terminates an ongoing OSCORE ID update procedure with another peer as suc
 
 A peer MUST NOT initiate an OSCORE ID update procedure with another peer, if it has another such procedure ongoing with that other peer.
 
-Upon receiving a valid ID update message, a responder that supports the ID update procedure MUST send the second ID update message, except in the following case.
+Upon receiving a valid ID update message, a responder that supports the ID update procedure MUST send the second ID update message, except in the following cases.
 
 * The received ID update message is not a KUDOS message (i.e., the OSCORE ID update procedure is being performed stand-alone) and the responder has no eligible Recipient ID to offer to the initiator (see {{id-update-additional-actions}}).
 
-   If the responder is a server, the responder MUST also reply to the received ID update request message with a protected 5.03 (Service Unavailable) error response. The error response MUST NOT include the Recipient-ID Option, and its diagnostic payload MAY provide additional information.
+* The received ID update message contains a Recipient-ID option with a length that exceeds the maximum length of OSCORE Sender/Recipient IDs for the AEAD algorithm in use for the OSCORE Security Context shared between the peers. Specifically, the length of the Recipient-ID option may not exceed the length of the AEAD nonce minus 6 (see {{Section 3.3 of RFC8613}}).
 
-   When receiving the error response, the initiator terminates the OSCORE IDs procedure as failed.
+   In both cases, if the responder is a server, the responder MUST also reply to the received ID update request message with a protected 5.03 (Service Unavailable) error response. The error response MUST NOT include the Recipient-ID Option, and its diagnostic payload MAY provide additional information. When receiving the error response, the initiator terminates the OSCORE IDs procedure as failed.
 
 When the OSCORE ID update procedure is integrated into the execution of the KUDOS procedure, it is possible for the KUDOS procedure to succeed while the OSCORE ID update procedure fails (e.g., because the responder has no eligible Recipient ID to offer to the initiator). In such case, the peers should continue communication using the newly derived OSCORE Security Context CTX\_NEW obtained from the KUDOS procedure. This CTX\_NEW should use the peers' old Sender and Recipient IDs, meaning the desired Recipient IDs conveyed in the Recipient-ID options should not be considered.
 
