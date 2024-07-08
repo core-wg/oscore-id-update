@@ -133,19 +133,16 @@ Conversely, the OSCORE ID update procedure may succeed while the KUDOS procedure
 
 ## The Recipient-ID Option # {#sec-recipient-id-option}
 
-The Recipient ID-Option defined in this section has the properties summarized in {{fig-recipient-id-option}}, which extends Table 4 of {{RFC7252}}. That is, the option is elective, safe to forward, part of the cache key, and not repeatable.
+The Recipient ID-Option defined in this section has the properties summarized in {{table-recipient-id-option}}, which extends Table 4 of {{RFC7252}}. That is, the option is elective, safe to forward, part of the cache key, and not repeatable.
 
-~~~~~~~~~~~
-+-------+---+---+---+---+--------------+--------+--------+---------+
 | No.   | C | U | N | R | Name         | Format | Length | Default |
-+-------+---+---+---+---+--------------+--------+--------+---------+
-|       |   |   |   |   |              |        |        |         |
 | TBD24 |   |   |   |   | Recipient-ID | opaque | any    | (none)  |
-|       |   |   |   |   |              |        |        |         |
-+-------+---+---+---+---+--------------+--------+--------+---------+
-          C=Critical, U=Unsafe, N=NoCacheKey, R=Repeatable
-~~~~~~~~~~~
-{: #fig-recipient-id-option title="The Recipient-ID Option." artwork-align="center"}
+{: #table-recipient-id-option title="The&nbsp;Recipient-ID&nbsp;Option.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+C=Critical, U=Unsafe, N=NoCacheKey, R=Repeatable" align="center"}
 
 Note to RFC Editor: Following the registration of the CoAP Option Number 24, please replace "TBD24" with "24" in the figure above. Then, please delete this paragraph.
 
