@@ -1321,10 +1321,11 @@ When receiving the error response, the initiator terminates the OSCORE IDs proce
           </figcaption></figure>
 </div>
 <p id="section-2.1-3">Note to RFC Editor: Following the registration of the CoAP Option Number 24, please replace "TBD24" with "24" in the figure above. Then, please delete this paragraph.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
-<p id="section-2.1-4">The option value can have an arbitrary length. Implementations can limit its length to that of the longest supported Recipient ID.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.1-4">The option value can have an arbitrary length, including zero length to indicate intent to use the empty string as Recipient ID. Implementations can limit its length to that of the longest supported Recipient ID.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
 <p id="section-2.1-5">This document particularly defines how this option is used in messages protected with OSCORE. That is, when the option is included in an outgoing message, the option value specifies the new OSCORE Recipient ID that the sender endpoint intends to use with the other endpoint sharing the OSCORE Security Context.<a href="#section-2.1-5" class="pilcrow">¶</a></p>
 <p id="section-2.1-6">Therefore, the maximum length of the option value is equal to the maximum length of OSCORE Sender/Recipient IDs. As defined in <span><a href="https://rfc-editor.org/rfc/rfc8613#section-3.3" class="relref">Section 3.3</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, this is determined by the size of the AEAD nonce of the used AEAD Algorithm in the OSCORE Security Context.<a href="#section-2.1-6" class="pilcrow">¶</a></p>
-<p id="section-2.1-7">The Recipient-ID Option is of class E in terms of OSCORE processing (see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-4.1" class="relref">Section 4.1</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>).<a href="#section-2.1-7" class="pilcrow">¶</a></p>
+<p id="section-2.1-7">If the length of the Recipient ID included in the Recipient-ID option is zero, the option value <span class="bcp14">SHALL</span> be empty (Option Length = 0).<a href="#section-2.1-7" class="pilcrow">¶</a></p>
+<p id="section-2.1-8">The Recipient-ID Option is of class E in terms of OSCORE processing (see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-4.1" class="relref">Section 4.1</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>).<a href="#section-2.1-8" class="pilcrow">¶</a></p>
 <div id="example-client-initiated-id-update">
 <section id="section-2.1.1">
           <h4 id="name-forward-message-flow">
@@ -2529,7 +2530,14 @@ When receiving the error response, the initiator terminates the OSCORE IDs proce
         <h3 id="name-version-00-to-01">
 <a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-version-00-to-01" class="section-name selfRef">Version -00 to -01</a>
         </h3>
-<p id="appendix-B.1-1">Clarifications and editorial improvements.<a href="#appendix-B.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-B.1-1.1">
+            <p id="appendix-B.1-1.1.1">Clarifications and editorial improvements.<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.1-1.2">
+            <p id="appendix-B.1-1.2.1">Specify that the Recipient-ID option may need to be empty.<a href="#appendix-B.1-1.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
 </section>
 </div>
 <div id="sec-00">
