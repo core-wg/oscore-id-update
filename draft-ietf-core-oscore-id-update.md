@@ -496,7 +496,7 @@ Generate N1             |                      |
 CTX_1 = updateCtx(      |                      |
         X1,             |                      |
         N1,             |                      |
-        CTX_OLD)        |                      |
+        CTX_OLD         |                      |
                         |                      |
                         |      Request #1      |
 Protect with CTX_1      |--------------------->| /.well-known/kudos
@@ -505,7 +505,7 @@ Protect with CTX_1      |--------------------->| /.well-known/kudos
                         |  d flag: 1           | CTX_1 = updateCtx(
                         |  x: X1               |         X1,
                         |  nonce: N1           |         N1,
-                        |  ...                 |         CTX_OLD)
+                        |  ...                 |         CTX_OLD )
                         |  kid: 0x01           |
                         | }                    | Verify with CTX_1
                         | Encrypted Payload {  |
@@ -514,7 +514,7 @@ Protect with CTX_1      |--------------------->| /.well-known/kudos
                         |  ...                 | CTX_NEW = updateCtx(
                         | }                    |           Comb(X1,X2),
                         |                      |           Comb(N1,N2),
-                        |                      |           CTX_OLD)
+                        |                      |           CTX_OLD )
                         |                      |
                         |      Response #1     |
                         |<---------------------| Protect with CTX_NEW
@@ -523,7 +523,7 @@ Protect with CTX_1      |--------------------->| /.well-known/kudos
 CTX_NEW = updateCtx(    |  Partial IV: 0       |
           Comb(X1,X2),  |  ...                 |
           Comb(N1,N2),  |                      |
-          CTX_OLD)      |  d flag: 1           |
+          CTX_OLD )     |  d flag: 1           |
                         |  x: X2               |
 Verify with CTX_NEW     |  nonce: N2           |
                         |  ...                 |
@@ -538,8 +538,8 @@ CTX_NEW {               | }                    | CTX_NEW {
 }                       |                      | }
                         |                      |
 
-// The actual key update process ends here.
-// The two peers can use the new Security Context CTX_NEW.
+The actual key update process ends here.
+The two peers can use the new Security Context CTX_NEW.
 
                         |                      |
                         |      Request #2      |
@@ -591,7 +591,7 @@ Protect with CTX_OLD    |--------------------->| /temp
                         | }                    | CTX_1 = updateCtx(
                         |                      |         X1,
                         |                      |         N1,
-                        |                      |         CTX_OLD)
+                        |                      |         CTX_OLD )
                         |                      |
                         |      Response #1     |
                         |<---------------------| Protect with CTX_1
@@ -600,7 +600,7 @@ Protect with CTX_OLD    |--------------------->| /temp
 CTX_1 = updateCtx(      |  Partial IV: 0       |
         X1,             |  ...                 |
         N1,             |  d flag: 1           |
-        CTX_OLD)        |  x: X1               |
+        CTX_OLD )       |  x: X1               |
                         |  nonce: N1           |
 Verify with CTX_1       |  ...                 |
                         | }                    |
@@ -609,7 +609,7 @@ Generate N2             | Encrypted Payload {  |
 CTX_NEW = updateCtx(    |  Recipient-ID: 0x78  |
           Comb(X1,X2),  |  ...                 |
           Comb(N1,N2),  | }                    |
-          CTX_OLD)      |                      |
+          CTX_OLD )     |                      |
                         |                      |
                         |      Request #2      |
 Protect with CTX_NEW    |--------------------->| /.well-known/kudos
@@ -618,7 +618,7 @@ Protect with CTX_NEW    |--------------------->| /.well-known/kudos
                         |  d flag: 1           | CTX_NEW = updateCtx(
                         |  x: X2               |           Comb(X1,X2),
                         |  nonce: N2           |           Comb(N1,N2),
-                        |  y: w                |           CTX_OLD)
+                        |  y: w                |           CTX_OLD )
                         |  old_nonce: N1       |
                         |  kid: 0x01           |
                         |  ...                 |
@@ -639,8 +639,8 @@ RID in CTX_NEW          |                      | RID in CTX_NEW
  }                      |                      | }
                         |                      |
 
-// The actual key update process ends here.
-// The two peers can use the new Security Context CTX_NEW.
+The actual key update process ends here.
+The two peers can use the new Security Context CTX_NEW.
 
                         |                      |
                         |      Response #2     |
@@ -682,15 +682,15 @@ Verify with CTX_NEW     | }                    |
 
 ## Version -00 to -01 ## {#sec-00-01}
 
-* Editorial improvements
+Clarifications and editorial improvements.
 
 ## Version -00 ## {#sec-00}
 
 * Split out material from Key Update for OSCORE draft into this new document.
 
-* Extended terminology
+* Extended terminology.
 
-* Editorial improvements
+* Editorial improvements.
 
 # Acknowledgments # {#acknowledgment}
 {:numbered="false"}
