@@ -1296,6 +1296,8 @@ If the responder is a server, the responder <span class="bcp14">MUST</span> also
 When receiving the error response, the initiator terminates the OSCORE IDs procedure as failed.<a href="#section-2-11.1.3" class="pilcrow">¶</a></p>
 </li>
       </ul>
+<p id="section-2-12">When the OSCORE ID update procedure is integrated into the execution of the KUDOS procedure, it is possible for the KUDOS procedure to succeed while the OSCORE ID update procedure fails (e.g., because the responder has no eligible Recipient ID to offer to the initiator). In such case, the peers should continue communication using the newly derived OSCORE Security Context CTX_NEW obtained from the KUDOS procedure. This CTX_NEW should use the peers' old Sender and Recipient IDs, meaning the desired Recipient IDs conveyed in the Recipient-ID options should not be considered.<a href="#section-2-12" class="pilcrow">¶</a></p>
+<p id="section-2-13">Conversely, the OSCORE ID update procedure may succeed while the KUDOS procedure fails. As long as the peers have exchanged a pair of OSCORE-protected requests and responses that conveyed their desired new Recipient IDs in the Recipient-ID option, the peers can transition to using those IDs in their continued communication. However, if the KUDOS procedure fails because the responder replies with an unprotected CoAP error response, the ID update procedure is also considered to have failed.<a href="#section-2-13" class="pilcrow">¶</a></p>
 <div id="sec-recipient-id-option">
 <section id="section-2.1">
         <h3 id="name-the-recipient-id-option">
@@ -2536,6 +2538,9 @@ When receiving the error response, the initiator terminates the OSCORE IDs proce
 </li>
           <li class="normal" id="appendix-B.1-1.2">
             <p id="appendix-B.1-1.2.1">Specify that the Recipient-ID option may need to be empty.<a href="#appendix-B.1-1.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.1-1.3">
+            <p id="appendix-B.1-1.3.1">Failure cases when running the ID update procedure integrated with KUDOS.<a href="#appendix-B.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
