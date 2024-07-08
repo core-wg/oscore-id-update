@@ -504,7 +504,7 @@ Generate N1             |                      |
 CTX_1 = updateCtx(      |                      |
         X1,             |                      |
         N1,             |                      |
-        CTX_OLD         |                      |
+        CTX_OLD )       |                      |
                         |                      |
                         |      Request #1      |
 Protect with CTX_1      |--------------------->| /.well-known/kudos
