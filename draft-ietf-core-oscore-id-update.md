@@ -125,6 +125,10 @@ Upon receiving a valid ID update message, a responder that supports the ID updat
 
    When receiving the error response, the initiator terminates the OSCORE IDs procedure as failed.
 
+When the OSCORE ID update procedure is integrated into the execution of the KUDOS procedure, it is possible for the KUDOS procedure to succeed while the OSCORE ID update procedure fails (e.g., because the responder has no eligible Recipient ID to offer to the initiator). In such case, the peers should continue communication using the newly derived OSCORE Security Context CTX\_NEW obtained from the KUDOS procedure. This CTX\_NEW should use the peers' old Sender and Recipient IDs, meaning the desired Recipient IDs conveyed in the Recipient-ID options should not be considered.
+
+Conversely, the OSCORE ID update procedure may succeed while the KUDOS procedure fails. As long as the peers have exchanged a pair of OSCORE-protected requests and responses that conveyed their desired new Recipient IDs in the Recipient-ID option, the peers can transition to using those IDs in their continued communication. However, if the KUDOS procedure fails because the responder replies with an unprotected CoAP error response, the ID update procedure is also considered to have failed.
+
 ## The Recipient-ID Option # {#sec-recipient-id-option}
 
 The Recipient ID-Option defined in this section has the properties summarized in {{fig-recipient-id-option}}, which extends Table 4 of {{RFC7252}}. That is, the option is elective, safe to forward, part of the cache key, and not repeatable.
@@ -687,6 +691,8 @@ Verify with CTX_NEW     | }                    |
 * Clarifications and editorial improvements.
 
 * Specify that the Recipient-ID option may need to be empty.
+
+* Failure cases when running the ID update procedure integrated with KUDOS.
 
 ## Version -00 ## {#sec-00}
 
