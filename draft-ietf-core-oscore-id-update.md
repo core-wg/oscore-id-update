@@ -143,11 +143,13 @@ The Recipient ID-Option defined in this section has the properties summarized in
 
 Note to RFC Editor: Following the registration of the CoAP Option Number 24, please replace "TBD24" with "24" in the figure above. Then, please delete this paragraph.
 
-The option value can have an arbitrary length. Implementations can limit its length to that of the longest supported Recipient ID.
+The option value can have an arbitrary length, including zero length to indicate intent to use the empty string as Recipient ID. Implementations can limit its length to that of the longest supported Recipient ID.
 
 This document particularly defines how this option is used in messages protected with OSCORE. That is, when the option is included in an outgoing message, the option value specifies the new OSCORE Recipient ID that the sender endpoint intends to use with the other endpoint sharing the OSCORE Security Context.
 
 Therefore, the maximum length of the option value is equal to the maximum length of OSCORE Sender/Recipient IDs. As defined in {{Section 3.3 of RFC8613}}, this is determined by the size of the AEAD nonce of the used AEAD Algorithm in the OSCORE Security Context.
+
+If the length of the Recipient ID included in the Recipient-ID option is zero, the option value SHALL be empty (Option Length = 0).
 
 The Recipient-ID Option is of class E in terms of OSCORE processing (see {{Section 4.1 of RFC8613}}).
 
@@ -682,7 +684,9 @@ Verify with CTX_NEW     | }                    |
 
 ## Version -00 to -01 ## {#sec-00-01}
 
-Clarifications and editorial improvements.
+* Clarifications and editorial improvements.
+
+* Specify that the Recipient-ID option may need to be empty.
 
 ## Version -00 ## {#sec-00}
 
