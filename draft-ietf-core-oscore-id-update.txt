@@ -294,20 +294,18 @@ Table of Contents
 2.1.  The Recipient-ID Option
 
    The Recipient ID-Option defined in this section has the properties
-   summarized in Figure 1, which extends Table 4 of [RFC7252].  That is,
+   summarized in Table 1, which extends Table 4 of [RFC7252].  That is,
    the option is elective, safe to forward, part of the cache key, and
    not repeatable.
 
-   +-------+---+---+---+---+--------------+--------+--------+---------+
+   +=======+===+===+===+===+==============+========+========+=========+
    | No.   | C | U | N | R | Name         | Format | Length | Default |
-   +-------+---+---+---+---+--------------+--------+--------+---------+
-   |       |   |   |   |   |              |        |        |         |
+   +=======+===+===+===+===+==============+========+========+=========+
    | TBD24 |   |   |   |   | Recipient-ID | opaque | any    | (none)  |
-   |       |   |   |   |   |              |        |        |         |
    +-------+---+---+---+---+--------------+--------+--------+---------+
-             C=Critical, U=Unsafe, N=NoCacheKey, R=Repeatable
 
-                     Figure 1: The Recipient-ID Option.
+                    Table 1: The Recipient-ID Option.
+             C=Critical, U=Unsafe, N=NoCacheKey, R=Repeatable
 
    Note to RFC Editor: Following the registration of the CoAP Option
    Number 24, please replace "TBD24" with "24" in the figure above.
@@ -337,7 +335,7 @@ Table of Contents
 
 2.1.1.  Forward Message Flow
 
-   Figure 2 shows an example of the OSCORE ID update procedure, run
+   Figure 1 shows an example of the OSCORE ID update procedure, run
    stand-alone and in the forward message flow, with the client acting
    as initiator.  On each peer, SID and RID denote the OSCORE Sender ID
    and Recipient ID of that peer, respectively.
@@ -434,7 +432,7 @@ Table of Contents
                    | }                                 |
                    |                                   |
 
-      Figure 2: Example of the OSCORE ID update procedure with Forward
+      Figure 1: Example of the OSCORE ID update procedure with Forward
                                 Message Flow
 
    Before the OSCORE ID update procedure starts, the client (the server)
@@ -513,7 +511,7 @@ Table of Contents
 
 2.1.2.  Reverse Message Flow
 
-   Figure 3 shows an example of the OSCORE ID update procedure, run
+   Figure 2 shows an example of the OSCORE ID update procedure, run
    stand-alone and in the reverse message flow, with the server acting
    as initiator.  On each peer, SID and RID denote the OSCORE Sender ID
    and Recipient ID of that peer, respectively.
@@ -636,7 +634,7 @@ Table of Contents
                    | }                                 |
                    |                                   |
 
-      Figure 3: Example of the OSCORE ID update procedure with Reverse
+      Figure 2: Example of the OSCORE ID update procedure with Reverse
                                 Message Flow
 
    Before the OSCORE ID update procedure starts, the client (the server)
@@ -829,7 +827,7 @@ Table of Contents
                   | TBD24  | Recipient-ID | [RFC-XXXX] |
                   +--------+--------------+------------+
 
-                     Table 1: New CoAP Option Number
+                     Table 2: New CoAP Option Number
 
    Note to RFC Editor: Following the registration of the CoAP Option
    Number 24, please replace "TBD24" with "24" in the table above.
@@ -890,7 +888,7 @@ Appendix A.  Examples of OSCORE ID update procedure Integrated in KUDOS
 
 A.1.  Forward Message Flow
 
-   Figure 4 provides an example of the OSCORE ID update procedure, as
+   Figure 3 provides an example of the OSCORE ID update procedure, as
    run integrated in an execution of KUDOS and in the forward message
    flow (see Section 4.3.1 of [I-D.ietf-core-oscore-key-update]).  On
    each peer, SID and RID denote the OSCORE Sender ID and Recipient ID
@@ -977,12 +975,12 @@ A.1.  Forward Message Flow
                          | }                    |
                          |                      |
 
-    Figure 4: Example of the OSCORE ID update procedure with Forward
+    Figure 3: Example of the OSCORE ID update procedure with Forward
            Message Flow and Integrated in a KUDOS Execution.
 
 A.2.  Reverse Message Flow
 
-   Figure 5 provides an example of the OSCORE ID update procedure, as
+   Figure 4 provides an example of the OSCORE ID update procedure, as
    run integrated in an execution of KUDOS and in the reverse message
    flow (see Section 4.3.2 of [I-D.ietf-core-oscore-key-update]).  On
    each peer, SID and RID denote the OSCORE Sender ID and Recipient ID
@@ -1092,7 +1090,7 @@ A.2.  Reverse Message Flow
                          | }                    |
                          |                      |
 
-    Figure 5: Example of the OSCORE ID update procedure with Reverse
+    Figure 4: Example of the OSCORE ID update procedure with Reverse
            Message Flow and Integrated in a KUDOS Execution.
 
 Appendix B.  Document Updates
