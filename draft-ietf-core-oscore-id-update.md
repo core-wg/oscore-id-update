@@ -117,7 +117,7 @@ A peer terminates an ongoing OSCORE ID update procedure with another peer as suc
 
 A peer MUST NOT initiate an OSCORE ID update procedure with another peer, if it has another such procedure ongoing with that other peer.
 
-Upon receiving a valid ID update message, a responder that supports the ID update update procedure MUST send the second ID update message, except in the following case.
+Upon receiving a valid ID update message, a responder that supports the ID update procedure MUST send the second ID update message, except in the following case.
 
 * The received ID update message is not a KUDOS message (i.e., the OSCORE ID update procedure is being performed stand-alone) and the responder has no eligible Recipient ID to offer to the initiator (see {{id-update-additional-actions}}).
 
@@ -127,7 +127,7 @@ Upon receiving a valid ID update message, a responder that supports the ID updat
 
 ## The Recipient-ID Option # {#sec-recipient-id-option}
 
-The Recipient ID-Option defined in this section has the properties summarized in {{fig-recipient-id-option}}, which extends Table 4 of {{RFC7252}}. That is, the option is elective, safe to forward, part of the cache key, and non repeatable.
+The Recipient ID-Option defined in this section has the properties summarized in {{fig-recipient-id-option}}, which extends Table 4 of {{RFC7252}}. That is, the option is elective, safe to forward, part of the cache key, and not repeatable.
 
 ~~~~~~~~~~~
 +-------+---+---+---+---+--------------+--------+--------+---------+
@@ -247,29 +247,29 @@ with CTX_B  | Encrypted Payload {               |
 ~~~~~~~~~~~
 {: #fig-id-update-client-init title="Example of the OSCORE ID update procedure with Forward Message Flow" artwork-align="center"}
 
-Before the OSCORE ID update procedure starts, the client (the server) shares with the server (the client) an OSCORE Security Context CTX_A with Sender ID 0x01 (0x00) and Recipient ID 0x00 (0x01).
+Before the OSCORE ID update procedure starts, the client (the server) shares with the server (the client) an OSCORE Security Context CTX\_A with Sender ID 0x01 (0x00) and Recipient ID 0x00 (0x01).
 
 When starting the OSCORE ID update procedure, the client determines its new intended OSCORE Recipient ID 0x42. Then, the client prepares a CoAP request targeting an application resource at the server. The request includes the Recipient-ID Option, with value the client's new Recipient ID 0x42.
 
-The client protects the request with CTX_A, i.e., by using the keying material derived from the client's current Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request \#1.
+The client protects the request with CTX\_A, i.e., by using the keying material derived from the client's current Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request \#1.
 
 Upon receiving, decrypting, and successfully verifying the OSCORE message Request \#1, the server retrieves the value 0x42 from the Recipient-ID Option, and determines its new intended OSCORE Recipient ID 0x78. Then, the server prepares a CoAP response including the Recipient-ID Option, with value the server's new Recipient ID 0x78.
 
-The server protects the response with CTX_A, i.e., by using the keying material derived from the server's current Sender ID 0x00. After that, the server sends the response to the client.
+The server protects the response with CTX\_A, i.e., by using the keying material derived from the server's current Sender ID 0x00. After that, the server sends the response to the client.
 
-Then, the server considers 0x42 and 0x78 as its new Sender ID and Recipient ID to use with the client, respectively. As shown in the example, the server practically installs a new OSCORE Security Context CTX_B where: i) its Sender ID and Recipient ID are 0x42 and 0x78, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see {{Section 3.2.2 of RFC8613}}); iii) anything else is like in the OSCORE Security Context used to encrypt the OSCORE message Response \#1.
+Then, the server considers 0x42 and 0x78 as its new Sender ID and Recipient ID to use with the client, respectively. As shown in the example, the server practically installs a new OSCORE Security Context CTX\_B where: i) its Sender ID and Recipient ID are 0x42 and 0x78, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see {{Section 3.2.2 of RFC8613}}); iii) anything else is like in the OSCORE Security Context used to encrypt the OSCORE message Response \#1.
 
-Upon receiving, decrypting, and successfully verifying the OSCORE message Response \#1, the client considers 0x78 and 0x42 as the new Sender ID and Recipient ID to use with the server, respectively. As shown in the example, the client practically installs a new OSCORE Security Context CTX_B where: i) its Sender ID and Recipient ID are 0x78 and 0x42, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see {{Section 3.2.2 of RFC8613}}); iii) anything else is like in the OSCORE Security Context used to decrypt the OSCORE message Response \#1.
+Upon receiving, decrypting, and successfully verifying the OSCORE message Response \#1, the client considers 0x78 and 0x42 as the new Sender ID and Recipient ID to use with the server, respectively. As shown in the example, the client practically installs a new OSCORE Security Context CTX\_B where: i) its Sender ID and Recipient ID are 0x78 and 0x42, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see {{Section 3.2.2 of RFC8613}}); iii) anything else is like in the OSCORE Security Context used to decrypt the OSCORE message Response \#1.
 
-From then on, the client and the server can exchange messages protected with the OSCORE Security Context CTX_B, i.e., according to the new OSCORE Sender/Recipient IDs and using new keying material derived from those.
+From then on, the client and the server can exchange messages protected with the OSCORE Security Context CTX\_B, i.e., according to the new OSCORE Sender/Recipient IDs and using new keying material derived from those.
 
-That is, the client sends the OSCORE message Request \#2, which is protected with CTX_B and specifies the new client's Sender ID 0x78 in the 'kid' field of the OSCORE Option.
+That is, the client sends the OSCORE message Request \#2, which is protected with CTX\_B and specifies the new client's Sender ID 0x78 in the 'kid' field of the OSCORE Option.
 
-Upon receiving the OSCORE message Request \#2, the server retrieves the OSCORE Security Context CTX_B, according to its new Recipient ID 0x78 specified in the 'kid' field of the OSCORE Option. Then, the server decrypts and verifies the response by using CTX_B. Finally, the server prepares a CoAP response Response \#2, protects it with CTX_B, and sends it to the client.
+Upon receiving the OSCORE message Request \#2, the server retrieves the OSCORE Security Context CTX\_B, according to its new Recipient ID 0x78 specified in the 'kid' field of the OSCORE Option. Then, the server decrypts and verifies the response by using CTX\_B. Finally, the server prepares a CoAP response Response \#2, protects it with CTX\_B, and sends it to the client.
 
-Upon receiving the OSCORE message Response \#2, the client decrypts and verifies it with the OSCORE Security Context CTX_B. In case of successful verification, the client confirms that the server is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX_A.
+Upon receiving the OSCORE message Response \#2, the client decrypts and verifies it with the OSCORE Security Context CTX\_B. In case of successful verification, the client confirms that the server is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX\_A.
 
-After that, one further exchange occurs, where both the CoAP request and the CoAP response are protected with the OSCORE Security Context CTX_B. In particular, upon receiving, decrypting, and successfully verifying the OSCORE message Request \#3, the server confirms that the client is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX_A.
+After that, one further exchange occurs, where both the CoAP request and the CoAP response are protected with the OSCORE Security Context CTX\_B. In particular, upon receiving, decrypting, and successfully verifying the OSCORE message Request \#3, the server confirms that the client is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX\_A.
 
 ### Reverse Message Flow {#example-server-initiated-id-update}
 
@@ -393,33 +393,33 @@ with CTX_B  | Encrypted Payload {               |
 ~~~~~~~~~~~
 {: #fig-id-update-server-init title="Example of the OSCORE ID update procedure with Reverse Message Flow" artwork-align="center"}
 
-Before the OSCORE ID update procedure starts, the client (the server) shares with the server (the client) an OSCORE Security Context CTX_A with Sender ID 0x01 (0x00) and Recipient ID 0x00 (0x01).
+Before the OSCORE ID update procedure starts, the client (the server) shares with the server (the client) an OSCORE Security Context CTX\_A with Sender ID 0x01 (0x00) and Recipient ID 0x00 (0x01).
 
-At first, the client prepares a CoAP Request \#1 targeting an application resource at the server. The client protects the request with CTX_A, i.e., by using the keying material derived from the client's current Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request \#1.
+At first, the client prepares a CoAP Request \#1 targeting an application resource at the server. The client protects the request with CTX\_A, i.e., by using the keying material derived from the client's current Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request \#1.
 
 Upon receiving, decrypting, and successfully verifying the OSCORE message Request \#1, the server decides to start an OSCORE ID update procedure. To this end, the server determines its new intended OSCORE Recipient ID 0x78. Then, the server prepares a CoAP response as a reply to the just received request and including the Recipient-ID Option, with value the server's new Recipient ID 0x78.
 
-The server protects the response with CTX_A, i.e., by using the keying material derived from the server's current Sender ID 0x00. After that, the server sends the response to the client as Response \#1.
+The server protects the response with CTX\_A, i.e., by using the keying material derived from the server's current Sender ID 0x00. After that, the server sends the response to the client as Response \#1.
 
 Upon receiving, decrypting, and successfully verifying the OSCORE message Response \#1, the client retrieves the value 0x78 from the Recipient-ID Option, and determines its new intended OSCORE Recipient ID 0x42. Then, the client prepares a CoAP request targeting an application resource at the server. The request includes the Recipient-ID Option, with value the client's new Recipient ID 0x42.
 
-The client protects the request with CTX_A, i.e., by using the keying material derived from the client's current Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request \#2.
+The client protects the request with CTX\_A, i.e., by using the keying material derived from the client's current Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request \#2.
 
-Upon receiving, decrypting, and successfully verifying the OSCORE message Request \#2, the server retrieves the value 0x42 from the Recipient-ID Option. Then the server considers 0x42 and 0x78 as the new Sender ID and Recipient ID to use with the client, respectively. As shown in the example, the server practically installs a new OSCORE Security Context CTX_B where: i) its Sender ID and Recipient ID are 0x42 and 0x78, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see {{Section 3.2.2 of RFC8613}}); iii) anything else is like in the OSCORE Security Context used to encrypt the OSCORE message Request \#2.
+Upon receiving, decrypting, and successfully verifying the OSCORE message Request \#2, the server retrieves the value 0x42 from the Recipient-ID Option. Then the server considers 0x42 and 0x78 as the new Sender ID and Recipient ID to use with the client, respectively. As shown in the example, the server practically installs a new OSCORE Security Context CTX\_B where: i) its Sender ID and Recipient ID are 0x42 and 0x78, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see {{Section 3.2.2 of RFC8613}}); iii) anything else is like in the OSCORE Security Context used to encrypt the OSCORE message Request \#2.
 
-Then, the server prepares a CoAP response, as a reply to the just received request, and protects it with CTX_A, i.e., by using the keying material derived from the server's current Sender ID 0x00. After that, the server sends the response to the client as Response \#2.
+Then, the server prepares a CoAP response, as a reply to the just received request, and protects it with CTX\_A, i.e., by using the keying material derived from the server's current Sender ID 0x00. After that, the server sends the response to the client as Response \#2.
 
-Upon receiving, decrypting, and successfully verifying the OSCORE message Response \#2, the client considers 0x78 and 0x42 as the new Sender ID and Recipient ID to use with the server, respectively. As shown in the example, the client practically installs a new OSCORE Security Context CTX_B where: i) its Sender ID and Recipient ID are 0x78 and 0x42, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see {{Section 3.2.2 of RFC8613}}); iii) anything else is like in the OSCORE Security Context used to decrypt the OSCORE response.
+Upon receiving, decrypting, and successfully verifying the OSCORE message Response \#2, the client considers 0x78 and 0x42 as the new Sender ID and Recipient ID to use with the server, respectively. As shown in the example, the client practically installs a new OSCORE Security Context CTX\_B where: i) its Sender ID and Recipient ID are 0x78 and 0x42, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see {{Section 3.2.2 of RFC8613}}); iii) anything else is like in the OSCORE Security Context used to decrypt the OSCORE response.
 
-From then on, the client and the server can exchange messages protected with the OSCORE Security Context CTX_B, i.e., according to the new OSCORE Sender/Recipient IDs and using new keying material derived from those.
+From then on, the client and the server can exchange messages protected with the OSCORE Security Context CTX\_B, i.e., according to the new OSCORE Sender/Recipient IDs and using new keying material derived from those.
 
-That is, the client sends the OSCORE message Request \#3, which is protected with CTX_B and specifies the new client's Sender ID 0x78 in the 'kid' field of the OSCORE Option.
+That is, the client sends the OSCORE message Request \#3, which is protected with CTX\_B and specifies the new client's Sender ID 0x78 in the 'kid' field of the OSCORE Option.
 
-Upon receiving the OSCORE message Request \#3, the server retrieves the OSCORE Security Context CTX_B, according to its new Recipient ID 0x78 specified in the 'kid' field of the OSCORE Option. Then, the server decrypts and verifies the response by using CTX_B. Finally, the server prepares a CoAP response, protects it with CTX_B, and sends it to the client as Response \#3.
+Upon receiving the OSCORE message Request \#3, the server retrieves the OSCORE Security Context CTX\_B, according to its new Recipient ID 0x78 specified in the 'kid' field of the OSCORE Option. Then, the server decrypts and verifies the response by using CTX\_B. Finally, the server prepares a CoAP response, protects it with CTX\_B, and sends it to the client as Response \#3.
 
-Upon receiving the OSCORE message Response \#3, the client decrypts and verifies it with the OSCORE Security Context CTX_B. In case of successful verification, the client confirms that the server is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX_A.
+Upon receiving the OSCORE message Response \#3, the client decrypts and verifies it with the OSCORE Security Context CTX\_B. In case of successful verification, the client confirms that the server is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX\_A.
 
-After that, one further exchange occurs, where both the CoAP request and the CoAP response are protected with the OSCORE Security Context CTX_B. In particular, upon receiving, decrypting, and successfully verifying the OSCORE message Request \#4, the server confirms that the client is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX_A.
+After that, one further exchange occurs, where both the CoAP request and the CoAP response are protected with the OSCORE Security Context CTX\_B. In particular, upon receiving, decrypting, and successfully verifying the OSCORE message Request \#4, the server confirms that the client is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX\_A.
 
 ### Additional Actions for Execution {#id-update-additional-actions}
 
