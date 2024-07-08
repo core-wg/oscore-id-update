@@ -103,9 +103,9 @@ Furthermore, this procedure can be executed stand-alone, or instead seamlessly i
 
 * In the latter integrated case, the KUDOS initiator (responder) also acts as initiator (responder) for the OSCORE ID update procedure. That is, both KUDOS and the OSCORE ID update procedure MUST be run either in their forward message flow or in their reverse message flow.
 
-   The new OSCORE Sender/Recipient IDs MUST NOT be used with the OSCORE Security Context CTX_OLD, and MUST NOT be used with the temporary OSCORE Security Context CTX_1 used to protect the first KUDOS message of a KUDOS execution.
+   The new OSCORE Sender/Recipient IDs MUST NOT be used with the OSCORE Security Context CTX\_OLD, and MUST NOT be used with the temporary OSCORE Security Context CTX\_1 used to protect the first KUDOS message of a KUDOS execution.
 
-   The first use of the new OSCORE Sender/Recipient IDs with the new OSCORE Security Context CTX_NEW occurs: for the KUDOS initiator, after having received from the KUDOS responder and successfully verified the second KUDOS message of the KUDOS execution in question; for the KUDOS responder, after having sent to the KUDOS initiator the second KUDOS message of the KUDOS execution in question.
+   The first use of the new OSCORE Sender/Recipient IDs with the new OSCORE Security Context CTX\_NEW occurs: for the KUDOS initiator, after having received from the KUDOS responder and successfully verified the second KUDOS message of the KUDOS execution in question; for the KUDOS responder, after having sent to the KUDOS initiator the second KUDOS message of the KUDOS execution in question.
 
 An initiator terminates an ongoing OSCORE ID update procedure with another peer as failed, in case, after having sent the first ID update message for the procedure in question, a pre-defined amount of time has elapsed without receiving and successfully verifying the second ID update message from the other peer. It is RECOMMENDED that such an amount of time is equal to MAX_TRANSMIT_WAIT (see {{Section 4.8.2 of RFC7252}}).
 
