@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-09-12T00:50:41.174978+00:00",
+  "timestamp": "2024-09-15T00:56:36.878775+00:00",
   "repo": "core-wg/oscore-id-update",
   "labels": [
     {
@@ -127,6 +127,22 @@
       "body": "We can add more examples for instance:\r\n\r\n- OSCORE ID Update combined with KUDOS where one of them fails to complete\r\n- OSCORE ID Update standalone which fails to complete",
       "createdAt": "2024-07-08T16:30:30Z",
       "updatedAt": "2024-07-08T16:30:30Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 6,
+      "id": "I_kwDOLZNAsc6WT8SP",
+      "title": "Note importance of building chains/relations between OSCORE Security Contexts",
+      "url": "https://github.com/core-wg/oscore-id-update/issues/6",
+      "state": "OPEN",
+      "author": "rikard-sics",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "As we are doing in KUDOS",
+      "createdAt": "2024-09-12T09:08:50Z",
+      "updatedAt": "2024-09-12T09:08:50Z",
       "closedAt": null,
       "comments": []
     }
