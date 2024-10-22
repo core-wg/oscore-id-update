@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-20T00:58:06.529853+00:00",
+  "timestamp": "2024-10-22T00:54:22.306938+00:00",
   "repo": "core-wg/oscore-id-update",
   "labels": [
     {
@@ -110,7 +110,7 @@
       "labels": [],
       "body": "The section _Update of OSCORE Sender/Recipient IDs_ can be split into subsections to make things more readable",
       "createdAt": "2024-07-08T16:29:20Z",
-      "updatedAt": "2024-07-08T16:29:20Z",
+      "updatedAt": "2024-10-21T12:48:35Z",
       "closedAt": null,
       "comments": []
     },
@@ -126,7 +126,7 @@
       "labels": [],
       "body": "We can add more examples for instance:\r\n\r\n- OSCORE ID Update combined with KUDOS where one of them fails to complete\r\n- OSCORE ID Update standalone which fails to complete",
       "createdAt": "2024-07-08T16:30:30Z",
-      "updatedAt": "2024-07-08T16:30:30Z",
+      "updatedAt": "2024-10-21T12:48:28Z",
       "closedAt": null,
       "comments": []
     },
@@ -142,7 +142,7 @@
       "labels": [],
       "body": "As we are doing in KUDOS",
       "createdAt": "2024-09-12T09:08:50Z",
-      "updatedAt": "2024-09-12T09:08:50Z",
+      "updatedAt": "2024-10-21T12:48:21Z",
       "closedAt": null,
       "comments": []
     }
