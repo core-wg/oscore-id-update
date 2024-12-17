@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-12-15T01:03:00.168372+00:00",
+  "timestamp": "2024-12-17T00:58:44.113513+00:00",
   "repo": "core-wg/oscore-id-update",
   "labels": [
     {
@@ -143,6 +143,22 @@
       "body": "As we are doing in KUDOS",
       "createdAt": "2024-09-12T09:08:50Z",
       "updatedAt": "2024-10-21T12:48:21Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 7,
+      "id": "I_kwDOLZNAsc6jceE3",
+      "title": "Explore ideas about changing ID very message, based on a pattern",
+      "url": "https://github.com/core-wg/oscore-id-update/issues/7",
+      "state": "OPEN",
+      "author": "rikard-sics",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "For instance both peers can generate new IDs with a hash-based method. In this way the IDs can change every message and do not need to be sent over the wire. Complications include ID collisions and lost messages.",
+      "createdAt": "2024-12-16T11:42:13Z",
+      "updatedAt": "2024-12-16T11:42:13Z",
       "closedAt": null,
       "comments": []
     }
