@@ -685,6 +685,10 @@ Verify with CTX_NEW     | }                    |
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
 
+## Version -01 to -02 ## {#sec-01-02}
+
+* Split long section into subsections.
+
 ## Version -00 to -01 ## {#sec-00-01}
 
 * Revised and extended error handling.
