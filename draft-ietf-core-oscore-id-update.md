@@ -107,8 +107,6 @@ Furthermore, this procedure can be executed stand-alone, or instead seamlessly i
 
    The first use of the new OSCORE Sender/Recipient IDs with the new OSCORE Security Context CTX\_NEW occurs: for the KUDOS initiator, after having received from the KUDOS responder and successfully verified the second KUDOS message of the KUDOS execution in question; for the KUDOS responder, after having sent to the KUDOS initiator the second KUDOS message of the KUDOS execution in question.
 
-An initiator terminates an ongoing OSCORE ID update procedure with another peer as failed, in case, after having sent the first ID update message for the procedure in question, a pre-defined amount of time has elapsed without receiving and successfully verifying the second ID update message from the other peer. It is RECOMMENDED that such an amount of time is equal to MAX_TRANSMIT_WAIT (see {{Section 4.8.2 of RFC7252}}).
-
 A peer terminates an ongoing OSCORE ID update procedure with another peer as successful, in any of the following two cases.
 
 * The peer is acting as initiator, and it has received and successfully verified the second ID update message from the other peer.
@@ -117,7 +115,11 @@ A peer terminates an ongoing OSCORE ID update procedure with another peer as suc
 
 A peer MUST NOT initiate an OSCORE ID update procedure with another peer, if it has another such procedure ongoing with that other peer.
 
-Upon receiving a valid, first ID update message, a responder that supports the ID update procedure MUST send the second ID update message, except in the following case where the responder aborts the ID update procedure:
+Upon receiving a valid, first ID update message, a responder MUST send the second ID update message, except in the case any of the conditions for failing or aborting the procedure apply (see {{update-failure}}}).
+
+## Failure of the ID Update Procedure {#update-failure}
+
+Upon receiving a valid first ID update message, a responder MUST abort the ID update procedure, in the following case:
 
 * The received ID update message is not a KUDOS message (i.e., the OSCORE ID update procedure is being performed stand-alone) and the responder has no eligible Recipient ID to offer to the initiator (see {{id-update-additional-actions}}).
 
@@ -126,6 +128,8 @@ Upon receiving a valid ID update message, a peer MUST abort the ID update proced
 * The received ID update message contains a Recipient-ID option with a length that exceeds the maximum length of OSCORE Sender/Recipient IDs for the AEAD algorithm in use for the OSCORE Security Context shared between the peers. This is the case when the length of the Recipient-ID option exceeds the length of the AEAD nonce minus 6 (see {{Section 3.3 of RFC8613}}).
 
 If, after receiving an ID update message as CoAP request, a peer aborts the ID update procedure, the peer MUST also reply to the received ID update request message with a protected 5.03 (Service Unavailable) error response. The error response MUST NOT include the Recipient-ID Option, and its diagnostic payload MAY provide additional information. When receiving the error response, the initiator terminates the OSCORE IDs procedure as failed.
+
+An initiator terminates an ongoing OSCORE ID update procedure with another peer as failed, in case, after having sent the first ID update message for the procedure in question, a pre-defined amount of time has elapsed without receiving and successfully verifying the second ID update message from the other peer. It is RECOMMENDED that such an amount of time is equal to MAX\_TRANSMIT\_WAIT (see {{Section 4.8.2 of RFC7252}}).
 
 When the OSCORE ID update procedure is integrated into the execution of the KUDOS procedure, it is possible that the KUDOS procedure succeeds while the OSCORE ID update procedure fails. In such case, the peers continue their communications using the newly derived OSCORE Security Context CTX\_NEW obtained from the KUDOS procedure, and still use the old Sender and Recipient IDs. That is, any Recipient IDs conveyed in the exchanged Recipient-ID Options is not considered.
 
