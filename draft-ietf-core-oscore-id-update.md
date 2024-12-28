@@ -5,10 +5,18 @@ title: Identifier Update for OSCORE
 abbrev: Identifier Update for OSCORE
 docname: draft-ietf-core-oscore-id-update-latest
 
+# stand_alone: true
+
+ipr: trust200902
 wg: CoRE Working Group
-kd: Internet-Draft
+kw: Internet-Draft
 cat: std
 submissiontype: IETF
+
+venue:
+  group: Constrained RESTful Environments (core)
+  mail: core@ietf.org
+  github: core-wg/oscore-id-update
 
 coding: utf-8
 
