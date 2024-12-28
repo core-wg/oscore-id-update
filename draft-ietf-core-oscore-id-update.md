@@ -127,6 +127,8 @@ Upon receiving a valid, first ID update message, a responder MUST send the secon
 
 ## Failure of the ID Update Procedure {#update-failure}
 
+The following section describes cases where the ID update procedure fails, or must to be aborted by one of the peers.
+
 Upon receiving a valid first ID update message, a responder MUST abort the ID update procedure, in the following case:
 
 * The received ID update message is not a KUDOS message (i.e., the OSCORE ID update procedure is being performed stand-alone) and the responder has no eligible Recipient ID to offer to the initiator (see {{id-update-additional-actions}}).
