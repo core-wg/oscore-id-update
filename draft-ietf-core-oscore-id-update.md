@@ -127,7 +127,7 @@ Upon receiving a valid, first ID update message, a responder MUST send the secon
 
 ## Failure of the ID Update Procedure {#update-failure}
 
-The following section describes cases where the ID update procedure fails, or must to be aborted by one of the peers.
+The following section describes cases where the OSCORE ID update procedure fails, or must to be aborted by one of the peers.
 
 Upon receiving a valid first ID update message, a responder MUST abort the ID update procedure, in the following case:
 
