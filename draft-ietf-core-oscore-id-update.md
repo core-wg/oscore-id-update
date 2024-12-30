@@ -174,7 +174,7 @@ The Recipient-ID Option is of class E in terms of OSCORE processing (see {{Secti
 
 {{fig-id-update-client-init}} shows an example of the OSCORE ID update procedure, run stand-alone and in the forward message flow, with the client acting as initiator. On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
 
-{{sec-id-update-in-kudos-forward}} provides a different example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the forward message flow (see {{Section 4.3.1 of I-D.ietf-core-oscore-key-update}}).
+{{sec-id-update-in-kudos-forward}} provides a different example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the forward message flow (see {{Section 4.3.5 of I-D.ietf-core-oscore-key-update}}).
 
 ~~~~~~~~~~~ aasvg
           Client                             Server
@@ -294,7 +294,7 @@ After that, one further exchange occurs, where both the CoAP request and the CoA
 
 {{fig-id-update-server-init}} shows an example of the OSCORE ID update procedure, run stand-alone and in the reverse message flow, with the server acting as initiator. On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
 
-{{sec-id-update-in-kudos-reverse}} provides a different example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the reverse message flow (see {{Section 4.3.2 of I-D.ietf-core-oscore-key-update}}).
+{{sec-id-update-in-kudos-reverse}} provides a different example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the reverse message flow (see {{Section 4.3.6 of I-D.ietf-core-oscore-key-update}}).
 
 ~~~~~~~~~~~ aasvg
           Client                             Server
@@ -499,7 +499,7 @@ The following section shows two examples where the OSCORE ID update procedure is
 
 ## Forward Message Flow # {#sec-id-update-in-kudos-forward}
 
-{{fig-kudos-and-id-update-client-init}} provides an example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the forward message flow (see {{Section 4.3.1 of I-D.ietf-core-oscore-key-update}}). On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
+{{fig-kudos-and-id-update-client-init}} provides an example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the forward message flow (see {{Section 4.3.5 of I-D.ietf-core-oscore-key-update}}). On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
 
 ~~~~~~~~~~~ aasvg
                      Client                  Server
@@ -587,7 +587,7 @@ Verify with CTX_NEW     | }                    |
 
 ## Reverse Message Flow # {#sec-id-update-in-kudos-reverse}
 
-{{fig-kudos-and-id-update-server-init}} provides an example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the reverse message flow (see {{Section 4.3.2 of I-D.ietf-core-oscore-key-update}}). On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
+{{fig-kudos-and-id-update-server-init}} provides an example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the reverse message flow (see {{Section 4.3.6 of I-D.ietf-core-oscore-key-update}}). On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
 
 ~~~~~~~~~~~ aasvg
                       Client                 Server
@@ -702,6 +702,8 @@ Verify with CTX_NEW     | }                    |
 ## Version -01 to -02 ## {#sec-01-02}
 
 * Split long section into subsections.
+
+* Updated references.
 
 ## Version -00 to -01 ## {#sec-00-01}
 
