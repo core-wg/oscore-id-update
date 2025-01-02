@@ -5,7 +5,7 @@
 CoRE Working Group                                            R. Höglund
 Internet-Draft                                                 M. Tiloca
 Intended status: Standards Track                                 RISE AB
-Expires: 9 January 2025                                      8 July 2024
+Expires: 6 July 2025                                      2 January 2025
 
 
                       Identifier Update for OSCORE
@@ -29,13 +29,18 @@ Abstract
    alone or seamlessly integrated in an execution of the Key Update for
    OSCORE (KUDOS) procedure.
 
-Discussion Venues
+About This Document
 
    This note is to be removed before publishing as an RFC.
 
+   Status information for this document may be found at
+   https://datatracker.ietf.org/doc/draft-ietf-core-oscore-id-update/.
+
    Discussion of this document takes place on the Constrained RESTful
-   Environments Working Group mailing list (core@ietf.org), which is
-   archived at https://mailarchive.ietf.org/arch/browse/core/.
+   Environments (core) Working Group mailing list
+   (mailto:core@ietf.org), which is archived at
+   https://mailarchive.ietf.org/arch/browse/core/.  Subscribe at
+   https://www.ietf.org/mailman/listinfo/core/.
 
    Source for this draft and an issue tracker can be found at
    https://github.com/core-wg/oscore-id-update.
@@ -55,11 +60,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 January 2025.
+   This Internet-Draft will expire on 6 July 2025.
 
 Copyright Notice
 
-   Copyright (c) 2024 IETF Trust and the persons identified as the
+   Copyright (c) 2025 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -76,11 +81,12 @@ Table of Contents
    1.  Introduction
      1.1.  Terminology
    2.  Update of OSCORE Sender/Recipient IDs
-     2.1.  The Recipient-ID Option
-       2.1.1.  Forward Message Flow
-       2.1.2.  Reverse Message Flow
-       2.1.3.  Additional Actions for Execution
-     2.2.  Preserving Observations Across ID Updates
+     2.1.  Failure of the ID Update Procedure
+     2.2.  The Recipient-ID Option
+       2.2.1.  Forward Message Flow
+       2.2.2.  Reverse Message Flow
+       2.2.3.  Additional Actions for Execution
+     2.3.  Preserving Observations Across ID Updates
    3.  Security Considerations
    4.  IANA Considerations
      4.1.  CoAP Option Numbers Registry
@@ -92,8 +98,9 @@ Table of Contents
      A.1.  Forward Message Flow
      A.2.  Reverse Message Flow
    Appendix B.  Document Updates
-     B.1.  Version -00 to -01
-     B.2.  Version -00
+     B.1.  Version -01 to -02
+     B.2.  Version -00 to -01
+     B.3.  Version -00
    Acknowledgments
    Authors' Addresses
 
@@ -157,10 +164,10 @@ Table of Contents
       execution of the OSCORE ID update procedure.
 
    *  Forward message flow: the execution workflow where the initiator
-      acts as CoAP client (see Section 2.1.1).
+      acts as CoAP client (see Section 2.2.1).
 
    *  Reverse message flow: the execution workflow where the initiator
-      acts as CoAP server (see Section 2.1.2).
+      acts as CoAP server (see Section 2.2.2).
 
 2.  Update of OSCORE Sender/Recipient IDs
 
@@ -170,7 +177,7 @@ Table of Contents
 
    When performing an update of OSCORE Sender/Recipient IDs, a peer
    provides its new intended OSCORE Recipient ID to the other peer, by
-   means of the Recipient-ID Option defined in Section 2.1.  Hereafter,
+   means of the Recipient-ID Option defined in Section 2.2.  Hereafter,
    this document refers to a message including the Recipient-ID Option
    as an "ID update (request/response) message".
 
@@ -196,7 +203,7 @@ Table of Contents
       Since the same Master Secret is preserved, forward secrecy is not
       achieved.
 
-      As defined in Section 2.1.3, the two peers must take additional
+      As defined in Section 2.2.3, the two peers must take additional
       actions to ensure a safe execution of the OSCORE ID update
       procedure.
 
@@ -227,14 +234,6 @@ Table of Contents
       initiator the second KUDOS message of the KUDOS execution in
       question.
 
-   An initiator terminates an ongoing OSCORE ID update procedure with
-   another peer as failed, in case, after having sent the first ID
-   update message for the procedure in question, a pre-defined amount of
-   time has elapsed without receiving and successfully verifying the
-   second ID update message from the other peer.  It is RECOMMENDED that
-   such an amount of time is equal to MAX_TRANSMIT_WAIT (see
-   Section 4.8.2 of [RFC7252]).
-
    A peer terminates an ongoing OSCORE ID update procedure with another
    peer as successful, in any of the following two cases.
 
@@ -248,15 +247,23 @@ Table of Contents
    A peer MUST NOT initiate an OSCORE ID update procedure with another
    peer, if it has another such procedure ongoing with that other peer.
 
-   Upon receiving a valid, first ID update message, a responder that
-   supports the ID update procedure MUST send the second ID update
-   message, except in the following case where the responder aborts the
-   ID update procedure:
+   Upon receiving a valid, first ID update message, a responder MUST
+   send the second ID update message, except in the case any of the
+   conditions for failing or aborting the procedure apply (see
+   Section 2.1}).
+
+2.1.  Failure of the ID Update Procedure
+
+   The following section describes cases where the OSCORE ID update
+   procedure fails, or must to be aborted by one of the peers.
+
+   Upon receiving a valid first ID update message, a responder MUST
+   abort the ID update procedure, in the following case:
 
    *  The received ID update message is not a KUDOS message (i.e., the
       OSCORE ID update procedure is being performed stand-alone) and the
       responder has no eligible Recipient ID to offer to the initiator
-      (see Section 2.1.3).
+      (see Section 2.2.3).
 
    Upon receiving a valid ID update message, a peer MUST abort the ID
    update procedure, in the following case:
@@ -276,6 +283,14 @@ Table of Contents
    additional information.  When receiving the error response, the
    initiator terminates the OSCORE IDs procedure as failed.
 
+   An initiator terminates an ongoing OSCORE ID update procedure with
+   another peer as failed, in case, after having sent the first ID
+   update message for the procedure in question, a pre-defined amount of
+   time has elapsed without receiving and successfully verifying the
+   second ID update message from the other peer.  It is RECOMMENDED that
+   such an amount of time is equal to MAX_TRANSMIT_WAIT (see
+   Section 4.8.2 of [RFC7252]).
+
    When the OSCORE ID update procedure is integrated into the execution
    of the KUDOS procedure, it is possible that the KUDOS procedure
    succeeds while the OSCORE ID update procedure fails.  In such case,
@@ -291,7 +306,7 @@ Table of Contents
    Recipient IDs in the Recipient-ID Option, the peers start using those
    IDs in their communications.
 
-2.1.  The Recipient-ID Option
+2.2.  The Recipient-ID Option
 
    The Recipient ID-Option defined in this section has the properties
    summarized in Table 1, which extends Table 4 of [RFC7252].  That is,
@@ -333,7 +348,7 @@ Table of Contents
    The Recipient-ID Option is of class E in terms of OSCORE processing
    (see Section 4.1 of [RFC8613]).
 
-2.1.1.  Forward Message Flow
+2.2.1.  Forward Message Flow
 
    Figure 1 shows an example of the OSCORE ID update procedure, run
    stand-alone and in the forward message flow, with the client acting
@@ -342,7 +357,7 @@ Table of Contents
 
    Appendix A.1 provides a different example of the OSCORE ID update
    procedure, as run integrated in an execution of KUDOS and in the
-   forward message flow (see Section 4.3.1 of
+   forward message flow (see Section 4.3.5 of
    [I-D.ietf-core-oscore-key-update]).
 
                  Client                             Server
@@ -509,7 +524,7 @@ Table of Contents
    client is aligned with the new OSCORE Sender/Recipient IDs, and thus
    discards the OSCORE Security Context CTX_A.
 
-2.1.2.  Reverse Message Flow
+2.2.2.  Reverse Message Flow
 
    Figure 2 shows an example of the OSCORE ID update procedure, run
    stand-alone and in the reverse message flow, with the server acting
@@ -518,7 +533,7 @@ Table of Contents
 
    Appendix A.2 provides a different example of the OSCORE ID update
    procedure, as run integrated in an execution of KUDOS and in the
-   reverse message flow (see Section 4.3.2 of
+   reverse message flow (see Section 4.3.6 of
    [I-D.ietf-core-oscore-key-update]).
 
                  Client                             Server
@@ -730,7 +745,7 @@ Table of Contents
    client is aligned with the new OSCORE Sender/Recipient IDs, and thus
    discards the OSCORE Security Context CTX_A.
 
-2.1.3.  Additional Actions for Execution
+2.2.3.  Additional Actions for Execution
 
    After having experienced a loss of state, a peer MUST NOT participate
    in a stand-alone OSCORE ID update procedure with another peer, until
@@ -767,7 +782,7 @@ Table of Contents
    update of the OSCORE Master Secret (e.g., performed by running
    KUDOS).
 
-2.2.  Preserving Observations Across ID Updates
+2.3.  Preserving Observations Across ID Updates
 
    When running the OSCORE ID update procedure stand-alone or integrated
    in an execution of KUDOS, the following holds if Observe [RFC7641] is
@@ -840,9 +855,9 @@ Table of Contents
    [I-D.ietf-core-oscore-key-update]
               Höglund, R. and M. Tiloca, "Key Update for OSCORE
               (KUDOS)", Work in Progress, Internet-Draft, draft-ietf-
-              core-oscore-key-update-07, 4 March 2024,
+              core-oscore-key-update-09, 21 October 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              oscore-key-update-07>.
+              oscore-key-update-09>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -890,7 +905,7 @@ A.1.  Forward Message Flow
 
    Figure 3 provides an example of the OSCORE ID update procedure, as
    run integrated in an execution of KUDOS and in the forward message
-   flow (see Section 4.3.1 of [I-D.ietf-core-oscore-key-update]).  On
+   flow (see Section 4.3.5 of [I-D.ietf-core-oscore-key-update]).  On
    each peer, SID and RID denote the OSCORE Sender ID and Recipient ID
    of that peer, respectively.
 
@@ -982,7 +997,7 @@ A.2.  Reverse Message Flow
 
    Figure 4 provides an example of the OSCORE ID update procedure, as
    run integrated in an execution of KUDOS and in the reverse message
-   flow (see Section 4.3.2 of [I-D.ietf-core-oscore-key-update]).  On
+   flow (see Section 4.3.6 of [I-D.ietf-core-oscore-key-update]).  On
    each peer, SID and RID denote the OSCORE Sender ID and Recipient ID
    of that peer, respectively.
 
@@ -1097,7 +1112,13 @@ Appendix B.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-B.1.  Version -00 to -01
+B.1.  Version -01 to -02
+
+   *  Split long section into subsections.
+
+   *  Updated references.
+
+B.2.  Version -00 to -01
 
    *  Revised and extended error handling.
 
@@ -1108,7 +1129,7 @@ B.1.  Version -00 to -01
 
    *  Clarifications and editorial improvements.
 
-B.2.  Version -00
+B.3.  Version -00
 
    *  Split out material from Key Update for OSCORE draft into this new
       document.
