@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-01-02T00:53:23.522973+00:00",
+  "timestamp": "2025-01-05T00:58:28.431051+00:00",
   "repo": "core-wg/oscore-id-update",
   "labels": [
     {
@@ -103,15 +103,15 @@
       "id": "I_kwDOLZNAsc6O0SmE",
       "title": "Split long section 2 into subsections",
       "url": "https://github.com/core-wg/oscore-id-update/issues/4",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "rikard-sics",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "The section _Update of OSCORE Sender/Recipient IDs_ can be split into subsections to make things more readable",
       "createdAt": "2024-07-08T16:29:20Z",
-      "updatedAt": "2024-10-21T12:48:35Z",
-      "closedAt": null,
+      "updatedAt": "2025-01-02T16:33:51Z",
+      "closedAt": "2025-01-02T16:33:50Z",
       "comments": []
     },
     {
