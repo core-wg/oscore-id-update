@@ -5,7 +5,7 @@
 CoRE Working Group                                            R. Höglund
 Internet-Draft                                                 M. Tiloca
 Intended status: Standards Track                                 RISE AB
-Expires: 6 July 2025                                      2 January 2025
+Expires: 6 August 2025                                   2 February 2025
 
 
                       Identifier Update for OSCORE
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 July 2025.
+   This Internet-Draft will expire on 6 August 2025.
 
 Copyright Notice
 
