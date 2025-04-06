@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-03T00:58:14.941070+00:00",
+  "timestamp": "2025-04-06T01:01:45.100209+00:00",
   "repo": "core-wg/oscore-id-update",
   "labels": [
     {
@@ -159,6 +159,38 @@
       "body": "For instance both peers can generate new IDs with a hash-based method. In this way the IDs can change every message and do not need to be sent over the wire. Complications include ID collisions and lost messages.",
       "createdAt": "2024-12-16T11:42:13Z",
       "updatedAt": "2024-12-16T11:42:13Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 8,
+      "id": "I_kwDOLZNAsc6w9V0j",
+      "title": "Privacy considerations: ID update procedure is as a piece of a set of solutions for achieving privacy",
+      "url": "https://github.com/core-wg/oscore-id-update/issues/8",
+      "state": "OPEN",
+      "author": "rikard-sics",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Set:\n- Need to update ID\n- Update network address\n- Update link layer address\n- (Encrypt Partial IV). Although since we reset SSN this is less important, but it adds confusion as resets to SSN 0 are no longer visible.\n\nThe ID update is just one piece of privacy preserving solutions. Discuss this in privacy considerations.\n\nNote: It's enough and probable that only 1 peer changes addresses\n\nNote: Can we start the SSN from random number instead of 0? To reduce trackability\n\nNote: Also mention security at different layers? E.g. what if having security at link-layer?\n",
+      "createdAt": "2025-04-03T09:18:15Z",
+      "updatedAt": "2025-04-03T11:28:58Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 9,
+      "id": "I_kwDOLZNAsc6w-3tl",
+      "title": "Note importance of getting new IDs ready before changing network",
+      "url": "https://github.com/core-wg/oscore-id-update/issues/9",
+      "state": "OPEN",
+      "author": "rikard-sics",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Do the ID update ahead of the network change to get new IDs ready, only then change network, and start using the new IDs. If the new IDs are used before the network change, they are exposed prematurely",
+      "createdAt": "2025-04-03T11:28:47Z",
+      "updatedAt": "2025-04-03T11:28:47Z",
       "closedAt": null,
       "comments": []
     }
