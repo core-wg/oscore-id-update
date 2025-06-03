@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-01T01:15:05.551825+00:00",
+  "timestamp": "2025-06-03T01:03:54.352211+00:00",
   "repo": "core-wg/oscore-id-update",
   "labels": [
     {
@@ -190,9 +190,17 @@
       "labels": [],
       "body": "Do the ID update ahead of the network change to get new IDs ready, only then change network, and start using the new IDs. If the new IDs are used before the network change, they are exposed prematurely",
       "createdAt": "2025-04-03T11:28:47Z",
-      "updatedAt": "2025-04-03T11:28:47Z",
+      "updatedAt": "2025-06-02T14:33:41Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "rikard-sics",
+          "authorAssociation": "MEMBER",
+          "body": "Check also QUIC RFC for some relevant content:\nhttps://datatracker.ietf.org/doc/html/rfc9000",
+          "createdAt": "2025-06-02T14:33:40Z",
+          "updatedAt": "2025-06-02T14:33:40Z"
+        }
+      ]
     }
   ],
   "pulls": []
