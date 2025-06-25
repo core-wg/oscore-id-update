@@ -10,22 +10,22 @@
 <meta content="
        Two peers that communicate with the CoAP protocol can use the Object Security for Constrained RESTful Environments (OSCORE) protocol to protect their message exchanges end-to-end. To this end, the two peers share an OSCORE Security Context and a number of related identifiers. In particular, each of the two peers stores a Sender ID that identifies its own Sender Context within the Security Context, and a Recipient ID that identifies the Recipient Context associated with the other peer within the same Security Context. These identifiers are sent in plaintext within OSCORE-protected messages. Hence, they can be used to correlate messages exchanged between peers and track those peers, with consequent privacy implications. This document defines an OSCORE ID update procedure that two peers can use to update their OSCORE identifiers. This procedure can be run stand-alone or seamlessly integrated in an execution of the Key Update for OSCORE (KUDOS) procedure. 
     " name="description">
-<meta content="xml2rfc 3.25.0" name="generator">
+<meta content="xml2rfc 3.29.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-core-oscore-id-update-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.25.0
-    Python 3.12.8
+  xml2rfc 3.29.0
+    Python 3.12.11
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
-    Jinja2 3.1.5
-    lxml 5.3.0
-    platformdirs 4.3.6
+    Jinja2 3.1.6
+    lxml 5.3.1
+    platformdirs 4.3.8
     pycountry 24.6.1
     PyYAML 6.0.2
-    requests 2.32.3
-    setuptools 70.3.0
+    requests 2.32.4
+    setuptools 80.9.0
     wcwidth 0.2.13
 -->
 <link href="draft-ietf-core-oscore-id-update.xml" rel="alternate" type="application/rfc+xml">
@@ -436,7 +436,7 @@ dl {
     margin-bottom: 0;
   }
 }
-dl > dt {
+dl:not(.dlNewline) > dt {
   float: left;
   margin-right: 2ch;
   min-width: 8ch;
@@ -1045,11 +1045,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Identifier Update for OSCORE</td>
-<td class="right">February 2025</td>
+<td class="right">June 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Höglund &amp; Tiloca</td>
-<td class="center">Expires 6 August 2025</td>
+<td class="center">Expires 27 December 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1062,12 +1062,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-core-oscore-id-update-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-02-02" class="published">2 February 2025</time>
+<time datetime="2025-06-25" class="published">25 June 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-08-06">6 August 2025</time></dd>
+<dd class="expires"><time datetime="2025-12-27">27 December 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1120,7 +1120,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 6 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 27 December 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1219,13 +1219,16 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.7.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-document-updates" class="internal xref">Document Updates</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
-                <p id="section-toc.1-1.7.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-version-01-to-02" class="internal xref">Version -01 to -02</a></p>
+                <p id="section-toc.1-1.7.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-version-02-to-03" class="internal xref">Version -02 to -03</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
-                <p id="section-toc.1-1.7.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-version-00-to-01" class="internal xref">Version -00 to -01</a></p>
+                <p id="section-toc.1-1.7.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-version-01-to-02" class="internal xref">Version -01 to -02</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
-                <p id="section-toc.1-1.7.2.3.1"><a href="#appendix-B.3" class="auto internal xref">B.3</a>.  <a href="#name-version-00" class="internal xref">Version -00</a></p>
+                <p id="section-toc.1-1.7.2.3.1"><a href="#appendix-B.3" class="auto internal xref">B.3</a>.  <a href="#name-version-00-to-01" class="internal xref">Version -00 to -01</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4">
+                <p id="section-toc.1-1.7.2.4.1"><a href="#appendix-B.4" class="auto internal xref">B.4</a>.  <a href="#name-version-00" class="internal xref">Version -00</a></p>
 </li>
             </ul>
 </li>
@@ -1244,10 +1247,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">When using the CoAP protocol <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, two peers can use Object Security for Constrained RESTful Environments (OSCORE) protocol to protect their message exchanges end-to-end. To this end, the two peers share an OSCORE Security Context and a number of related identifiers.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">When using the CoAP protocol <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, two peers can use the Object Security for Constrained RESTful Environments (OSCORE) protocol to protect their message exchanges end-to-end. To this end, the two peers share an OSCORE Security Context and a number of related identifiers.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">As part of the shared Security Context, each peer stores one Sender Context identified by a Sender ID and used to protect its outgoing messages. Also, it stores a Recipient Context identified by a Recipient ID and used to unprotect the incoming messages from the other peer. That is, one's peer Sender ID (Recipient ID) is equal to the other peer's Recipient ID (Sender ID).<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">When receiving an OSCORE-protected message, the recipient peer uses its Recipient ID conveyed within the message or otherwise implied, in order to retrieve the correct Security Context and unprotect the message.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">These identifiers are sent in plaintext within OSCORE-protected messages and are immutable throughout the lifetime of a Security Context, even in case the two peers migrate to a different network or simply change their addressing information. Therefore, the identifiers can be used to correlate messages that the two peers exchange at different points in time or through different paths, hence allowing for track them with consequent privacy implications.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-3">When receiving an OSCORE-protected message, the recipient peer uses the Recipient ID conveyed within the message or otherwise implied, in order to retrieve the correct Security Context and unprotect the message.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">These identifiers are sent in plaintext within OSCORE-protected messages and are immutable throughout the lifetime of a Security Context, even in case the two peers migrate to a different network or simply change their addressing information. Therefore, the identifiers can be used to correlate messages that the two peers exchange at different points in time or through different paths, hence allowing to track them with the consequent privacy implications.<a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">In order to address this issue, this document defines an OSCORE ID update procedure that two peers can use to update their OSCORE Sender and Recipient IDs. For instance, two peers may want to use this procedure before switching to a different network, in order to make it more difficult to understand that their communication is continuing in the new network.<a href="#section-1-5" class="pilcrow">¶</a></p>
 <p id="section-1-6">The OSCORE ID update procedure can be run stand-alone or seamlessly integrated in an execution of the Key Update for OSCORE (KUDOS) procedure <span>[<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>.<a href="#section-1-6" class="pilcrow">¶</a></p>
 <div id="terminology">
@@ -1286,8 +1289,8 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
       </h2>
 <p id="section-2-1">This section defines the procedure that two peers can perform, in order to update the OSCORE Sender/Recipient IDs that they use in their shared OSCORE Security Context.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-2-2">When performing an update of OSCORE Sender/Recipient IDs, a peer provides its new intended OSCORE Recipient ID to the other peer, by means of the Recipient-ID Option defined in <a href="#sec-recipient-id-option" class="auto internal xref">Section 2.2</a>. Hereafter, this document refers to a message including the Recipient-ID Option as an "ID update (request/response) message".<a href="#section-2-2" class="pilcrow">¶</a></p>
-<p id="section-2-3">This procedure can be initiated by either peer, i.e., the CoAP client or the CoAP server may start it by sending the first OSCORE IDs update message. The former case is denoted as the "forward message flow" and the latter as the "reverse message flow".<a href="#section-2-3" class="pilcrow">¶</a></p>
-<p id="section-2-4">Furthermore, this procedure can be executed stand-alone, or instead seamlessly integrated in an execution of the KUDOS procedure for updating OSCORE keying material (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-09#section-4" class="relref">Section 4</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>) used in its FS mode or no-FS mode (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-09#section-4.5" class="relref">Section 4.5</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>).<a href="#section-2-4" class="pilcrow">¶</a></p>
+<p id="section-2-3">This procedure can be initiated by either peer, i.e., the CoAP client or the CoAP server may start it by sending the first OSCORE ID update message. The former case is denoted as the "forward message flow" and the latter as the "reverse message flow".<a href="#section-2-3" class="pilcrow">¶</a></p>
+<p id="section-2-4">Furthermore, this procedure can be executed stand-alone, or instead seamlessly integrated in an execution of the KUDOS procedure for updating OSCORE keying material used in its FS mode (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-10#section-4" class="relref">Section 4</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>) or no-FS mode (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-10#section-4.5" class="relref">Section 4.5</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>).<a href="#section-2-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2-5.1">
           <p id="section-2-5.1.1">In the former stand-alone case, updating the OSCORE Sender/Recipient IDs effectively results in updating part of the current OSCORE Security Context.<a href="#section-2-5.1.1" class="pilcrow">¶</a></p>
@@ -1382,7 +1385,7 @@ The first use of the new OSCORE Sender/Recipient IDs with the new OSCORE Securit
         </table>
 </div>
 <p id="section-2.2-3">Note to RFC Editor: Following the registration of the CoAP Option Number 24, please replace "TBD24" with "24" in the figure above. Then, please delete this paragraph.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
-<p id="section-2.2-4">The option value can have an arbitrary length, including zero length to indicate intent to use the empty string as Recipient ID. Implementations can limit its length to that of the longest supported Recipient ID.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
+<p id="section-2.2-4">The option value can have an arbitrary length, including zero length to indicate intent to use the empty string as Recipient ID.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
 <p id="section-2.2-5">This document particularly defines how this option is used in messages protected with OSCORE. That is, when the option is included in an outgoing message, the option value specifies the new OSCORE Recipient ID that the sender endpoint intends to use with the other endpoint sharing the OSCORE Security Context.<a href="#section-2.2-5" class="pilcrow">¶</a></p>
 <p id="section-2.2-6">Therefore, the maximum length of the option value is equal to the maximum length of OSCORE Sender/Recipient IDs. As defined in <span><a href="https://rfc-editor.org/rfc/rfc8613#section-3.3" class="relref">Section 3.3</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, this is determined by the size of the AEAD nonce of the used AEAD Algorithm in the OSCORE Security Context.<a href="#section-2.2-6" class="pilcrow">¶</a></p>
 <p id="section-2.2-7">If the length of the Recipient ID included in the Recipient-ID option is zero, the option value <span class="bcp14">SHALL</span> be empty (Option Length = 0).<a href="#section-2.2-7" class="pilcrow">¶</a></p>
@@ -1393,7 +1396,7 @@ The first use of the new OSCORE Sender/Recipient IDs with the new OSCORE Securit
 <a href="#section-2.2.1" class="section-number selfRef">2.2.1. </a><a href="#name-forward-message-flow" class="section-name selfRef">Forward Message Flow</a>
           </h4>
 <p id="section-2.2.1-1"><a href="#fig-id-update-client-init" class="auto internal xref">Figure 1</a> shows an example of the OSCORE ID update procedure, run stand-alone and in the forward message flow, with the client acting as initiator. On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
-<p id="section-2.2.1-2"><a href="#sec-id-update-in-kudos-forward" class="auto internal xref">Appendix A.1</a> provides a different example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the forward message flow (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-09#section-4.3.5" class="relref">Section 4.3.5</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>).<a href="#section-2.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-2"><a href="#sec-id-update-in-kudos-forward" class="auto internal xref">Appendix A.1</a> provides a different example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the forward message flow (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-10#section-4.3.5" class="relref">Section 4.3.5</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>).<a href="#section-2.2.1-2" class="pilcrow">¶</a></p>
 <span id="name-example-of-the-oscore-id-up"></span><div id="fig-id-update-client-init">
 <figure id="figure-1">
             <div id="section-2.2.1-3.1">
@@ -1615,7 +1618,7 @@ The first use of the new OSCORE Sender/Recipient IDs with the new OSCORE Securit
 <a href="#section-2.2.2" class="section-number selfRef">2.2.2. </a><a href="#name-reverse-message-flow" class="section-name selfRef">Reverse Message Flow</a>
           </h4>
 <p id="section-2.2.2-1"><a href="#fig-id-update-server-init" class="auto internal xref">Figure 2</a> shows an example of the OSCORE ID update procedure, run stand-alone and in the reverse message flow, with the server acting as initiator. On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.<a href="#section-2.2.2-1" class="pilcrow">¶</a></p>
-<p id="section-2.2.2-2"><a href="#sec-id-update-in-kudos-reverse" class="auto internal xref">Appendix A.2</a> provides a different example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the reverse message flow (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-09#section-4.3.6" class="relref">Section 4.3.6</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>).<a href="#section-2.2.2-2" class="pilcrow">¶</a></p>
+<p id="section-2.2.2-2"><a href="#sec-id-update-in-kudos-reverse" class="auto internal xref">Appendix A.2</a> provides a different example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the reverse message flow (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-10#section-4.3.6" class="relref">Section 4.3.6</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>).<a href="#section-2.2.2-2" class="pilcrow">¶</a></p>
 <span id="name-example-of-the-oscore-id-upd"></span><div id="fig-id-update-server-init">
 <figure id="figure-2">
             <div id="section-2.2.2-3.1">
@@ -1994,7 +1997,7 @@ The first use of the new OSCORE Sender/Recipient IDs with the new OSCORE Securit
 <dl class="references">
 <dt id="I-D.ietf-core-oscore-key-update">[I-D.ietf-core-oscore-key-update]</dt>
         <dd>
-<span class="refAuthor">Höglund, R.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Key Update for OSCORE (KUDOS)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-key-update-09</span>, <time datetime="2024-10-21" class="refDate">21 October 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-09">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-09</a>&gt;</span>. </dd>
+<span class="refAuthor">Höglund, R.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Key Update for OSCORE (KUDOS)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-key-update-10</span>, <time datetime="2025-03-03" class="refDate">3 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-10">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-10</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
@@ -2049,7 +2052,7 @@ The first use of the new OSCORE Sender/Recipient IDs with the new OSCORE Securit
         <h3 id="name-forward-message-flow-2">
 <a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-forward-message-flow-2" class="section-name selfRef">Forward Message Flow</a>
         </h3>
-<p id="appendix-A.1-1"><a href="#fig-kudos-and-id-update-client-init" class="auto internal xref">Figure 3</a> provides an example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the forward message flow (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-09#section-4.3.5" class="relref">Section 4.3.5</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>). On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-1"><a href="#fig-kudos-and-id-update-client-init" class="auto internal xref">Figure 3</a> provides an example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the forward message flow (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-10#section-4.3.5" class="relref">Section 4.3.5</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>). On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
 <span id="name-example-of-the-oscore-id-upda"></span><div id="fig-kudos-and-id-update-client-init">
 <figure id="figure-3">
           <div id="appendix-A.1-2.1">
@@ -2292,7 +2295,7 @@ The first use of the new OSCORE Sender/Recipient IDs with the new OSCORE Securit
         <h3 id="name-reverse-message-flow-2">
 <a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-reverse-message-flow-2" class="section-name selfRef">Reverse Message Flow</a>
         </h3>
-<p id="appendix-A.2-1"><a href="#fig-kudos-and-id-update-server-init" class="auto internal xref">Figure 4</a> provides an example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the reverse message flow (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-09#section-4.3.6" class="relref">Section 4.3.6</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>). On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-1"><a href="#fig-kudos-and-id-update-server-init" class="auto internal xref">Figure 4</a> provides an example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the reverse message flow (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-10#section-4.3.6" class="relref">Section 4.3.6</a> of [<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>). On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
 <span id="name-example-of-the-oscore-id-updat"></span><div id="fig-kudos-and-id-update-server-init">
 <figure id="figure-4">
           <div id="appendix-A.2-2.1">
@@ -2589,56 +2592,68 @@ The first use of the new OSCORE Sender/Recipient IDs with the new OSCORE Securit
 <a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-document-updates" class="section-name selfRef">Document Updates</a>
       </h2>
 <p id="appendix-B-1">This section is to be removed before publishing as an RFC.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
-<div id="sec-01-02">
+<div id="sec-02-03">
 <section id="appendix-B.1">
-        <h3 id="name-version-01-to-02">
-<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-version-01-to-02" class="section-name selfRef">Version -01 to -02</a>
+        <h3 id="name-version-02-to-03">
+<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-version-02-to-03" class="section-name selfRef">Version -02 to -03</a>
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-B.1-1.1">
-            <p id="appendix-B.1-1.1.1">Split long section into subsections.<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-B.1-1.1.1">Editorial improvements.<a href="#appendix-B.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.1-1.2">
-            <p id="appendix-B.1-1.2.1">Updated references.<a href="#appendix-B.1-1.2.1" class="pilcrow">¶</a></p>
+        </ul>
+</section>
+</div>
+<div id="sec-01-02">
+<section id="appendix-B.2">
+        <h3 id="name-version-01-to-02">
+<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-version-01-to-02" class="section-name selfRef">Version -01 to -02</a>
+        </h3>
+<ul class="normal">
+<li class="normal" id="appendix-B.2-1.1">
+            <p id="appendix-B.2-1.1.1">Split long section into subsections.<a href="#appendix-B.2-1.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-B.2-1.2">
+            <p id="appendix-B.2-1.2.1">Updated references.<a href="#appendix-B.2-1.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-00-01">
-<section id="appendix-B.2">
+<section id="appendix-B.3">
         <h3 id="name-version-00-to-01">
-<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-version-00-to-01" class="section-name selfRef">Version -00 to -01</a>
+<a href="#appendix-B.3" class="section-number selfRef">B.3. </a><a href="#name-version-00-to-01" class="section-name selfRef">Version -00 to -01</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.2-1.1">
-            <p id="appendix-B.2-1.1.1">Revised and extended error handling.<a href="#appendix-B.2-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B.3-1.1">
+            <p id="appendix-B.3-1.1.1">Revised and extended error handling.<a href="#appendix-B.3-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.2">
-            <p id="appendix-B.2-1.2.1">Specify that the Recipient-ID option may need to be empty.<a href="#appendix-B.2-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.2">
+            <p id="appendix-B.3-1.2.1">Specify that the Recipient-ID option may need to be empty.<a href="#appendix-B.3-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.3">
-            <p id="appendix-B.2-1.3.1">Failure cases when running the ID update procedure integrated with KUDOS.<a href="#appendix-B.2-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.3">
+            <p id="appendix-B.3-1.3.1">Failure cases when running the ID update procedure integrated with KUDOS.<a href="#appendix-B.3-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.2-1.4">
-            <p id="appendix-B.2-1.4.1">Clarifications and editorial improvements.<a href="#appendix-B.2-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.3-1.4">
+            <p id="appendix-B.3-1.4.1">Clarifications and editorial improvements.<a href="#appendix-B.3-1.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="sec-00">
-<section id="appendix-B.3">
+<section id="appendix-B.4">
         <h3 id="name-version-00">
-<a href="#appendix-B.3" class="section-number selfRef">B.3. </a><a href="#name-version-00" class="section-name selfRef">Version -00</a>
+<a href="#appendix-B.4" class="section-number selfRef">B.4. </a><a href="#name-version-00" class="section-name selfRef">Version -00</a>
         </h3>
 <ul class="normal">
-<li class="normal" id="appendix-B.3-1.1">
-            <p id="appendix-B.3-1.1.1">Split out material from Key Update for OSCORE draft into this new document.<a href="#appendix-B.3-1.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-B.4-1.1">
+            <p id="appendix-B.4-1.1.1">Split out material from Key Update for OSCORE draft into this new document.<a href="#appendix-B.4-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.3-1.2">
-            <p id="appendix-B.3-1.2.1">Extended terminology.<a href="#appendix-B.3-1.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.4-1.2">
+            <p id="appendix-B.4-1.2.1">Extended terminology.<a href="#appendix-B.4-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-B.3-1.3">
-            <p id="appendix-B.3-1.3.1">Editorial improvements.<a href="#appendix-B.3-1.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-B.4-1.3">
+            <p id="appendix-B.4-1.3.1">Editorial improvements.<a href="#appendix-B.4-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
