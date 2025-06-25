@@ -440,6 +440,12 @@ Upon receiving the OSCORE message Response \#3, the client decrypts and verifies
 
 After that, one further exchange occurs, where both the CoAP request and the CoAP response are protected with the OSCORE Security Context CTX\_B. In particular, upon receiving, decrypting, and successfully verifying the OSCORE message Request \#4, the server confirms that the client is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX\_A.
 
+### Determining New OSCORE Identifiers Ahead of Network Migration {#new-identifiers-before-migration}
+
+Peers may use the OSCORE ID update procedure to determine new OSCORE IDs in advance of a network path change. However, peers must not begin using these new identifiers on the current path prior to switching to a new network. Using a new identifier on the old path would allow observers to correlate activity across paths, defeating the unlinkability that updating the OSCORE IDs is intended to provide. To be effective, new identifiers must only be used for sending packets once the network migration is complete. Provisioning new OSCORE IDs ahead of time ensures that migration can proceed without delay, but care must be taken to ensure that premature use does not enable linkability.
+
+To accomplish this, the peers execute the ID update procedure as normal (in the forward or reverse message flow), with the following difference: The peers must not begin using the OSCORE Security Context CTX\_B until after the network migration has taken place. Thus, both peers will be in a position to derive CTX\_B, but will not transition to use it until the first request protected with CTX\_B is transmitted, which must take place after network migration.
+
 ### Additional Actions for Execution {#id-update-additional-actions}
 
 After having experienced a loss of state, a peer MUST NOT participate in a stand-alone OSCORE ID update procedure with another peer, until having performed a full-fledged establishment/renewal of an OSCORE Security Context with the other peer (e.g., by running KUDOS {{I-D.ietf-core-oscore-key-update}} or the authenticated key establishment protocol EDHOC {{RFC9528}}).
