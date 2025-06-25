@@ -1941,7 +1941,18 @@ The first use of the new OSCORE Sender/Recipient IDs with the new OSCORE Securit
       <h2 id="name-security-considerations">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-3-1">TODO Security<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-1">The OSCORE ID update procedure is a mechanism to mitigate the risk of tracking by on-path adversaries. By enabling endpoints to update their identifiers, either in response to specific events or on a regular basis, this approach prevents correlations that could otherwise be drawn between OSCORE messages on different network paths. While the ID update procedure is effective in reducing linkability across paths, it is best used in together with encryption of the OSCORE Partial IV.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">The encryption of the Partial IV defends against correlation of messages based on sequence number patterns, which can still occur even when identifiers are updated. This combined approach significantly improves unlinkability of messages, making it more difficult for adversaries to infer relationships between them or to track communicating parties over time and across paths.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3">Usage of the OSCORE ID update procedure in isolation may not completely prevent adversaries from recognizing traffic patterns that reveal message ordering or frequency. In addition adversaries can infer identities of peers based on the sequence numbers (reset to zero or incrementing values), which may still allow for tracking peers across networks.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-4">Note that while the OSCORE ID update procedure updates the OSCORE identifiers used, other information from the network communication may still be used to track the peers. Thus, it is recommended to combine usage of the OSCORE ID update procedure also with the following:<a href="#section-3-4" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3-5.1">
+          <p id="section-3-5.1.1">Changing the network address (e.g., intentionally, or due to mobility, or NAT rebinding).<a href="#section-3-5.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-3-5.2">
+          <p id="section-3-5.2.1">Changing the link-layer address (e.g., MAC address randomization).<a href="#section-3-5.2.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
 </section>
 </div>
 <div id="sec-iana">
