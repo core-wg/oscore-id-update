@@ -1148,6 +1148,8 @@ B.1.  Version -02 to -03
 
    *  Editorial improvements.
 
+   *  Improved security considerations.
+
 B.2.  Version -01 to -02
 
    *  Split long section into subsections.
