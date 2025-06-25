@@ -85,7 +85,9 @@ Table of Contents
      2.2.  The Recipient-ID Option
        2.2.1.  Forward Message Flow
        2.2.2.  Reverse Message Flow
-       2.2.3.  Additional Actions for Execution
+       2.2.3.  Determining New OSCORE Identifiers Ahead of Network
+               Migration
+       2.2.4.  Additional Actions for Execution
      2.3.  Preserving Observations Across ID Updates
    3.  Security Considerations
    4.  IANA Considerations
@@ -205,7 +207,7 @@ Table of Contents
       Since the same Master Secret is preserved, forward secrecy is not
       achieved.
 
-      As defined in Section 2.2.3, the two peers must take additional
+      As defined in Section 2.2.4, the two peers must take additional
       actions to ensure a safe execution of the OSCORE ID update
       procedure.
 
@@ -265,7 +267,7 @@ Table of Contents
    *  The received ID update message is not a KUDOS message (i.e., the
       OSCORE ID update procedure is being performed stand-alone) and the
       responder has no eligible Recipient ID to offer to the initiator
-      (see Section 2.2.3).
+      (see Section 2.2.4).
 
    Upon receiving a valid ID update message, a peer MUST abort the ID
    update procedure, in the following case:
@@ -745,7 +747,29 @@ Table of Contents
    client is aligned with the new OSCORE Sender/Recipient IDs, and thus
    discards the OSCORE Security Context CTX_A.
 
-2.2.3.  Additional Actions for Execution
+2.2.3.  Determining New OSCORE Identifiers Ahead of Network Migration
+
+   Peers may use the OSCORE ID update procedure to determine new OSCORE
+   IDs in advance of a network path change.  However, peers must not
+   begin using these new identifiers on the current path prior to
+   switching to a new network.  Using a new identifier on the old path
+   would allow observers to correlate activity across paths, defeating
+   the unlinkability that updating the OSCORE IDs is intended to
+   provide.  To be effective, new identifiers must only be used for
+   sending packets once the network migration is complete.  Provisioning
+   new OSCORE IDs ahead of time ensures that migration can proceed
+   without delay, but care must be taken to ensure that premature use
+   does not enable linkability.
+
+   To accomplish this, the peers execute the ID update procedure as
+   normal (in the forward or reverse message flow), with the following
+   difference: The peers must not begin using the OSCORE Security
+   Context CTX_B until after the network migration has taken place.
+   Thus, both peers will be in a position to derive CTX_B, but will not
+   transition to use it until the first request protected with CTX_B is
+   transmitted, which must take place after network migration.
+
+2.2.4.  Additional Actions for Execution
 
    After having experienced a loss of state, a peer MUST NOT participate
    in a stand-alone OSCORE ID update procedure with another peer, until

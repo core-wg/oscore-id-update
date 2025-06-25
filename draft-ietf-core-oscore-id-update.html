@@ -1173,7 +1173,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
                     <p id="section-toc.1-1.2.2.2.2.2.1"><a href="#section-2.2.2" class="auto internal xref">2.2.2</a>.  <a href="#name-reverse-message-flow" class="internal xref">Reverse Message Flow</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.3">
-                    <p id="section-toc.1-1.2.2.2.2.3.1"><a href="#section-2.2.3" class="auto internal xref">2.2.3</a>.  <a href="#name-additional-actions-for-exec" class="internal xref">Additional Actions for Execution</a></p>
+                    <p id="section-toc.1-1.2.2.2.2.3.1"><a href="#section-2.2.3" class="auto internal xref">2.2.3</a>.  <a href="#name-determining-new-oscore-iden" class="internal xref">Determining New OSCORE Identifiers Ahead of Network Migration</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.4">
+                    <p id="section-toc.1-1.2.2.2.2.4.1"><a href="#section-2.2.4" class="auto internal xref">2.2.4</a>.  <a href="#name-additional-actions-for-exec" class="internal xref">Additional Actions for Execution</a></p>
 </li>
                 </ul>
 </li>
@@ -1297,7 +1300,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-2-5.1.2">
 That is, both peers derive a new Sender Key, Recipient Key, and Common IV, as defined in <span><a href="https://rfc-editor.org/rfc/rfc8613#section-3.2" class="relref">Section 3.2</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>. Also, both peers re-initialize the Sender Sequence Number and the Replay Window accordingly, as defined in <span><a href="https://rfc-editor.org/rfc/rfc8613#section-3.2.2" class="relref">Section 3.2.2</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>. Since the same Master Secret is preserved, forward secrecy is not achieved.<a href="#section-2-5.1.2" class="pilcrow">¶</a></p>
 <p id="section-2-5.1.3">
-As defined in <a href="#id-update-additional-actions" class="auto internal xref">Section 2.2.3</a>, the two peers must take additional actions to ensure a safe execution of the OSCORE ID update procedure.<a href="#section-2-5.1.3" class="pilcrow">¶</a></p>
+As defined in <a href="#id-update-additional-actions" class="auto internal xref">Section 2.2.4</a>, the two peers must take additional actions to ensure a safe execution of the OSCORE ID update procedure.<a href="#section-2-5.1.3" class="pilcrow">¶</a></p>
 <p id="section-2-5.1.4">
 A peer can safely discard the old OSCORE Security Context including the old OSCORE Sender/Recipient IDs after the following two events have occurred, in this order: first, the peer has sent to the other peer a message protected with the new OSCORE Security Context including the new OSCORE Sender/Recipient IDs; then, the peer has received from the other peer and successfully verified a message protected with that new OSCORE Security Context.<a href="#section-2-5.1.4" class="pilcrow">¶</a></p>
 </li>
@@ -1329,7 +1332,7 @@ The first use of the new OSCORE Sender/Recipient IDs with the new OSCORE Securit
 <p id="section-2.1-2">Upon receiving a valid first ID update message, a responder <span class="bcp14">MUST</span> abort the ID update procedure, in the following case:<a href="#section-2.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.1-3.1">
-            <p id="section-2.1-3.1.1">The received ID update message is not a KUDOS message (i.e., the OSCORE ID update procedure is being performed stand-alone) and the responder has no eligible Recipient ID to offer to the initiator (see <a href="#id-update-additional-actions" class="auto internal xref">Section 2.2.3</a>).<a href="#section-2.1-3.1.1" class="pilcrow">¶</a></p>
+            <p id="section-2.1-3.1.1">The received ID update message is not a KUDOS message (i.e., the OSCORE ID update procedure is being performed stand-alone) and the responder has no eligible Recipient ID to offer to the initiator (see <a href="#id-update-additional-actions" class="auto internal xref">Section 2.2.4</a>).<a href="#section-2.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-2.1-4">Upon receiving a valid ID update message, a peer <span class="bcp14">MUST</span> abort the ID update procedure, in the following case:<a href="#section-2.1-4" class="pilcrow">¶</a></p>
@@ -1881,23 +1884,32 @@ The first use of the new OSCORE Sender/Recipient IDs with the new OSCORE Securit
 <p id="section-2.2.2-17">After that, one further exchange occurs, where both the CoAP request and the CoAP response are protected with the OSCORE Security Context CTX_B. In particular, upon receiving, decrypting, and successfully verifying the OSCORE message Request #4, the server confirms that the client is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX_A.<a href="#section-2.2.2-17" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="id-update-additional-actions">
+<div id="new-identifiers-before-migration">
 <section id="section-2.2.3">
-          <h4 id="name-additional-actions-for-exec">
-<a href="#section-2.2.3" class="section-number selfRef">2.2.3. </a><a href="#name-additional-actions-for-exec" class="section-name selfRef">Additional Actions for Execution</a>
+          <h4 id="name-determining-new-oscore-iden">
+<a href="#section-2.2.3" class="section-number selfRef">2.2.3. </a><a href="#name-determining-new-oscore-iden" class="section-name selfRef">Determining New OSCORE Identifiers Ahead of Network Migration</a>
           </h4>
-<p id="section-2.2.3-1">After having experienced a loss of state, a peer <span class="bcp14">MUST NOT</span> participate in a stand-alone OSCORE ID update procedure with another peer, until having performed a full-fledged establishment/renewal of an OSCORE Security Context with the other peer (e.g., by running KUDOS <span>[<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span> or the authenticated key establishment protocol EDHOC <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>).<a href="#section-2.2.3-1" class="pilcrow">¶</a></p>
-<p id="section-2.2.3-2">More precisely, a peer has experienced a loss of state if it cannot access the latest snapshot of the latest OSCORE Security Context CTX_OLD or the whole set of OSCORE Sender/Recipient IDs that have been used with the triplet (Master Secret, Master Salt, ID Context) of CTX_OLD. This can happen, for instance, after a device reboots.<a href="#section-2.2.3-2" class="pilcrow">¶</a></p>
-<p id="section-2.2.3-3">Furthermore, when participating in a stand-alone OSCORE ID update procedure, a peer performs the following additional steps.<a href="#section-2.2.3-3" class="pilcrow">¶</a></p>
+<p id="section-2.2.3-1">Peers may use the OSCORE ID update procedure to determine new OSCORE IDs in advance of a network path change. However, peers must not begin using these new identifiers on the current path prior to switching to a new network. Using a new identifier on the old path would allow observers to correlate activity across paths, defeating the unlinkability that updating the OSCORE IDs is intended to provide. To be effective, new identifiers must only be used for sending packets once the network migration is complete. Provisioning new OSCORE IDs ahead of time ensures that migration can proceed without delay, but care must be taken to ensure that premature use does not enable linkability.<a href="#section-2.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.3-2">To accomplish this, the peers execute the ID update procedure as normal (in the forward or reverse message flow), with the following difference: The peers must not begin using the OSCORE Security Context CTX_B until after the network migration has taken place. Thus, both peers will be in a position to derive CTX_B, but will not transition to use it until the first request protected with CTX_B is transmitted, which must take place after network migration.<a href="#section-2.2.3-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="id-update-additional-actions">
+<section id="section-2.2.4">
+          <h4 id="name-additional-actions-for-exec">
+<a href="#section-2.2.4" class="section-number selfRef">2.2.4. </a><a href="#name-additional-actions-for-exec" class="section-name selfRef">Additional Actions for Execution</a>
+          </h4>
+<p id="section-2.2.4-1">After having experienced a loss of state, a peer <span class="bcp14">MUST NOT</span> participate in a stand-alone OSCORE ID update procedure with another peer, until having performed a full-fledged establishment/renewal of an OSCORE Security Context with the other peer (e.g., by running KUDOS <span>[<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span> or the authenticated key establishment protocol EDHOC <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>).<a href="#section-2.2.4-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.4-2">More precisely, a peer has experienced a loss of state if it cannot access the latest snapshot of the latest OSCORE Security Context CTX_OLD or the whole set of OSCORE Sender/Recipient IDs that have been used with the triplet (Master Secret, Master Salt, ID Context) of CTX_OLD. This can happen, for instance, after a device reboots.<a href="#section-2.2.4-2" class="pilcrow">¶</a></p>
+<p id="section-2.2.4-3">Furthermore, when participating in a stand-alone OSCORE ID update procedure, a peer performs the following additional steps.<a href="#section-2.2.4-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.2.3-4.1">
-              <p id="section-2.2.3-4.1.1">When a peer sends an ID update message, the value of the Recipient-ID Option that the peer specifies as its new intended OSCORE Recipient ID <span class="bcp14">MUST</span> fulfill both the following conditions: it is currently available as Recipient ID to use for the peer (see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-3.3" class="relref">Section 3.3</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>); and the peer has never used it as Recipient ID with the current triplet (Master Secret, Master Salt, ID Context).<a href="#section-2.2.3-4.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-2.2.4-4.1">
+              <p id="section-2.2.4-4.1.1">When a peer sends an ID update message, the value of the Recipient-ID Option that the peer specifies as its new intended OSCORE Recipient ID <span class="bcp14">MUST</span> fulfill both the following conditions: it is currently available as Recipient ID to use for the peer (see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-3.3" class="relref">Section 3.3</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>); and the peer has never used it as Recipient ID with the current triplet (Master Secret, Master Salt, ID Context).<a href="#section-2.2.4-4.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-2.2.3-4.2">
-              <p id="section-2.2.3-4.2.1">When receiving an ID update message, the peer <span class="bcp14">MUST</span> abort the procedure if it has already used the identifier specified in the Recipient-ID Option as its own Sender ID with the current triplet (Master Secret, Master Salt, ID Context).<a href="#section-2.2.3-4.2.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-2.2.4-4.2">
+              <p id="section-2.2.4-4.2.1">When receiving an ID update message, the peer <span class="bcp14">MUST</span> abort the procedure if it has already used the identifier specified in the Recipient-ID Option as its own Sender ID with the current triplet (Master Secret, Master Salt, ID Context).<a href="#section-2.2.4-4.2.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-2.2.3-5">In order to fulfill the conditions above, a peer has to keep track of the OSCORE Sender/Recipient IDs that it has used with the current triplet (Master Secret, Master Salt, ID Context) since the latest update of the OSCORE Master Secret (e.g., performed by running KUDOS).<a href="#section-2.2.3-5" class="pilcrow">¶</a></p>
+<p id="section-2.2.4-5">In order to fulfill the conditions above, a peer has to keep track of the OSCORE Sender/Recipient IDs that it has used with the current triplet (Master Secret, Master Salt, ID Context) since the latest update of the OSCORE Master Secret (e.g., performed by running KUDOS).<a href="#section-2.2.4-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
