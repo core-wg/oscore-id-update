@@ -712,6 +712,8 @@ Verify with CTX_NEW     | }                    |
 
 * Editorial improvements.
 
+* Improved security considerations.
+
 ## Version -01 to -02 ## {#sec-01-02}
 
 * Split long section into subsections.
