@@ -63,13 +63,13 @@ Two peers that communicate with the CoAP protocol can use the Object Security fo
 
 # Introduction
 
-When using the CoAP protocol {{RFC7252}}, two peers can use Object Security for Constrained RESTful Environments (OSCORE) protocol to protect their message exchanges end-to-end. To this end, the two peers share an OSCORE Security Context and a number of related identifiers.
+When using the CoAP protocol {{RFC7252}}, two peers can use the Object Security for Constrained RESTful Environments (OSCORE) protocol to protect their message exchanges end-to-end. To this end, the two peers share an OSCORE Security Context and a number of related identifiers.
 
 As part of the shared Security Context, each peer stores one Sender Context identified by a Sender ID and used to protect its outgoing messages. Also, it stores a Recipient Context identified by a Recipient ID and used to unprotect the incoming messages from the other peer. That is, one's peer Sender ID (Recipient ID) is equal to the other peer's Recipient ID (Sender ID).
 
-When receiving an OSCORE-protected message, the recipient peer uses its Recipient ID conveyed within the message or otherwise implied, in order to retrieve the correct Security Context and unprotect the message.
+When receiving an OSCORE-protected message, the recipient peer uses the Recipient ID conveyed within the message or otherwise implied, in order to retrieve the correct Security Context and unprotect the message.
 
-These identifiers are sent in plaintext within OSCORE-protected messages and are immutable throughout the lifetime of a Security Context, even in case the two peers migrate to a different network or simply change their addressing information. Therefore, the identifiers can be used to correlate messages that the two peers exchange at different points in time or through different paths, hence allowing for track them with consequent privacy implications.
+These identifiers are sent in plaintext within OSCORE-protected messages and are immutable throughout the lifetime of a Security Context, even in case the two peers migrate to a different network or simply change their addressing information. Therefore, the identifiers can be used to correlate messages that the two peers exchange at different points in time or through different paths, hence allowing to track them with the consequent privacy implications.
 
 In order to address this issue, this document defines an OSCORE ID update procedure that two peers can use to update their OSCORE Sender and Recipient IDs. For instance, two peers may want to use this procedure before switching to a different network, in order to make it more difficult to understand that their communication is continuing in the new network.
 
@@ -97,9 +97,9 @@ This section defines the procedure that two peers can perform, in order to updat
 
 When performing an update of OSCORE Sender/Recipient IDs, a peer provides its new intended OSCORE Recipient ID to the other peer, by means of the Recipient-ID Option defined in {{sec-recipient-id-option}}. Hereafter, this document refers to a message including the Recipient-ID Option as an "ID update (request/response) message".
 
-This procedure can be initiated by either peer, i.e., the CoAP client or the CoAP server may start it by sending the first OSCORE IDs update message. The former case is denoted as the "forward message flow" and the latter as the "reverse message flow".
+This procedure can be initiated by either peer, i.e., the CoAP client or the CoAP server may start it by sending the first OSCORE ID update message. The former case is denoted as the "forward message flow" and the latter as the "reverse message flow".
 
-Furthermore, this procedure can be executed stand-alone, or instead seamlessly integrated in an execution of the KUDOS procedure for updating OSCORE keying material (see {{Section 4 of I-D.ietf-core-oscore-key-update}}) used in its FS mode or no-FS mode (see {{Section 4.5 of I-D.ietf-core-oscore-key-update}}).
+Furthermore, this procedure can be executed stand-alone, or instead seamlessly integrated in an execution of the KUDOS procedure for updating OSCORE keying material used in its FS mode (see {{Section 4 of I-D.ietf-core-oscore-key-update}}) or no-FS mode (see {{Section 4.5 of I-D.ietf-core-oscore-key-update}}).
 
 * In the former stand-alone case, updating the OSCORE Sender/Recipient IDs effectively results in updating part of the current OSCORE Security Context.
 
@@ -160,7 +160,7 @@ C=Critical, U=Unsafe, N=NoCacheKey, R=Repeatable" align="center"}
 
 Note to RFC Editor: Following the registration of the CoAP Option Number 24, please replace "TBD24" with "24" in the figure above. Then, please delete this paragraph.
 
-The option value can have an arbitrary length, including zero length to indicate intent to use the empty string as Recipient ID. Implementations can limit its length to that of the longest supported Recipient ID.
+The option value can have an arbitrary length, including zero length to indicate intent to use the empty string as Recipient ID.
 
 This document particularly defines how this option is used in messages protected with OSCORE. That is, when the option is included in an outgoing message, the option value specifies the new OSCORE Recipient ID that the sender endpoint intends to use with the other endpoint sharing the OSCORE Security Context.
 
@@ -698,6 +698,10 @@ Verify with CTX_NEW     | }                    |
 
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
+
+## Version -02 to -03 ## {#sec-02-03}
+
+* Editorial improvements.
 
 ## Version -01 to -02 ## {#sec-01-02}
 
