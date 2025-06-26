@@ -5,7 +5,7 @@
 CoRE Working Group                                            R. Höglund
 Internet-Draft                                                 M. Tiloca
 Intended status: Standards Track                                 RISE AB
-Expires: 27 December 2025                                   25 June 2025
+Expires: 28 December 2025                                   26 June 2025
 
 
                       Identifier Update for OSCORE
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 December 2025.
+   This Internet-Draft will expire on 28 December 2025.
 
 Copyright Notice
 
@@ -1173,6 +1173,9 @@ B.1.  Version -02 to -03
    *  Editorial improvements.
 
    *  Improved security considerations.
+
+   *  Using the ID update procedure ahead of network migration and
+      switching to new IDs after migration.
 
 B.2.  Version -01 to -02
 
