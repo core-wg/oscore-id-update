@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-24T01:04:18.612264+00:00",
+  "timestamp": "2025-06-26T01:03:58.770095+00:00",
   "repo": "core-wg/oscore-id-update",
   "labels": [
     {
@@ -167,31 +167,39 @@
       "id": "I_kwDOLZNAsc6w9V0j",
       "title": "Privacy considerations: ID update procedure is as a piece of a set of solutions for achieving privacy",
       "url": "https://github.com/core-wg/oscore-id-update/issues/8",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "rikard-sics",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "Set:\n- Need to update ID\n- Update network address\n- Update link layer address\n- (Encrypt Partial IV). Although since we reset SSN this is less important, but it adds confusion as resets to SSN 0 are no longer visible.\n\nThe ID update is just one piece of privacy preserving solutions. Discuss this in privacy considerations.\n\nNote: It's enough and probable that only 1 peer changes addresses\n\nNote: Can we start the SSN from random number instead of 0? To reduce trackability\n\nNote: Also mention security at different layers? E.g. what if having security at link-layer?\n",
       "createdAt": "2025-04-03T09:18:15Z",
-      "updatedAt": "2025-04-03T11:28:58Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2025-06-25T11:11:02Z",
+      "closedAt": "2025-06-25T11:11:02Z",
+      "comments": [
+        {
+          "author": "rikard-sics",
+          "authorAssociation": "MEMBER",
+          "body": "Added content covering this in commit 3c80b725b20e7a890309259ffdd860a6eac004f1",
+          "createdAt": "2025-06-25T11:11:02Z",
+          "updatedAt": "2025-06-25T11:11:02Z"
+        }
+      ]
     },
     {
       "number": 9,
       "id": "I_kwDOLZNAsc6w-3tl",
       "title": "Note importance of getting new IDs ready before changing network",
       "url": "https://github.com/core-wg/oscore-id-update/issues/9",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "rikard-sics",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "Do the ID update ahead of the network change to get new IDs ready, only then change network, and start using the new IDs. If the new IDs are used before the network change, they are exposed prematurely",
       "createdAt": "2025-04-03T11:28:47Z",
-      "updatedAt": "2025-06-02T14:33:41Z",
-      "closedAt": null,
+      "updatedAt": "2025-06-25T14:16:00Z",
+      "closedAt": "2025-06-25T14:16:00Z",
       "comments": [
         {
           "author": "rikard-sics",
@@ -199,6 +207,13 @@
           "body": "Check also QUIC RFC for some relevant content:\nhttps://datatracker.ietf.org/doc/html/rfc9000",
           "createdAt": "2025-06-02T14:33:40Z",
           "updatedAt": "2025-06-02T14:33:40Z"
+        },
+        {
+          "author": "rikard-sics",
+          "authorAssociation": "MEMBER",
+          "body": "Now done in commit 30c5018206abb5262a8a642f96d11c73d080df4c",
+          "createdAt": "2025-06-25T14:16:00Z",
+          "updatedAt": "2025-06-25T14:16:00Z"
         }
       ]
     }
