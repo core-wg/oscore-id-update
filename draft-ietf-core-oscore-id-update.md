@@ -41,10 +41,8 @@ author:
         email: marco.tiloca@ri.se
 
 normative:
-  RFC2119:
   RFC7252:
   RFC7641:
-  RFC8174:
   RFC8613:
   RFC8949:
   I-D.ietf-core-oscore-key-update:
@@ -719,6 +717,8 @@ Verify with CTX_NEW     | }                    |
 * Editorial improvements.
 
 * Improved security considerations.
+
+* Using the ID update procedure ahead of network migration and switching to new IDs after migration.
 
 ## Version -01 to -02 ## {#sec-01-02}
 
