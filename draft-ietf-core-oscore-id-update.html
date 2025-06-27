@@ -1049,7 +1049,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Höglund &amp; Tiloca</td>
-<td class="center">Expires 28 December 2025</td>
+<td class="center">Expires 29 December 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1062,12 +1062,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-core-oscore-id-update-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-06-26" class="published">26 June 2025</time>
+<time datetime="2025-06-27" class="published">27 June 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-12-28">28 December 2025</time></dd>
+<dd class="expires"><time datetime="2025-12-29">29 December 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1120,7 +1120,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 28 December 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 29 December 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1173,7 +1173,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
                     <p id="section-toc.1-1.2.2.2.2.2.1"><a href="#section-2.2.2" class="auto internal xref">2.2.2</a>.  <a href="#name-reverse-message-flow" class="internal xref">Reverse Message Flow</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.3">
-                    <p id="section-toc.1-1.2.2.2.2.3.1"><a href="#section-2.2.3" class="auto internal xref">2.2.3</a>.  <a href="#name-determining-new-oscore-iden" class="internal xref">Determining New OSCORE Identifiers Ahead of Network Migration</a></p>
+                    <p id="section-toc.1-1.2.2.2.2.3.1"><a href="#section-2.2.3" class="auto internal xref">2.2.3</a>.  <a href="#name-establishing-new-oscore-ide" class="internal xref">Establishing New OSCORE Identifiers Ahead of Network Migration</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.4">
                     <p id="section-toc.1-1.2.2.2.2.4.1"><a href="#section-2.2.4" class="auto internal xref">2.2.4</a>.  <a href="#name-additional-actions-for-exec" class="internal xref">Additional Actions for Execution</a></p>
@@ -1252,7 +1252,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
       </h2>
 <p id="section-1-1">When using the CoAP protocol <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, two peers can use the Object Security for Constrained RESTful Environments (OSCORE) protocol to protect their message exchanges end-to-end. To this end, the two peers share an OSCORE Security Context and a number of related identifiers.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">As part of the shared Security Context, each peer stores one Sender Context identified by a Sender ID and used to protect its outgoing messages. Also, it stores a Recipient Context identified by a Recipient ID and used to unprotect the incoming messages from the other peer. That is, one's peer Sender ID (Recipient ID) is equal to the other peer's Recipient ID (Sender ID).<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">When receiving an OSCORE-protected message, the recipient peer uses the Recipient ID conveyed within the message or otherwise implied, in order to retrieve the correct Security Context and unprotect the message.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-3">When receiving an OSCORE-protected message, the recipient peer uses its Recipient ID conveyed within the message or otherwise implied, in order to retrieve the correct Security Context and unprotect the message.<a href="#section-1-3" class="pilcrow">¶</a></p>
 <p id="section-1-4">These identifiers are sent in plaintext within OSCORE-protected messages and are immutable throughout the lifetime of a Security Context, even in case the two peers migrate to a different network or simply change their addressing information. Therefore, the identifiers can be used to correlate messages that the two peers exchange at different points in time or through different paths, hence allowing to track them with the consequent privacy implications.<a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">In order to address this issue, this document defines an OSCORE ID update procedure that two peers can use to update their OSCORE Sender and Recipient IDs. For instance, two peers may want to use this procedure before switching to a different network, in order to make it more difficult to understand that their communication is continuing in the new network.<a href="#section-1-5" class="pilcrow">¶</a></p>
 <p id="section-1-6">The OSCORE ID update procedure can be run stand-alone or seamlessly integrated in an execution of the Key Update for OSCORE (KUDOS) procedure <span>[<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>.<a href="#section-1-6" class="pilcrow">¶</a></p>
@@ -1388,7 +1388,7 @@ The first use of the new OSCORE Sender/Recipient IDs with the new OSCORE Securit
         </table>
 </div>
 <p id="section-2.2-3">Note to RFC Editor: Following the registration of the CoAP Option Number 24, please replace "TBD24" with "24" in the figure above. Then, please delete this paragraph.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
-<p id="section-2.2-4">The option value can have an arbitrary length, including zero length to indicate intent to use the empty string as Recipient ID.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
+<p id="section-2.2-4">The option value can have an arbitrary length, including zero length to indicate intent to use the empty string as Recipient ID. Implementations can limit its length to that of the longest supported Recipient ID.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
 <p id="section-2.2-5">This document particularly defines how this option is used in messages protected with OSCORE. That is, when the option is included in an outgoing message, the option value specifies the new OSCORE Recipient ID that the sender endpoint intends to use with the other endpoint sharing the OSCORE Security Context.<a href="#section-2.2-5" class="pilcrow">¶</a></p>
 <p id="section-2.2-6">Therefore, the maximum length of the option value is equal to the maximum length of OSCORE Sender/Recipient IDs. As defined in <span><a href="https://rfc-editor.org/rfc/rfc8613#section-3.3" class="relref">Section 3.3</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, this is determined by the size of the AEAD nonce of the used AEAD Algorithm in the OSCORE Security Context.<a href="#section-2.2-6" class="pilcrow">¶</a></p>
 <p id="section-2.2-7">If the length of the Recipient ID included in the Recipient-ID option is zero, the option value <span class="bcp14">SHALL</span> be empty (Option Length = 0).<a href="#section-2.2-7" class="pilcrow">¶</a></p>
@@ -1886,11 +1886,11 @@ The first use of the new OSCORE Sender/Recipient IDs with the new OSCORE Securit
 </div>
 <div id="new-identifiers-before-migration">
 <section id="section-2.2.3">
-          <h4 id="name-determining-new-oscore-iden">
-<a href="#section-2.2.3" class="section-number selfRef">2.2.3. </a><a href="#name-determining-new-oscore-iden" class="section-name selfRef">Determining New OSCORE Identifiers Ahead of Network Migration</a>
+          <h4 id="name-establishing-new-oscore-ide">
+<a href="#section-2.2.3" class="section-number selfRef">2.2.3. </a><a href="#name-establishing-new-oscore-ide" class="section-name selfRef">Establishing New OSCORE Identifiers Ahead of Network Migration</a>
           </h4>
-<p id="section-2.2.3-1">Peers may use the OSCORE ID update procedure to determine new OSCORE IDs in advance of a network path change. However, peers must not begin using these new identifiers on the current path prior to switching to a new network. Using a new identifier on the old path would allow observers to correlate activity across paths, defeating the unlinkability that updating the OSCORE IDs is intended to provide. To be effective, new identifiers must only be used for sending packets once the network migration is complete. Provisioning new OSCORE IDs ahead of time ensures that migration can proceed without delay, but care must be taken to ensure that premature use does not enable linkability.<a href="#section-2.2.3-1" class="pilcrow">¶</a></p>
-<p id="section-2.2.3-2">To accomplish this, the peers execute the ID update procedure as normal (in the forward or reverse message flow), with the following difference: The peers must not begin using the OSCORE Security Context CTX_B until after the network migration has taken place. Thus, both peers will be in a position to derive CTX_B, but will not transition to use it until the first request protected with CTX_B is transmitted, which must take place after network migration.<a href="#section-2.2.3-2" class="pilcrow">¶</a></p>
+<p id="section-2.2.3-1">Peers may use the OSCORE ID update procedure to establish new OSCORE IDs in advance of a network change. However, peers <span class="bcp14">SHOULD NOT</span> begin using these new identifiers on the current network prior to network migration. Using a new identifier on the old network would allow observers to correlate activity across networks, defeating the unlinkability that updating the OSCORE IDs is intended to provide. To be effective, new identifiers <span class="bcp14">SHOULD</span> only be used for sending OSCORE protected messages once the network migration is completed. Establishing new OSCORE IDs ahead of time ensures that migration can proceed without delay, but care must be taken to ensure that premature use of the identifiers does not enable linkability.<a href="#section-2.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.3-2">To accomplish this, the peers execute the ID update procedure as normal (in the forward or reverse message flow), with the following difference: the peers must not begin using the OSCORE Security Context CTX_B until after the network migration has taken place. Thus, both peers will be in the position to derive CTX_B, but will not transition to use it until the first request protected with CTX_B is transmitted in the new network, that is after network migration.<a href="#section-2.2.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="id-update-additional-actions">
@@ -1953,18 +1953,20 @@ The first use of the new OSCORE Sender/Recipient IDs with the new OSCORE Securit
       <h2 id="name-security-considerations">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-3-1">The OSCORE ID update procedure is a mechanism to mitigate the risk of tracking by on-path adversaries. By enabling endpoints to update their identifiers, either in response to specific events or on a regular basis, this approach prevents correlations that could otherwise be drawn between OSCORE messages on different network paths. While the ID update procedure is effective in reducing linkability across paths, it is best used in together with encryption of the OSCORE Partial IV.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">The encryption of the Partial IV defends against correlation of messages based on sequence number patterns, which can still occur even when identifiers are updated. This combined approach significantly improves unlinkability of messages, making it more difficult for adversaries to infer relationships between them or to track communicating parties over time and across paths.<a href="#section-3-2" class="pilcrow">¶</a></p>
-<p id="section-3-3">Usage of the OSCORE ID update procedure in isolation may not completely prevent adversaries from recognizing traffic patterns that reveal message ordering or frequency. In addition adversaries can infer identities of peers based on the sequence numbers (reset to zero or incrementing values), which may still allow for tracking peers across networks.<a href="#section-3-3" class="pilcrow">¶</a></p>
-<p id="section-3-4">Note that while the OSCORE ID update procedure updates the OSCORE identifiers used, other information from the network communication may still be used to track the peers. Thus, it is recommended to combine usage of the OSCORE ID update procedure also with the following:<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-1">The same security considerations as in <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span> and <span>[<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span> hold for this document.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">The OSCORE ID update procedure is a mechanism to mitigate the risk of tracking by on-path adversaries. By enabling endpoints to update their identifiers, either in response to specific events or on a regular basis, this approach helps prevent correlations that could otherwise be drawn between OSCORE messages on different networks.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3">While the ID update procedure helps reduce linkability across networks, the change of IDs alone might not completely prevent adversaries from recognizing traffic patterns that reveal message ordering or frequency. That is, the procedure becomes more effective if combined with the protection and/or change of other information that can help identify endpoints across different networks.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-4">In that spirit, when a peer installs a new OSCORE Security Context as a result of the OSCORE ID update procedure, it re-initializes the Sender Sequence Number to 0. That prevents an adversary from obviously tracking the peer by leveraging the Partial IV of observed messages, since the Partial IV value does not predictably continue from the last known value that was used in the previous network. Building on that, the peer can in fact re-initialize the Sender Sequence Number to a value greater than 0, thus making tracking further difficult.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-5">Likewise, other information such as addressing information, may still be used to track the peers. Thus, it is recommended to combine the usage of the OSCORE ID update procedure also with the following, upon network migration:<a href="#section-3-5" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3-5.1">
-          <p id="section-3-5.1.1">Changing the network address (e.g., intentionally, or due to mobility, or NAT rebinding).<a href="#section-3-5.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3-6.1">
+          <p id="section-3-6.1.1">Changing the network address (e.g., intentionally, or due to mobility, or NAT rebinding).<a href="#section-3-6.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-5.2">
-          <p id="section-3-5.2.1">Changing the link-layer address (e.g., MAC address randomization).<a href="#section-3-5.2.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-6.2">
+          <p id="section-3-6.2.1">Changing the link-layer address (e.g., MAC address randomization).<a href="#section-3-6.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
+<p id="section-3-7">Furthermore, it is recommended that a peer does not start using its newly established OSCORE Sender ID until after network migration, in order to mitigate tracking attempts.<a href="#section-3-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-iana">
