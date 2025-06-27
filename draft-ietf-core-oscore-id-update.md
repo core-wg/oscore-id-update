@@ -65,7 +65,7 @@ When using the CoAP protocol {{RFC7252}}, two peers can use the Object Security 
 
 As part of the shared Security Context, each peer stores one Sender Context identified by a Sender ID and used to protect its outgoing messages. Also, it stores a Recipient Context identified by a Recipient ID and used to unprotect the incoming messages from the other peer. That is, one's peer Sender ID (Recipient ID) is equal to the other peer's Recipient ID (Sender ID).
 
-When receiving an OSCORE-protected message, the recipient peer uses the Recipient ID conveyed within the message or otherwise implied, in order to retrieve the correct Security Context and unprotect the message.
+When receiving an OSCORE-protected message, the recipient peer uses its Recipient ID conveyed within the message or otherwise implied, in order to retrieve the correct Security Context and unprotect the message.
 
 These identifiers are sent in plaintext within OSCORE-protected messages and are immutable throughout the lifetime of a Security Context, even in case the two peers migrate to a different network or simply change their addressing information. Therefore, the identifiers can be used to correlate messages that the two peers exchange at different points in time or through different paths, hence allowing to track them with the consequent privacy implications.
 
@@ -158,7 +158,7 @@ C=Critical, U=Unsafe, N=NoCacheKey, R=Repeatable" align="center"}
 
 Note to RFC Editor: Following the registration of the CoAP Option Number 24, please replace "TBD24" with "24" in the figure above. Then, please delete this paragraph.
 
-The option value can have an arbitrary length, including zero length to indicate intent to use the empty string as Recipient ID.
+The option value can have an arbitrary length, including zero length to indicate intent to use the empty string as Recipient ID. Implementations can limit its length to that of the longest supported Recipient ID.
 
 This document particularly defines how this option is used in messages protected with OSCORE. That is, when the option is included in an outgoing message, the option value specifies the new OSCORE Recipient ID that the sender endpoint intends to use with the other endpoint sharing the OSCORE Security Context.
 
@@ -438,11 +438,11 @@ Upon receiving the OSCORE message Response \#3, the client decrypts and verifies
 
 After that, one further exchange occurs, where both the CoAP request and the CoAP response are protected with the OSCORE Security Context CTX\_B. In particular, upon receiving, decrypting, and successfully verifying the OSCORE message Request \#4, the server confirms that the client is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX\_A.
 
-### Determining New OSCORE Identifiers Ahead of Network Migration {#new-identifiers-before-migration}
+### Establishing New OSCORE Identifiers Ahead of Network Migration {#new-identifiers-before-migration}
 
-Peers may use the OSCORE ID update procedure to determine new OSCORE IDs in advance of a network path change. However, peers must not begin using these new identifiers on the current path prior to switching to a new network. Using a new identifier on the old path would allow observers to correlate activity across paths, defeating the unlinkability that updating the OSCORE IDs is intended to provide. To be effective, new identifiers must only be used for sending packets once the network migration is complete. Provisioning new OSCORE IDs ahead of time ensures that migration can proceed without delay, but care must be taken to ensure that premature use does not enable linkability.
+Peers may use the OSCORE ID update procedure to establish new OSCORE IDs in advance of a network change. However, peers SHOULD NOT begin using these new identifiers on the current network prior to network migration. Using a new identifier on the old network would allow observers to correlate activity across networks, defeating the unlinkability that updating the OSCORE IDs is intended to provide. To be effective, new identifiers SHOULD only be used for sending OSCORE protected messages once the network migration is completed. Establishing new OSCORE IDs ahead of time ensures that migration can proceed without delay, but care must be taken to ensure that premature use of the identifiers does not enable linkability.
 
-To accomplish this, the peers execute the ID update procedure as normal (in the forward or reverse message flow), with the following difference: The peers must not begin using the OSCORE Security Context CTX\_B until after the network migration has taken place. Thus, both peers will be in a position to derive CTX\_B, but will not transition to use it until the first request protected with CTX\_B is transmitted, which must take place after network migration.
+To accomplish this, the peers execute the ID update procedure as normal (in the forward or reverse message flow), with the following difference: the peers must not begin using the OSCORE Security Context CTX\_B until after the network migration has taken place. Thus, both peers will be in the position to derive CTX\_B, but will not transition to use it until the first request protected with CTX\_B is transmitted in the new network, that is after network migration.
 
 ### Additional Actions for Execution {#id-update-additional-actions}
 
@@ -476,16 +476,20 @@ When running the OSCORE ID update procedure stand-alone or integrated in an exec
 
 # Security Considerations
 
-The OSCORE ID update procedure is a mechanism to mitigate the risk of tracking by on-path adversaries. By enabling endpoints to update their identifiers, either in response to specific events or on a regular basis, this approach prevents correlations that could otherwise be drawn between OSCORE messages on different network paths. While the ID update procedure is effective in reducing linkability across paths, it is best used in together with encryption of the OSCORE Partial IV.
+The same security considerations as in {{rfc8613}} and {{draft-ietf-core-oscore-key-update}} hold for this document.
 
-The encryption of the Partial IV defends against correlation of messages based on sequence number patterns, which can still occur even when identifiers are updated. This combined approach significantly improves unlinkability of messages, making it more difficult for adversaries to infer relationships between them or to track communicating parties over time and across paths.
+The OSCORE ID update procedure is a mechanism to mitigate the risk of tracking by on-path adversaries. By enabling endpoints to update their identifiers, either in response to specific events or on a regular basis, this approach helps prevent correlations that could otherwise be drawn between OSCORE messages on different networks.
 
-Usage of the OSCORE ID update procedure in isolation may not completely prevent adversaries from recognizing traffic patterns that reveal message ordering or frequency. In addition adversaries can infer identities of peers based on the sequence numbers (reset to zero or incrementing values), which may still allow for tracking peers across networks.
+While the ID update procedure helps reduce linkability across networks, the change of IDs alone might not completely prevent adversaries from recognizing traffic patterns that reveal message ordering or frequency. That is, the procedure becomes more effective if combined with the protection and/or change of other information that can help identify endpoints across different networks.
 
-Note that while the OSCORE ID update procedure updates the OSCORE identifiers used, other information from the network communication may still be used to track the peers. Thus, it is recommended to combine usage of the OSCORE ID update procedure also with the following:
+In that spirit, when a peer installs a new OSCORE Security Context as a result of the OSCORE ID update procedure, it re-initializes the Sender Sequence Number to 0. That prevents an adversary from obviously tracking the peer by leveraging the Partial IV of observed messages, since the Partial IV value does not predictably continue from the last known value that was used in the previous network. Building on that, the peer can in fact re-initialize the Sender Sequence Number to a value greater than 0, thus making tracking further difficult.
+
+Likewise, other information such as addressing information, may still be used to track the peers. Thus, it is recommended to combine the usage of the OSCORE ID update procedure also with the following, upon network migration:
 
 * Changing the network address (e.g., intentionally, or due to mobility, or NAT rebinding).
 * Changing the link-layer address (e.g., MAC address randomization).
+
+Furthermore, it is recommended that a peer does not start using its newly established OSCORE Sender ID until after network migration, in order to mitigate tracking attempts. 
 
 # IANA Considerations # {#sec-iana}
 
