@@ -476,7 +476,7 @@ When running the OSCORE ID update procedure stand-alone or integrated in an exec
 
 # Security Considerations
 
-The same security considerations as in {{rfc8613}} and {{draft-ietf-core-oscore-key-update}} hold for this document.
+The same security considerations as in {{RFC8613}} and {{I-D.ietf-core-oscore-key-update}} hold for this document.
 
 The OSCORE ID update procedure is a mechanism to mitigate the risk of tracking by on-path adversaries. By enabling endpoints to update their identifiers, either in response to specific events or on a regular basis, this approach helps prevent correlations that could otherwise be drawn between OSCORE messages on different networks.
 
@@ -489,7 +489,7 @@ Likewise, other information such as addressing information, may still be used to
 * Changing the network address (e.g., intentionally, or due to mobility, or NAT rebinding).
 * Changing the link-layer address (e.g., MAC address randomization).
 
-Furthermore, it is recommended that a peer does not start using its newly established OSCORE Sender ID until after network migration, in order to mitigate tracking attempts. 
+Furthermore, it is recommended that a peer does not start using its newly established OSCORE Sender ID until after network migration, in order to mitigate tracking attempts.
 
 # IANA Considerations # {#sec-iana}
 
