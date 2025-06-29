@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-06-26T01:03:58.770095+00:00",
+  "timestamp": "2025-06-29T01:11:27.762131+00:00",
   "repo": "core-wg/oscore-id-update",
   "labels": [
     {
@@ -126,25 +126,41 @@
       "labels": [],
       "body": "We can add more examples for instance:\r\n\r\n- OSCORE ID Update combined with KUDOS where one of them fails to complete\r\n- OSCORE ID Update standalone which fails to complete",
       "createdAt": "2024-07-08T16:30:30Z",
-      "updatedAt": "2024-10-21T12:48:28Z",
+      "updatedAt": "2025-06-26T11:35:28Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "rikard-sics",
+          "authorAssociation": "MEMBER",
+          "body": "I think this can wait until the current examples have been updated, and more alignment with the latest KUDOS design has been done",
+          "createdAt": "2025-06-26T11:35:28Z",
+          "updatedAt": "2025-06-26T11:35:28Z"
+        }
+      ]
     },
     {
       "number": 6,
       "id": "I_kwDOLZNAsc6WT8SP",
       "title": "Note importance of building chains/relations between OSCORE Security Contexts",
       "url": "https://github.com/core-wg/oscore-id-update/issues/6",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "rikard-sics",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "As we are doing in KUDOS",
       "createdAt": "2024-09-12T09:08:50Z",
-      "updatedAt": "2024-10-21T12:48:21Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2025-06-26T06:28:31Z",
+      "closedAt": "2025-06-26T06:28:31Z",
+      "comments": [
+        {
+          "author": "rikard-sics",
+          "authorAssociation": "MEMBER",
+          "body": "I believe this is fine considering the re-design of KUDOS. We no longer have around CTX_DEL for instance",
+          "createdAt": "2025-06-26T06:28:31Z",
+          "updatedAt": "2025-06-26T06:28:31Z"
+        }
+      ]
     },
     {
       "number": 7,
@@ -158,9 +174,17 @@
       "labels": [],
       "body": "For instance both peers can generate new IDs with a hash-based method. In this way the IDs can change every message and do not need to be sent over the wire. Complications include ID collisions and lost messages.",
       "createdAt": "2024-12-16T11:42:13Z",
-      "updatedAt": "2024-12-16T11:42:13Z",
+      "updatedAt": "2025-06-26T06:28:49Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "rikard-sics",
+          "authorAssociation": "MEMBER",
+          "body": "Let's keep this open towards the future",
+          "createdAt": "2025-06-26T06:28:49Z",
+          "updatedAt": "2025-06-26T06:28:49Z"
+        }
+      ]
     },
     {
       "number": 8,
@@ -216,6 +240,22 @@
           "updatedAt": "2025-06-25T14:16:00Z"
         }
       ]
+    },
+    {
+      "number": 10,
+      "id": "I_kwDOLZNAsc69exzt",
+      "title": "Align more with new design of KUDOS",
+      "url": "https://github.com/core-wg/oscore-id-update/issues/10",
+      "state": "OPEN",
+      "author": "rikard-sics",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-06-26T12:27:13Z",
+      "updatedAt": "2025-06-26T12:27:13Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": []
