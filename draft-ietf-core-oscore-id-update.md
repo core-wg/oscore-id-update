@@ -79,23 +79,13 @@ The OSCORE ID update procedure can be run stand-alone or seamlessly integrated i
 
 Readers are expected to be familiar with the terms and concepts related to CoAP {{RFC7252}}, Observe {{RFC7641}}, CBOR {{RFC8949}}, OSCORE {{RFC8613}}, and KUDOS {{I-D.ietf-core-oscore-key-update}}.
 
-This document additionally uses the following terminology.
-
-* Initiator: the peer starting the OSCORE ID update procedure, by sending the first message.
-
-* Responder: the peer that receives the first message in an execution of the OSCORE ID update procedure.
-
-* Forward message flow: the execution workflow where the initiator acts as CoAP client (see {{example-client-initiated-id-update}}).
-
-* Reverse message flow: the execution workflow where the initiator acts as CoAP server (see {{example-server-initiated-id-update}}).
-
 # Update of OSCORE Sender/Recipient IDs # {#update-oscore-ids}
 
 This section defines the procedure that two peers can perform, in order to update the OSCORE Sender/Recipient IDs that they use in their shared OSCORE Security Context.
 
-When performing an update of OSCORE Sender/Recipient IDs, a peer provides its new intended OSCORE Recipient ID to the other peer, by means of the Recipient-ID Option defined in {{sec-recipient-id-option}}. Hereafter, this document refers to a message including the Recipient-ID Option as an "ID update (request/response) message".
+When performing an update of OSCORE Sender/Recipient IDs, a peer provides its new intended OSCORE Recipient ID to the other peer, by means of the Recipient-ID Option defined in {{sec-recipient-id-option}}. Hereafter, this document refers to a message including the Recipient-ID Option as an "ID update (request/response) message". Furthermore, a peer uses the Recipient-ID-Ack Option to confirm the chosen Recipient ID of the other peer.
 
-This procedure can be initiated by either peer, i.e., the CoAP client or the CoAP server may start it by sending the first OSCORE ID update message. The former case is denoted as the "forward message flow" and the latter as the "reverse message flow".
+This procedure can be initiated by either peer, i.e., the CoAP client or the CoAP server may start it by sending the first OSCORE ID update message.
 
 Furthermore, this procedure can be executed stand-alone, or instead seamlessly integrated in an execution of the KUDOS procedure for updating OSCORE keying material used in its FS mode (see {{Section 4 of I-D.ietf-core-oscore-key-update}}) or no-FS mode (see {{Section 4.5 of I-D.ietf-core-oscore-key-update}}).
 
@@ -107,21 +97,61 @@ Furthermore, this procedure can be executed stand-alone, or instead seamlessly i
 
    A peer can safely discard the old OSCORE Security Context including the old OSCORE Sender/Recipient IDs after the following two events have occurred, in this order: first, the peer has sent to the other peer a message protected with the new OSCORE Security Context including the new OSCORE Sender/Recipient IDs; then, the peer has received from the other peer and successfully verified a message protected with that new OSCORE Security Context.
 
-* In the latter integrated case, the KUDOS initiator (responder) also acts as initiator (responder) for the OSCORE ID update procedure. That is, both KUDOS and the OSCORE ID update procedure MUST be run either in their forward message flow or in their reverse message flow.
-
-   The new OSCORE Sender/Recipient IDs MUST NOT be used with the OSCORE Security Context CTX\_OLD, and MUST NOT be used with the temporary OSCORE Security Context CTX\_1 used to protect the first KUDOS message of a KUDOS execution.
-
-   The first use of the new OSCORE Sender/Recipient IDs with the new OSCORE Security Context CTX\_NEW occurs: for the KUDOS initiator, after having received from the KUDOS responder and successfully verified the second KUDOS message of the KUDOS execution in question; for the KUDOS responder, after having sent to the KUDOS initiator the second KUDOS message of the KUDOS execution in question.
+   The new OSCORE Sender/Recipient IDs MUST NOT be used with the OSCORE Security Context CTX\_OLD, and MUST NOT be used with the temporary OSCORE Security Context CTX\_TEMP used to protect the first KUDOS message of a KUDOS execution.
 
 A peer terminates an ongoing OSCORE ID update procedure with another peer as successful, in any of the following two cases.
 
-* The peer is acting as initiator, and it has received and successfully verified the second ID update message from the other peer.
-
-* The peer is acting as responder, and it has sent the second ID update message to the other peer.
+* The peer has received and successfully verified three message from the other peer containing the Recipient-ID-Ack Option.
 
 A peer MUST NOT initiate an OSCORE ID update procedure with another peer, if it has another such procedure ongoing with that other peer.
 
-Upon receiving a valid, first ID update message, a responder MUST send the second ID update message, except in the case any of the conditions for failing or aborting the procedure apply (see {{update-failure}}}).
+Upon receiving a valid, first ID update message, a responder MUST continue the procedure and send a following ID update message, except in the case any of the conditions for failing or aborting the procedure apply (see {{update-failure}}}).
+
+## Workflow of the ID Update Procedure
+
+This section describes the workflow of the OSCORE ID Update procedure in detail.
+
+The procedure begins when either peer:
+- Sends a message including the Recipient-ID Option, or
+- Receives such a message from the other peer.
+
+Once the procedure has started a peer shall follow the instructions below:
+
+**Sending the Next Message**
+
+- The next sent message sent using CTX_A must include the Recipient-ID option with this peer's chosen Recipient ID value.
+  - Note that this also informs the other peer of support for the ID update procedure.
+  - If the peer initiated the procedure, it must not resend the offer immediately.
+
+**Acknowledgment**
+
+- If a peer hsa received a valid message from the other peer including the Recipient-ID Option, it must include the Recipient-ID-Ack Option in subsequent messages.
+- The value of Recipient-ID-Ack Option, if used, should be the Recipient ID received from the other peer.
+
+**Sending Subsequent Messages**
+
+A peer must revert to sending messages with the Recipient ID option according to the following:
+
+- A local timer should be maintained during the procedure.
+  - If the timeout expires, the next sent message must include the Recipient ID option and, if applicable, the Recipient-ID-Ack Option with the last received Recipient ID.
+
+### Procedure Completion
+
+The procedure concludes under one of the following conditions:
+
+**Successful Confirmation**
+
+Three valid messages are received from the peer that include the Recipient-ID-Ack Option. At this point:
+
+- It is safe to delete CTX\_A.
+- CTX\_B is now considered valid and can be used (e.g., following network migration).
+
+**Failure or Timeout**
+
+If the procedure times out without confirmation:
+
+- The offered Recipient ID must be discarded and added to the list of IDs to prevent reuse.
+
 
 ## Failure of the ID Update Procedure {#update-failure}
 
@@ -129,15 +159,15 @@ The following section describes cases where the OSCORE ID update procedure fails
 
 Upon receiving a valid first ID update message, a responder MUST abort the ID update procedure, in the following case:
 
-* The received ID update message is not a KUDOS message (i.e., the OSCORE ID update procedure is being performed stand-alone) and the responder has no eligible Recipient ID to offer to the initiator (see {{id-update-additional-actions}}).
+* The received ID update message is not a KUDOS message (i.e., the OSCORE ID update procedure is being performed stand-alone) and the peer has no eligible Recipient ID to offer (see {{id-update-additional-actions}}).
 
 Upon receiving a valid ID update message, a peer MUST abort the ID update procedure, in the following case:
 
 * The received ID update message contains a Recipient-ID option with a length that exceeds the maximum length of OSCORE Sender/Recipient IDs for the AEAD algorithm in use for the OSCORE Security Context shared between the peers. This is the case when the length of the Recipient-ID option exceeds the length of the AEAD nonce minus 6 (see {{Section 3.3 of RFC8613}}).
 
-If, after receiving an ID update message as CoAP request, a peer aborts the ID update procedure, the peer MUST also reply to the received ID update request message with a protected 5.03 (Service Unavailable) error response. The error response MUST NOT include the Recipient-ID Option, and its diagnostic payload MAY provide additional information. When receiving the error response, the initiator terminates the OSCORE IDs procedure as failed.
+If, after receiving an ID update message as CoAP request, a peer aborts the ID update procedure, the peer MUST also reply to the received ID update request message with a protected 5.03 (Service Unavailable) error response. The error response MUST NOT include the Recipient-ID Option, and its diagnostic payload MAY provide additional information. When receiving the error response, the peer terminates the OSCORE IDs procedure as failed.
 
-An initiator terminates an ongoing OSCORE ID update procedure with another peer as failed, in case, after having sent the first ID update message for the procedure in question, a pre-defined amount of time has elapsed without receiving and successfully verifying the second ID update message from the other peer. It is RECOMMENDED that such an amount of time is equal to MAX\_TRANSMIT\_WAIT (see {{Section 4.8.2 of RFC7252}}).
+A peer terminates an ongoing OSCORE ID update procedure with another peer as failed, in case, after having sent the first ID update message for the procedure in question, a pre-defined amount of time has elapsed without receiving and successfully verifying the second ID update message from the other peer. It is RECOMMENDED that such an amount of time is equal to MAX\_TRANSMIT\_WAIT (see {{Section 4.8.2 of RFC7252}}).
 
 When the OSCORE ID update procedure is integrated into the execution of the KUDOS procedure, it is possible that the KUDOS procedure succeeds while the OSCORE ID update procedure fails. In such case, the peers continue their communications using the newly derived OSCORE Security Context CTX\_NEW obtained from the KUDOS procedure, and still use the old Sender and Recipient IDs. That is, any Recipient IDs conveyed in the exchanged Recipient-ID Options is not considered.
 
@@ -168,15 +198,31 @@ If the length of the Recipient ID included in the Recipient-ID option is zero, t
 
 The Recipient-ID Option is of class E in terms of OSCORE processing (see {{Section 4.1 of RFC8613}}).
 
-### Forward Message Flow {#example-client-initiated-id-update}
+## The Recipient-ID-Ack Option # {#sec-recipient-id-ack-option}
 
-{{fig-id-update-client-init}} shows an example of the OSCORE ID update procedure, run stand-alone and in the forward message flow, with the client acting as initiator. On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
+The Recipient ID-Ack-Option defined in this section has the properties summarized in {{table-recipient-id-ack-option}}, which extends Table 4 of {{RFC7252}}. That is, the option is elective, safe to forward, part of the cache key, and not repeatable.
 
-{{sec-id-update-in-kudos-forward}} provides a different example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the forward message flow (see {{Section 4.3.5 of I-D.ietf-core-oscore-key-update}}).
+| No.   | C | U | N | R | Name             | Format | Length | Default |
+| TBD32 |   |   |   |   | Recipient-ID-Ack | empty  | any    | (none)  |
+{: #table-recipient-id-ack-option title="The&nbsp;Recipient-ID-Ack&nbsp;Option.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+C=Critical, U=Unsafe, N=NoCacheKey, R=Repeatable" align="center"}
+
+Note to RFC Editor: Following the registration of the CoAP Option Number 32, please replace "TBD32" with "32" in the figure above. Then, please delete this paragraph.
+
+This document particularly defines how this option is used in messages protected with OSCORE. That is, when the option is included in an outgoing message, the option value confirms the new OSCORE Recipient ID that the recipient endpoint has chosen for this sender endpoint.
+
+The Recipient-ID-Ack Option is of class E in terms of OSCORE processing (see {{Section 4.1 of RFC8613}}).
+
+### OSCORE ID Update Procedure Initiated with a Request Message {#example-client-initiated-id-update}
+
+{{fig-id-update-client-init}} shows an example of the OSCORE ID update procedure, run stand-alone and initiated by the client sending a request message. On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
 
 ~~~~~~~~~~~ aasvg
           Client                             Server
-       (initiator)                         (responder)
             |                                   |
 CTX_A {     |                                   | CTX_A {
  SID = 0x01 |                                   |  SID = 0x00
@@ -204,65 +250,95 @@ Verify      | }                                 |
 with CTX_A  | Encrypted Payload {               |
             |  ...                              |
             |  Recipient-ID: 0x78               |
+            |  Recipient-ID-Ack: 0x42           |
             |  ...                              |
             |  Application Payload              |
             | }                                 |
             |                                   |
-CTX_B {     |                                   | CTX_B {
- SID = 0x78 |                                   |  SID = 0x42
- RID = 0x42 |                                   |  RID = 0x78
-}           |                                   | }
+            |                                   |
             |                                   |
             |            Request #2             |
 Protect     |---------------------------------->| /temp
-with CTX_B  | OSCORE {                          |
+with CTX_A  | OSCORE {                          |
             |  ...                              |
-            |  kid: 0x78                        | Verify
-            | }                                 | with CTX_B
+            |                                   | Verify
+            | }                                 | with CTX_A
             | Encrypted Payload {               |
+            |  ...                              |
+            |  Recipient-ID-Ack: 0x78           |
             |  ...                              |
             |  Application Payload              |
             | }                                 |
             |                                   |
             |            Response #2            |
             |<----------------------------------| Protect
-            | OSCORE {                          | with CTX_B
+            | OSCORE {                          | with CTX_A
             |  ...                              |
 Verify      | }                                 |
-with CTX_B  | Encrypted Payload {               |
+with CTX_A  | Encrypted Payload {               |
             |  ...                              |
+            |  Recipient-ID-Ack: 0x42           |
             |  Application Payload              |
             | }                                 |
             |                                   |
-Discard     |                                   |
-CTX_A       |                                   |
             |                                   |
             |            Request #3             |
 Protect     |---------------------------------->| /temp
-with CTX_B  | OSCORE {                          |
+with CTX_A  | OSCORE {                          |
             |  ...                              |
-            |  kid: 0x78                        | Verify
-            | }                                 | with CTX_B
+            |                                   | Verify
+            | }                                 | with CTX_A
             | Encrypted Payload {               |
+            |  ...                              |
+            |  Recipient-ID-Ack: 0x78           |
             |  ...                              |
             |  Application Payload              |
             | }                                 |
             |                                   |
-            |                                   | Discard
-            |                                   | CTX_A
-            |                                   |
             |            Response #3            |
             |<----------------------------------| Protect
-            | OSCORE {                          | with CTX_B
+            | OSCORE {                          | with CTX_A
             |  ...                              |
 Verify      | }                                 |
-with CTX_B  | Encrypted Payload {               |
+with CTX_A  | Encrypted Payload {               |
+            |  ...                              |
+            |  Recipient-ID-Ack: 0x42           |
+            |  Application Payload              |
+            | }                                 |
+            |                                   |
+Safe to     |                                   |
+discard     |                                   |
+CTX_A       |                                   |
+            |                                   |
+            |            Request #4             |
+Protect     |---------------------------------->| /temp
+with CTX_A  | OSCORE {                          |
+            |  ...                              |
+            |                                   | Verify
+            | }                                 | with CTX_A
+            | Encrypted Payload {               |
+            |  ...                              |
+            |  Recipient-ID-Ack: 0x78           |
+            |  ...                              |
+            |  Application Payload              |
+            | }                                 |
+            |                                   |
+            |                                   | Safe to
+            |                                   | discard
+            |                                   | CTX_A
+            |                                   |
+            |            Response #4            |
+            |<----------------------------------| Protect
+            | OSCORE {                          | with CTX_A
+            |  ...                              |
+Verify      | }                                 |
+with CTX_A  | Encrypted Payload {               |
             |  ...                              |
             |  Application Payload              |
             | }                                 |
             |                                   |
 ~~~~~~~~~~~
-{: #fig-id-update-client-init title="Example of the OSCORE ID update procedure with Forward Message Flow" artwork-align="center"}
+{: #fig-id-update-client-init title="Example of the OSCORE ID update procedure initiated with a request message" artwork-align="center"}
 
 Before the OSCORE ID update procedure starts, the client (the server) shares with the server (the client) an OSCORE Security Context CTX\_A with Sender ID 0x01 (0x00) and Recipient ID 0x00 (0x01).
 
@@ -270,179 +346,25 @@ When starting the OSCORE ID update procedure, the client determines its new inte
 
 The client protects the request with CTX\_A, i.e., by using the keying material derived from the client's current Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request \#1.
 
-Upon receiving, decrypting, and successfully verifying the OSCORE message Request \#1, the server retrieves the value 0x42 from the Recipient-ID Option, and determines its new intended OSCORE Recipient ID 0x78. Then, the server prepares a CoAP response including the Recipient-ID Option, with value the server's new Recipient ID 0x78.
+Upon receiving, decrypting, and successfully verifying the OSCORE message Request \#1, the server retrieves the value 0x42 from the Recipient-ID Option, and determines its new intended OSCORE Recipient ID 0x78. Then, the server prepares a CoAP response including the Recipient-ID Option, with value the server's new Recipient ID 0x78, and the Recipient-ID-Ack Option, with value the client's offered Recipient ID 0x42.
 
 The server protects the response with CTX\_A, i.e., by using the keying material derived from the server's current Sender ID 0x00. After that, the server sends the response to the client.
 
-Then, the server considers 0x42 and 0x78 as its new Sender ID and Recipient ID to use with the client, respectively. As shown in the example, the server practically installs a new OSCORE Security Context CTX\_B where: i) its Sender ID and Recipient ID are 0x42 and 0x78, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see {{Section 3.2.2 of RFC8613}}); iii) anything else is like in the OSCORE Security Context used to encrypt the OSCORE message Response \#1.
+Next, the client sends the OSCORE message Request \#2, which is protected with CTX\_A and includes the Recipient-ID-Ack Option, with value the server's offered Recipient ID 0x78.
 
-Upon receiving, decrypting, and successfully verifying the OSCORE message Response \#1, the client considers 0x78 and 0x42 as the new Sender ID and Recipient ID to use with the server, respectively. As shown in the example, the client practically installs a new OSCORE Security Context CTX\_B where: i) its Sender ID and Recipient ID are 0x78 and 0x42, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see {{Section 3.2.2 of RFC8613}}); iii) anything else is like in the OSCORE Security Context used to decrypt the OSCORE message Response \#1.
+From this point, following messages exchanges between the peers will include the Recipient-ID-Ack Option. A peer will only stop including that option when it has verified 3 messages from the other peer containing the Recipient-ID-Ack Option.
 
-From then on, the client and the server can exchange messages protected with the OSCORE Security Context CTX\_B, i.e., according to the new OSCORE Sender/Recipient IDs and using new keying material derived from those.
+Upon receiving, decrypting, and successfully verifying the OSCORE message Response \#3, the client considers 0x78 and 0x42 as the new Sender ID and Recipient ID to use when deriving CTX\_B. Practically, the client can install a new OSCORE Security Context CTX\_B where: i) its Sender ID and Recipient ID are 0x78 and 0x42, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see {{Section 3.2.2 of RFC8613}}); iii) anything else is like in the OSCORE Security Context CTX\_A.
 
-That is, the client sends the OSCORE message Request \#2, which is protected with CTX\_B and specifies the new client's Sender ID 0x78 in the 'kid' field of the OSCORE Option.
+Upon receiving, decrypting, and successfully verifying the OSCORE message Request \#4, the server considers 0x42 and 0x78 as its new Sender ID and Recipient ID to use for CTX\_B. Practically, the server installs a new OSCORE Security Context CTX\_A where: i) its Sender ID and Recipient ID are 0x42 and 0x78, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see {{Section 3.2.2 of RFC8613}}); iii) anything else is like in the OSCORE Security Context CTX\_A.
 
-Upon receiving the OSCORE message Request \#2, the server retrieves the OSCORE Security Context CTX\_B, according to its new Recipient ID 0x78 specified in the 'kid' field of the OSCORE Option. Then, the server decrypts and verifies the response by using CTX\_B. Finally, the server prepares a CoAP response Response \#2, protects it with CTX\_B, and sends it to the client.
-
-Upon receiving the OSCORE message Response \#2, the client decrypts and verifies it with the OSCORE Security Context CTX\_B. In case of successful verification, the client confirms that the server is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX\_A.
-
-After that, one further exchange occurs, where both the CoAP request and the CoAP response are protected with the OSCORE Security Context CTX\_B. In particular, upon receiving, decrypting, and successfully verifying the OSCORE message Request \#3, the server confirms that the client is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX\_A.
-
-### Reverse Message Flow {#example-server-initiated-id-update}
-
-{{fig-id-update-server-init}} shows an example of the OSCORE ID update procedure, run stand-alone and in the reverse message flow, with the server acting as initiator. On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
-
-{{sec-id-update-in-kudos-reverse}} provides a different example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the reverse message flow (see {{Section 4.3.6 of I-D.ietf-core-oscore-key-update}}).
-
-~~~~~~~~~~~ aasvg
-          Client                             Server
-       (responder)                         (initiator)
-            |                                   |
-CTX_A {     |                                   | CTX_A {
- SID = 0x01 |                                   |  SID = 0x00
- RID = 0x00 |                                   |  RID = 0x01
-}           |                                   | }
-            |                                   |
-            |            Request #1             |
-Protect     |---------------------------------->| /temp
-with CTX_A  | OSCORE {                          |
-            |  ...                              |
-            |  kid: 0x01                        | Verify
-            | }                                 | with CTX_A
-            | Encrypted Payload {               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-            |            Response #1            |
-            |<----------------------------------| Protect
-            | OSCORE {                          | with CTX_A
-            |  ...                              |
-Verify      | }                                 |
-with CTX_A  | Encrypted Payload {               |
-            |  ...                              |
-            |  Recipient-ID: 0x78               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-            |            Request #2             |
-Protect     |---------------------------------->| /temp
-with CTX_A  | OSCORE {                          |
-            |  ...                              |
-            |  kid: 0x01                        | Verify
-            | }                                 | with CTX_A
-            | Encrypted Payload {               |
-            |  ...                              |
-            |  Recipient-ID: 0x42               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-            |                                   | CTX_B {
-            |                                   |  SID = 0x42
-            |                                   |  RID = 0x78
-            |                                   | }
-            |                                   |
-            |            Response #2            |
-            |<----------------------------------| Protect
-            | OSCORE {                          | with CTX_A
-            |  ...                              |
-Verify      | }                                 |
-with CTX_A  | Encrypted Payload {               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-CTX_B {     |                                   |
- SID = 0x78 |                                   |
- RID = 0x42 |                                   |
-}           |                                   |
-            |                                   |
-            |            Request #3             |
-Protect     |---------------------------------->| /temp
-with CTX_B  | OSCORE {                          |
-            |  ...                              |
-            |  kid: 0x78                        | Verify
-            | }                                 | with CTX_B
-            | Encrypted Payload {               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-            |            Response #3            |
-            |<----------------------------------| Protect
-            | OSCORE {                          | with CTX_B
-            |  ...                              |
-Verify      | }                                 |
-with CTX_B  | Encrypted Payload {               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-Discard     |                                   |
-CTX_A       |                                   |
-            |                                   |
-            |            Request #4             |
-Protect     |---------------------------------->| /temp
-with CTX_B  | OSCORE {                          |
-            |  ...                              |
-            |  kid: 0x78                        | Verify
-            | }                                 | with CTX_B
-            | Encrypted Payload {               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-            |                                   | Discard
-            |                                   | CTX_A
-            |                                   |
-            |            Response #4            |
-            |<----------------------------------| Protect
-            | OSCORE {                          | with CTX_B
-            |  ...                              |
-Verify      | }                                 |
-with CTX_B  | Encrypted Payload {               |
-            |  ...                              |
-            |  Application Payload              |
-            | }                                 |
-            |                                   |
-~~~~~~~~~~~
-{: #fig-id-update-server-init title="Example of the OSCORE ID update procedure with Reverse Message Flow" artwork-align="center"}
-
-Before the OSCORE ID update procedure starts, the client (the server) shares with the server (the client) an OSCORE Security Context CTX\_A with Sender ID 0x01 (0x00) and Recipient ID 0x00 (0x01).
-
-At first, the client prepares a CoAP Request \#1 targeting an application resource at the server. The client protects the request with CTX\_A, i.e., by using the keying material derived from the client's current Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request \#1.
-
-Upon receiving, decrypting, and successfully verifying the OSCORE message Request \#1, the server decides to start an OSCORE ID update procedure. To this end, the server determines its new intended OSCORE Recipient ID 0x78. Then, the server prepares a CoAP response as a reply to the just received request and including the Recipient-ID Option, with value the server's new Recipient ID 0x78.
-
-The server protects the response with CTX\_A, i.e., by using the keying material derived from the server's current Sender ID 0x00. After that, the server sends the response to the client as Response \#1.
-
-Upon receiving, decrypting, and successfully verifying the OSCORE message Response \#1, the client retrieves the value 0x78 from the Recipient-ID Option, and determines its new intended OSCORE Recipient ID 0x42. Then, the client prepares a CoAP request targeting an application resource at the server. The request includes the Recipient-ID Option, with value the client's new Recipient ID 0x42.
-
-The client protects the request with CTX\_A, i.e., by using the keying material derived from the client's current Sender ID 0x01. The protected request specifies the client's current Sender ID 0x01 in the 'kid' field of the OSCORE Option. After that, the client sends the request to the server as Request \#2.
-
-Upon receiving, decrypting, and successfully verifying the OSCORE message Request \#2, the server retrieves the value 0x42 from the Recipient-ID Option. Then the server considers 0x42 and 0x78 as the new Sender ID and Recipient ID to use with the client, respectively. As shown in the example, the server practically installs a new OSCORE Security Context CTX\_B where: i) its Sender ID and Recipient ID are 0x42 and 0x78, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see {{Section 3.2.2 of RFC8613}}); iii) anything else is like in the OSCORE Security Context used to encrypt the OSCORE message Request \#2.
-
-Then, the server prepares a CoAP response, as a reply to the just received request, and protects it with CTX\_A, i.e., by using the keying material derived from the server's current Sender ID 0x00. After that, the server sends the response to the client as Response \#2.
-
-Upon receiving, decrypting, and successfully verifying the OSCORE message Response \#2, the client considers 0x78 and 0x42 as the new Sender ID and Recipient ID to use with the server, respectively. As shown in the example, the client practically installs a new OSCORE Security Context CTX\_B where: i) its Sender ID and Recipient ID are 0x78 and 0x42, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see {{Section 3.2.2 of RFC8613}}); iii) anything else is like in the OSCORE Security Context used to decrypt the OSCORE response.
-
-From then on, the client and the server can exchange messages protected with the OSCORE Security Context CTX\_B, i.e., according to the new OSCORE Sender/Recipient IDs and using new keying material derived from those.
-
-That is, the client sends the OSCORE message Request \#3, which is protected with CTX\_B and specifies the new client's Sender ID 0x78 in the 'kid' field of the OSCORE Option.
-
-Upon receiving the OSCORE message Request \#3, the server retrieves the OSCORE Security Context CTX\_B, according to its new Recipient ID 0x78 specified in the 'kid' field of the OSCORE Option. Then, the server decrypts and verifies the response by using CTX\_B. Finally, the server prepares a CoAP response, protects it with CTX\_B, and sends it to the client as Response \#3.
-
-Upon receiving the OSCORE message Response \#3, the client decrypts and verifies it with the OSCORE Security Context CTX\_B. In case of successful verification, the client confirms that the server is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX\_A.
-
-After that, one further exchange occurs, where both the CoAP request and the CoAP response are protected with the OSCORE Security Context CTX\_B. In particular, upon receiving, decrypting, and successfully verifying the OSCORE message Request \#4, the server confirms that the client is aligned with the new OSCORE Sender/Recipient IDs, and thus discards the OSCORE Security Context CTX\_A.
+At this point both client and server are in a position to derive CTX\_B already, or wait to do it. Regardless they are both able to start using CTX\_B, e.g., after network migration.
 
 ### Establishing New OSCORE Identifiers Ahead of Network Migration {#new-identifiers-before-migration}
 
 Peers may use the OSCORE ID update procedure to establish new OSCORE IDs in advance of a network change. However, peers SHOULD NOT begin using these new identifiers on the current network prior to network migration. Using a new identifier on the old network would allow observers to correlate activity across networks, defeating the unlinkability that updating the OSCORE IDs is intended to provide. To be effective, new identifiers SHOULD only be used for sending OSCORE protected messages once the network migration is completed. Establishing new OSCORE IDs ahead of time ensures that migration can proceed without delay, but care must be taken to ensure that premature use of the identifiers does not enable linkability.
 
-To accomplish this, the peers execute the ID update procedure as normal (in the forward or reverse message flow), with the following difference: the peers must not begin using the OSCORE Security Context CTX\_B until after the network migration has taken place. Thus, both peers will be in the position to derive CTX\_B, but will not transition to use it until the first request protected with CTX\_B is transmitted in the new network, that is after network migration.
+To accomplish this, the peers execute the ID update procedure as normal, with the following difference: the peers must not begin using the OSCORE Security Context CTX\_B until after the network migration has taken place. Thus, both peers will be in the position to derive CTX\_B, but will not transition to use it until the first request protected with CTX\_B is transmitted in the new network, that is after network migration.
 
 ### Additional Actions for Execution {#id-update-additional-actions}
 
@@ -510,209 +432,6 @@ Note to RFC Editor: Following the registration of the CoAP Option Number 24, ple
 
 --- back
 
-# Examples of OSCORE ID update procedure Integrated in KUDOS # {#sec-id-update-in-kudos}
-
-The following section shows two examples where the OSCORE ID update procedure is performed together with the KUDOS procedure for updating OSCORE keying material.
-
-## Forward Message Flow # {#sec-id-update-in-kudos-forward}
-
-{{fig-kudos-and-id-update-client-init}} provides an example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the forward message flow (see {{Section 4.3.5 of I-D.ietf-core-oscore-key-update}}). On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
-
-~~~~~~~~~~~ aasvg
-                     Client                  Server
-                   (initiator)            (responder)
-                        |                      |
-CTX_OLD {               |                      | CTX_OLD {
- SID = 0x01             |                      |  SID = 0x00
- RID = 0x00             |                      |  RID = 0x01
-}                       |                      | }
-                        |                      |
-Generate N1             |                      |
-                        |                      |
-CTX_1 = updateCtx(      |                      |
-        X1,             |                      |
-        N1,             |                      |
-        CTX_OLD )       |                      |
-                        |                      |
-                        |      Request #1      |
-Protect with CTX_1      |--------------------->| /.well-known/kudos
-                        | OSCORE {             |
-                        |  ...                 |
-                        |  d flag: 1           | CTX_1 = updateCtx(
-                        |  x: X1               |         X1,
-                        |  nonce: N1           |         N1,
-                        |  ...                 |         CTX_OLD )
-                        |  kid: 0x01           |
-                        | }                    | Verify with CTX_1
-                        | Encrypted Payload {  |
-                        |  ...                 | Generate N2
-                        |  Recipient-ID: 0x42  |
-                        |  ...                 | CTX_NEW = updateCtx(
-                        | }                    |           Comb(X1,X2),
-                        |                      |           Comb(N1,N2),
-                        |                      |           CTX_OLD )
-                        |                      |
-                        |      Response #1     |
-                        |<---------------------| Protect with CTX_NEW
-                        | OSCORE {             |
-                        |  ...                 |
-CTX_NEW = updateCtx(    |  Partial IV: 0       |
-          Comb(X1,X2),  |  ...                 |
-          Comb(N1,N2),  |                      |
-          CTX_OLD )     |  d flag: 1           |
-                        |  x: X2               |
-Verify with CTX_NEW     |  nonce: N2           |
-                        |  ...                 |
-Discard CTX_OLD         | }                    |
-                        | Encrypted Payload {  |
-Update SID and          |  ...                 | Update SID and
-RID in CTX_NEW          |  Recipient-ID: 0x78  | RID in CTX_NEW
-                        |  ...                 |
-CTX_NEW {               | }                    | CTX_NEW {
- SID = 0x78             |                      |  SID = 0x42
- RID = 0x42             |                      |  RID = 0x78
-}                       |                      | }
-                        |                      |
-
-The actual key update process ends here.
-The two peers can use the new Security Context CTX_NEW.
-
-                        |                      |
-                        |      Request #2      |
-Protect with CTX_NEW    |--------------------->| /temp
-                        | OSCORE {             |
-                        |  ...                 |
-                        |  kid: 0x78           | Verify with CTX_NEW
-                        | }                    |
-                        | Encrypted Payload {  | Discard CTX_OLD
-                        |  ...                 |
-                        |  Application Payload |
-                        | }                    |
-                        |                      |
-                        |      Response #2     |
-                        |<---------------------| Protect with CTX_NEW
-                        | OSCORE {             |
-                        |  ...                 |
-Verify with CTX_NEW     | }                    |
-                        | Encrypted Payload {  |
-                        |  ...                 |
-                        |  Application Payload |
-                        | }                    |
-                        |                      |
-~~~~~~~~~~~
-{: #fig-kudos-and-id-update-client-init title="Example of the OSCORE ID update procedure with Forward Message Flow and Integrated in a KUDOS Execution." artwork-align="center"}
-
-## Reverse Message Flow # {#sec-id-update-in-kudos-reverse}
-
-{{fig-kudos-and-id-update-server-init}} provides an example of the OSCORE ID update procedure, as run integrated in an execution of KUDOS and in the reverse message flow (see {{Section 4.3.6 of I-D.ietf-core-oscore-key-update}}). On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
-
-~~~~~~~~~~~ aasvg
-                      Client                 Server
-                   (responder)            (initiator)
-                        |                      |
-CTX_OLD {               |                      | CTX_OLD {
- SID = 0x01             |                      |  SID = 0x00
- RID = 0x00             |                      |  RID = 0x01
-}                       |                      | }
-                        |                      |
-                        |      Request #1      |
-Protect with CTX_OLD    |--------------------->| /temp
-                        | OSCORE {             |
-                        |  ...                 |
-                        |  kid: 0x01           |
-                        | }                    | Verify with CTX_OLD
-                        | Encrypted Payload {  |
-                        |  ...                 | Generate N1
-                        |  Application Payload |
-                        | }                    | CTX_1 = updateCtx(
-                        |                      |         X1,
-                        |                      |         N1,
-                        |                      |         CTX_OLD )
-                        |                      |
-                        |      Response #1     |
-                        |<---------------------| Protect with CTX_1
-                        | OSCORE {             |
-                        |  ...                 |
-CTX_1 = updateCtx(      |  Partial IV: 0       |
-        X1,             |  ...                 |
-        N1,             |  d flag: 1           |
-        CTX_OLD )       |  x: X1               |
-                        |  nonce: N1           |
-Verify with CTX_1       |  ...                 |
-                        | }                    |
-Generate N2             | Encrypted Payload {  |
-                        |  ...                 |
-CTX_NEW = updateCtx(    |  Recipient-ID: 0x78  |
-          Comb(X1,X2),  |  ...                 |
-          Comb(N1,N2),  | }                    |
-          CTX_OLD )     |                      |
-                        |                      |
-                        |      Request #2      |
-Protect with CTX_NEW    |--------------------->| /.well-known/kudos
-                        | OSCORE {             |
-                        |  ...                 |
-                        |  d flag: 1           | CTX_NEW = updateCtx(
-                        |  x: X2               |           Comb(X1,X2),
-                        |  nonce: N2           |           Comb(N1,N2),
-                        |  y: w                |           CTX_OLD )
-                        |  old_nonce: N1       |
-                        |  kid: 0x01           |
-                        |  ...                 |
-                        | }                    | Verify with CTX_NEW
-                        | Encrypted Payload {  |
-                        |  ...                 | Discard CTX_OLD
-                        |  Recipient-ID: 0x42  |
-                        |  ...                 |
-                        |  Application Payload |
-                        | }                    |
-                        |                      |
-Update SID and          |                      | Update SID and
-RID in CTX_NEW          |                      | RID in CTX_NEW
-                        |                      |
- CTX_NEW {              |                      | CTX_NEW {
-  SID = 0x78            |                      |  SID = 0x42
-  RID = 0x42            |                      |  RID = 0x78
- }                      |                      | }
-                        |                      |
-
-The actual key update process ends here.
-The two peers can use the new Security Context CTX_NEW.
-
-                        |                      |
-                        |      Response #2     |
-                        |<---------------------| Protect with CTX_NEW
-                        | OSCORE {             |
-                        |  ...                 |
-Verify with CTX_NEW     | }                    |
-                        | Encrypted Payload {  |
-Discard CTX_OLD         |  ...                 |
-                        |  Application Payload |
-                        | }                    |
-                        |                      |
-                        |      Request #3      |
-Protect with CTX_NEW    |--------------------->| /temp
-                        | OSCORE {             |
-                        |  ...                 |
-                        |  kid: 0x78           | Verify with CTX_NEW
-                        | }                    |
-                        | Encrypted Payload {  |
-                        |  ...                 |
-                        |  Application Payload |
-                        | }                    |
-                        |                      |
-                        |      Response #3     |
-                        |<---------------------| Protect with CTX_NEW
-                        | OSCORE {             |
-                        |  ...                 |
-Verify with CTX_NEW     | }                    |
-                        | Encrypted Payload {  |
-                        |  ...                 |
-                        |  Application Payload |
-                        | }                    |
-                        |                      |
-~~~~~~~~~~~
-{: #fig-kudos-and-id-update-server-init title="Example of the OSCORE ID update procedure with Reverse Message Flow and Integrated in a KUDOS Execution." artwork-align="center"}
-
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
 
@@ -723,6 +442,8 @@ Verify with CTX_NEW     | }                    |
 * Improved security considerations.
 
 * Using the ID update procedure ahead of network migration and switching to new IDs after migration.
+
+* Update design more in line with KUDOS.
 
 ## Version -01 to -02 ## {#sec-01-02}
 
