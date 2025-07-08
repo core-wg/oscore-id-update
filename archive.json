@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-06T01:10:31.450617+00:00",
+  "timestamp": "2025-07-08T01:05:08.694216+00:00",
   "repo": "core-wg/oscore-id-update",
   "labels": [
     {
@@ -126,7 +126,7 @@
       "labels": [],
       "body": "We can add more examples for instance:\r\n\r\n- OSCORE ID Update combined with KUDOS where one of them fails to complete\r\n- OSCORE ID Update standalone which fails to complete",
       "createdAt": "2024-07-08T16:30:30Z",
-      "updatedAt": "2025-06-26T11:35:28Z",
+      "updatedAt": "2025-07-07T19:48:07Z",
       "closedAt": null,
       "comments": [
         {
@@ -135,6 +135,13 @@
           "body": "I think this can wait until the current examples have been updated, and more alignment with the latest KUDOS design has been done",
           "createdAt": "2025-06-26T11:35:28Z",
           "updatedAt": "2025-06-26T11:35:28Z"
+        },
+        {
+          "author": "rikard-sics",
+          "authorAssociation": "MEMBER",
+          "body": "This can be done for version -04",
+          "createdAt": "2025-07-07T19:48:07Z",
+          "updatedAt": "2025-07-07T19:48:07Z"
         }
       ]
     },
@@ -246,14 +253,30 @@
       "id": "I_kwDOLZNAsc69exzt",
       "title": "Align more with new design of KUDOS",
       "url": "https://github.com/core-wg/oscore-id-update/issues/10",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "rikard-sics",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2025-06-26T12:27:13Z",
-      "updatedAt": "2025-06-26T12:27:13Z",
+      "updatedAt": "2025-07-07T19:46:36Z",
+      "closedAt": "2025-07-07T19:46:36Z",
+      "comments": []
+    },
+    {
+      "number": 11,
+      "id": "I_kwDOLZNAsc6_Ux2I",
+      "title": "Add examples of running ID update integrated with KUDOS, also add more textual description about how this works now",
+      "url": "https://github.com/core-wg/oscore-id-update/issues/11",
+      "state": "OPEN",
+      "author": "rikard-sics",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-07-07T18:23:10Z",
+      "updatedAt": "2025-07-07T18:23:10Z",
       "closedAt": null,
       "comments": []
     }
