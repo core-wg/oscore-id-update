@@ -99,41 +99,39 @@ Furthermore, this procedure can be executed stand-alone, or instead seamlessly i
 
    The new OSCORE Sender/Recipient IDs MUST NOT be used with the OSCORE Security Context CTX\_OLD, and MUST NOT be used with the temporary OSCORE Security Context CTX\_TEMP used to protect the first KUDOS message of a KUDOS execution.
 
-A peer terminates an ongoing OSCORE ID update procedure with another peer as successful, in any of the following two cases.
-
-* The peer has received and successfully verified three message from the other peer containing the Recipient-ID-Ack Option.
-
 A peer MUST NOT initiate an OSCORE ID update procedure with another peer, if it has another such procedure ongoing with that other peer.
 
-Upon receiving a valid, first ID update message, a responder MUST continue the procedure and send a following ID update message, except in the case any of the conditions for failing or aborting the procedure apply (see {{update-failure}}}).
+Upon receiving a valid, first ID update message, a peer MUST continue the procedure and send a following ID update message, except in the case any of the conditions for failing or aborting the procedure apply (see {{update-failure}}}).
 
 ## Workflow of the ID Update Procedure
 
 This section describes the workflow of the OSCORE ID Update procedure in detail.
 
 The procedure begins when either peer:
+
 - Sends a message including the Recipient-ID Option, or
 - Receives such a message from the other peer.
+
+During the procedure a peer decides on a value of Recipient ID to offer to the other peer and use as value of the Recipient-ID Option, and continues offering that value until the procedure is completed.
 
 Once the procedure has started a peer shall follow the instructions below:
 
 **Sending the Next Message**
 
-- The next sent message sent using CTX_A must include the Recipient-ID option with this peer's chosen Recipient ID value.
+- The first messages sent using CTX_A, the current shared OSCORE Security Context, after the procedure has started must include the Recipient-ID Option, if this peer hasn't offered its Recipient ID already.
   - Note that this also informs the other peer of support for the ID update procedure.
-  - If the peer initiated the procedure, it must not resend the offer immediately.
 
 **Acknowledgment**
 
-- If a peer hsa received a valid message from the other peer including the Recipient-ID Option, it must include the Recipient-ID-Ack Option in subsequent messages.
+- If a peer has received a valid message from the other peer including the Recipient-ID Option, it must include the Recipient-ID-Ack Option in subsequent messages.
 - The value of Recipient-ID-Ack Option, if used, should be the Recipient ID received from the other peer.
 
 **Sending Subsequent Messages**
 
-A peer must revert to sending messages with the Recipient ID option according to the following:
+A peer must send one message with the Recipient ID Option according to the following:
 
-- A local timer should be maintained during the procedure.
-  - If the timeout expires, the next sent message must include the Recipient ID option and, if applicable, the Recipient-ID-Ack Option with the last received Recipient ID.
+- A local timer, REPEAT\_TIMER, should be maintained during the procedure. It first starts when the procedure starts. It is RECOMMENDED that the initial time of REPEAT\_TIMER is equal to MAX\_TRANSMIT\_WAIT (see {{Section 4.8.2 of RFC7252}}).
+  - If the timeout expires, the next sent message must include the Recipient ID option and, if applicable, the Recipient-ID-Ack Option with the last received Recipient ID. When that message is sent the timer REPEAT\_TIMER restarts.
 
 ### Procedure Completion
 
@@ -141,23 +139,22 @@ The procedure concludes under one of the following conditions:
 
 **Successful Confirmation**
 
-Three valid messages are received from the peer that include the Recipient-ID-Ack Option. At this point:
+The procedure succeeds if a peer has received and successfully verified at least three message from the other peer containing the Recipient-ID-Ack Option, and sent at least two messages containing the Recipient-ID-Ack Option. At this point:
 
-- It is safe to delete CTX\_A.
+- It is safe to delete CTX\_A. This does not mean that CTX\_A has to be deleted at this point.
 - CTX\_B is now considered valid and can be used (e.g., following network migration).
 
-**Failure or Timeout**
+**Failure**
 
-If the procedure times out without confirmation:
+During the procedure a timer, ENDING\_TIMER, is maintained and started when the procedure starts. The initial time of ENDING\_TIMER should be at least 3 times bigger than the initial time of REPEAT\_TIMER. If the ENDING\_TIMER expires, and the procedure times out without confirmation:
 
 - The offered Recipient ID must be discarded and added to the list of IDs to prevent reuse.
-
 
 ## Failure of the ID Update Procedure {#update-failure}
 
 The following section describes cases where the OSCORE ID update procedure fails, or must to be aborted by one of the peers.
 
-Upon receiving a valid first ID update message, a responder MUST abort the ID update procedure, in the following case:
+Upon receiving a valid first ID update message, a peer MUST abort the ID update procedure, in the following case:
 
 * The received ID update message is not a KUDOS message (i.e., the OSCORE ID update procedure is being performed stand-alone) and the peer has no eligible Recipient ID to offer (see {{id-update-additional-actions}}).
 
@@ -166,8 +163,6 @@ Upon receiving a valid ID update message, a peer MUST abort the ID update proced
 * The received ID update message contains a Recipient-ID option with a length that exceeds the maximum length of OSCORE Sender/Recipient IDs for the AEAD algorithm in use for the OSCORE Security Context shared between the peers. This is the case when the length of the Recipient-ID option exceeds the length of the AEAD nonce minus 6 (see {{Section 3.3 of RFC8613}}).
 
 If, after receiving an ID update message as CoAP request, a peer aborts the ID update procedure, the peer MUST also reply to the received ID update request message with a protected 5.03 (Service Unavailable) error response. The error response MUST NOT include the Recipient-ID Option, and its diagnostic payload MAY provide additional information. When receiving the error response, the peer terminates the OSCORE IDs procedure as failed.
-
-A peer terminates an ongoing OSCORE ID update procedure with another peer as failed, in case, after having sent the first ID update message for the procedure in question, a pre-defined amount of time has elapsed without receiving and successfully verifying the second ID update message from the other peer. It is RECOMMENDED that such an amount of time is equal to MAX\_TRANSMIT\_WAIT (see {{Section 4.8.2 of RFC7252}}).
 
 When the OSCORE ID update procedure is integrated into the execution of the KUDOS procedure, it is possible that the KUDOS procedure succeeds while the OSCORE ID update procedure fails. In such case, the peers continue their communications using the newly derived OSCORE Security Context CTX\_NEW obtained from the KUDOS procedure, and still use the old Sender and Recipient IDs. That is, any Recipient IDs conveyed in the exchanged Recipient-ID Options is not considered.
 
@@ -179,12 +174,7 @@ The Recipient ID-Option defined in this section has the properties summarized in
 
 | No.   | C | U | N | R | Name         | Format | Length | Default |
 | TBD24 |   |   |   |   | Recipient-ID | opaque | any    | (none)  |
-{: #table-recipient-id-option title="The&nbsp;Recipient-ID&nbsp;Option.
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-C=Critical, U=Unsafe, N=NoCacheKey, R=Repeatable" align="center"}
+{: #table-recipient-id-option title="The Recipient-ID Option. C=Critical, U=Unsafe, N=NoCacheKey, R=Repeatable" align="center"}
 
 Note to RFC Editor: Following the registration of the CoAP Option Number 24, please replace "TBD24" with "24" in the figure above. Then, please delete this paragraph.
 
@@ -203,13 +193,8 @@ The Recipient-ID Option is of class E in terms of OSCORE processing (see {{Secti
 The Recipient ID-Ack-Option defined in this section has the properties summarized in {{table-recipient-id-ack-option}}, which extends Table 4 of {{RFC7252}}. That is, the option is elective, safe to forward, part of the cache key, and not repeatable.
 
 | No.   | C | U | N | R | Name             | Format | Length | Default |
-| TBD32 |   |   |   |   | Recipient-ID-Ack | empty  | any    | (none)  |
-{: #table-recipient-id-ack-option title="The&nbsp;Recipient-ID-Ack&nbsp;Option.
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-C=Critical, U=Unsafe, N=NoCacheKey, R=Repeatable" align="center"}
+| TBD32 |   |   |   |   | Recipient-ID-Ack | opaque | any    | (none)  |
+{: #table-recipient-id-ack-option title="The Recipient-ID-Ack Option. C=Critical, U=Unsafe, N=NoCacheKey, R=Repeatable" align="center"}
 
 Note to RFC Editor: Following the registration of the CoAP Option Number 32, please replace "TBD32" with "32" in the figure above. Then, please delete this paragraph.
 
@@ -261,7 +246,7 @@ with CTX_A  | Encrypted Payload {               |
 Protect     |---------------------------------->| /temp
 with CTX_A  | OSCORE {                          |
             |  ...                              |
-            |                                   | Verify
+            |  kid: 0x01                        | Verify
             | }                                 | with CTX_A
             | Encrypted Payload {               |
             |  ...                              |
@@ -286,7 +271,7 @@ with CTX_A  | Encrypted Payload {               |
 Protect     |---------------------------------->| /temp
 with CTX_A  | OSCORE {                          |
             |  ...                              |
-            |                                   | Verify
+            |  kid: 0x01                        | Verify
             | }                                 | with CTX_A
             | Encrypted Payload {               |
             |  ...                              |
@@ -314,7 +299,7 @@ CTX_A       |                                   |
 Protect     |---------------------------------->| /temp
 with CTX_A  | OSCORE {                          |
             |  ...                              |
-            |                                   | Verify
+            |  kid: 0x01                        | Verify
             | }                                 | with CTX_A
             | Encrypted Payload {               |
             |  ...                              |
@@ -362,9 +347,9 @@ At this point both client and server are in a position to derive CTX\_B already,
 
 ### Establishing New OSCORE Identifiers Ahead of Network Migration {#new-identifiers-before-migration}
 
-Peers may use the OSCORE ID update procedure to establish new OSCORE IDs in advance of a network change. However, peers SHOULD NOT begin using these new identifiers on the current network prior to network migration. Using a new identifier on the old network would allow observers to correlate activity across networks, defeating the unlinkability that updating the OSCORE IDs is intended to provide. To be effective, new identifiers SHOULD only be used for sending OSCORE protected messages once the network migration is completed. Establishing new OSCORE IDs ahead of time ensures that migration can proceed without delay, but care must be taken to ensure that premature use of the identifiers does not enable linkability.
+Peers may use the OSCORE ID update procedure to establish new OSCORE IDs in advance of a network change. However, peers SHOULD NOT begin using these new identifiers on the current network prior to network migration. Using a new identifier on the old network, or using the old identifiers on the new network, would allow observers to correlate activity across networks, defeating the unlinkability that updating the OSCORE IDs is intended to provide. To be effective, new identifiers SHOULD only be used for sending OSCORE protected messages once the network migration is completed. Establishing new OSCORE IDs ahead of time ensures that migration can proceed without delay, but care must be taken to ensure that premature use of the identifiers does not enable linkability.
 
-To accomplish this, the peers execute the ID update procedure as normal, with the following difference: the peers must not begin using the OSCORE Security Context CTX\_B until after the network migration has taken place. Thus, both peers will be in the position to derive CTX\_B, but will not transition to use it until the first request protected with CTX\_B is transmitted in the new network, that is after network migration.
+To accomplish this, the peers execute the ID update procedure as normal, with the following difference: the peers must not begin using the OSCORE Security Context CTX\_B until after the network migration has taken place. Thus, both peers will be in the position to derive CTX\_B, but will not transition to use it until the first request protected with CTX\_B is transmitted in the new network, that is after network migration. Note that peers may want to retain CTX\_A to have available for migration back to the old network.
 
 ### Additional Actions for Execution {#id-update-additional-actions}
 
@@ -382,7 +367,7 @@ In order to fulfill the conditions above, a peer has to keep track of the OSCORE
 
 ## Preserving Observations Across ID Updates
 
-When running the OSCORE ID update procedure stand-alone or integrated in an execution of KUDOS, the following holds if Observe {{RFC7641}} is supported, in order to preserve ongoing observations beyond a change of OSCORE identifiers.
+When having run the OSCORE ID update procedure stand-alone and starting to use CTX\_B, or having run the OSCORE ID update procedure integrated in an execution of KUDOS, the following holds if Observe {{RFC7641}} is supported, in order to preserve ongoing observations beyond a change of OSCORE identifiers.
 
 * If a peer intends to keep active beyond an update of its Sender ID the observations where it is acting as CoAP client, then the peer:
 
@@ -421,19 +406,27 @@ Note to RFC Editor: Please replace all occurrences of "{{&SELF}}" with the RFC n
 
 ## CoAP Option Numbers Registry ## {#iana-coap-options}
 
-IANA is asked to enter the following option number to the "CoAP Option Numbers" registry within the "Constrained RESTful Environments (CoRE) Parameters" registry group.
+IANA is asked to enter the following entries to the "CoAP Option Numbers" registry within the "Constrained RESTful Environments (CoRE) Parameters" registry group.
 
-| Number |     Name     | Reference  |
-|--------|--------------|------------|
-| TBD24  | Recipient-ID | {{&SELF}}  |
-{: #tab-iana-recipient-id-option title="New CoAP Option Number" align="center"}
+| Number |     Name         | Reference  |
+|--------|------------------|------------|
+| TBD24  | Recipient-ID     | {{&SELF}}  |
+| TBD32  | Recipient-ID-Ack | {{&SELF}}  |
+{: #tab-iana-recipient-id-option title="New CoAP Option Numbers" align="center"}
 
 Note to RFC Editor: Following the registration of the CoAP Option Number 24, please replace "TBD24" with "24" in the table above. Then, please delete this paragraph.
+Note to RFC Editor: Following the registration of the CoAP Option Number 32, please replace "TBD32" with "32" in the table above. Then, please delete this paragraph.
 
 --- back
 
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
+
+## Version -03 to -04 ## {#sec-03-04}
+
+* Fixes in presenting the new approach.
+
+* Early recommendations for initial values of timers.
 
 ## Version -02 to -03 ## {#sec-02-03}
 
