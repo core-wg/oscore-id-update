@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-10T01:05:45.691981+00:00",
+  "timestamp": "2025-07-13T01:12:47.173749+00:00",
   "repo": "core-wg/oscore-id-update",
   "labels": [
     {
@@ -126,7 +126,7 @@
       "labels": [],
       "body": "We can add more examples for instance:\r\n\r\n- OSCORE ID Update combined with KUDOS where one of them fails to complete\r\n- OSCORE ID Update standalone which fails to complete",
       "createdAt": "2024-07-08T16:30:30Z",
-      "updatedAt": "2025-07-07T19:48:07Z",
+      "updatedAt": "2025-07-10T10:25:09Z",
       "closedAt": null,
       "comments": [
         {
@@ -139,9 +139,9 @@
         {
           "author": "rikard-sics",
           "authorAssociation": "MEMBER",
-          "body": "This can be done for version -04",
+          "body": "This can be done for version -05",
           "createdAt": "2025-07-07T19:48:07Z",
-          "updatedAt": "2025-07-07T19:48:07Z"
+          "updatedAt": "2025-07-10T10:25:09Z"
         }
       ]
     },
@@ -276,9 +276,17 @@
       "labels": [],
       "body": "",
       "createdAt": "2025-07-07T18:23:10Z",
-      "updatedAt": "2025-07-07T18:23:10Z",
+      "updatedAt": "2025-07-10T10:25:12Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "rikard-sics",
+          "authorAssociation": "MEMBER",
+          "body": "This can be done for version -05",
+          "createdAt": "2025-07-10T10:25:12Z",
+          "updatedAt": "2025-07-10T10:25:12Z"
+        }
+      ]
     }
   ],
   "pulls": []
