@@ -95,8 +95,6 @@ Furthermore, this procedure can be executed stand-alone, or instead seamlessly i
 
    As defined in {{id-update-additional-actions}}, the two peers must take additional actions to ensure a safe execution of the OSCORE ID update procedure.
 
-   A peer can safely discard the old OSCORE Security Context including the old OSCORE Sender/Recipient IDs after the following two events have occurred, in this order: first, the peer has sent to the other peer a message protected with the new OSCORE Security Context including the new OSCORE Sender/Recipient IDs; then, the peer has received from the other peer and successfully verified a message protected with that new OSCORE Security Context.
-
    The new OSCORE Sender/Recipient IDs MUST NOT be used with the OSCORE Security Context CTX\_OLD, and MUST NOT be used with the temporary OSCORE Security Context CTX\_TEMP used to protect the first KUDOS message of a KUDOS execution.
 
 A peer MUST NOT initiate an OSCORE ID update procedure with another peer, if it has another such procedure ongoing with that other peer.
@@ -204,7 +202,7 @@ The Recipient-ID-Ack Option is of class E in terms of OSCORE processing (see {{S
 
 ### OSCORE ID Update Procedure Initiated with a Request Message {#example-client-initiated-id-update}
 
-{{fig-id-update-client-init}} shows an example of the OSCORE ID update procedure, run stand-alone and initiated by the client sending a request message. On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively.
+{{fig-id-update-client-init}} shows an example of the OSCORE ID update procedure, run stand-alone and initiated by the client sending a request message. On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively. An example where the server initiates the procedure is shown in {{example-server-initiated-id-update}}.
 
 ~~~~~~~~~~~ aasvg
           Client                             Server
@@ -419,8 +417,260 @@ Note to RFC Editor: Following the registration of the CoAP Option Number 32, ple
 
 --- back
 
+# Examples
+
+This appendix provides examples where the OSCORE ID update procedure is used. In particular:
+
+* {{example-server-initiated-id-update}} shows an example of the OSCORE ID update procedure initiated by the server sending a response message.
+* {{example-client-initiated-id-update-failure}} shows an example of the OSCORE ID update procedure initiated by the client sending a request message where the procedure fails to complete.
+
+## OSCORE ID Update Procedure Initiated with a Response Message {#example-server-initiated-id-update}
+
+{{fig-id-update-server-init}} shows an example of the OSCORE ID update procedure, run stand-alone and initiated by the server sending a response message. On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively. The prerequisites and the actions taken by the peers involved are aligned with what is described in {{example-client-initiated-id-update}}, except that it is the server that takes the initiative to perform the OSCORE ID update procedure.
+
+~~~~~~~~~~~ aasvg
+          Client                             Server
+            |                                   |
+CTX_A {     |                                   | CTX_A {
+ SID = 0x01 |                                   |  SID = 0x00
+ RID = 0x00 |                                   |  RID = 0x01
+}           |                                   | }
+            |                                   |
+            |            Request #1             |
+            |---------------------------------->| /temp
+            | OSCORE {                          |
+            | ...                               |
+            | kid: 0x01                         |
+            | }                                 |
+            | Encrypted Payload {               |
+            | ...                               |
+            | Application Payload               |
+            | }                                 |
+            |                                   |
+            |            Response #1            |
+            |<----------------------------------| Protect
+            | OSCORE {                          | with CTX_A
+            |  ...                              |
+Verify      | }                                 |
+with CTX_A  | Encrypted Payload {               |
+            |  ...                              |
+            |  Recipient-ID: 0x42               |
+            |  ...                              |
+            |  Application Payload              |
+            | }                                 |
+            |                                   |
+            |                                   |
+            |                                   |
+            |            Request #2             |
+Protect     |---------------------------------->| /temp
+with CTX_A  | OSCORE {                          |
+            |  ...                              |
+            |  kid: 0x01                        | Verify
+            | }                                 | with CTX_A
+            | Encrypted Payload {               |
+            |  ...                              |
+            |  Recipient-ID: 0x78               |
+            |  Recipient-ID-Ack: 0x42           |
+            |  ...                              |
+            |  Application Payload              |
+            | }                                 |
+            |                                   |
+            |            Response #2            |
+            |<----------------------------------| Protect
+            | OSCORE {                          | with CTX_A
+            |  ...                              |
+Verify      | }                                 |
+with CTX_A  | Encrypted Payload {               |
+            |  ...                              |
+            |  Recipient-ID-Ack: 0x78           |
+            |  ...                              |
+            |  Application Payload              |
+            | }                                 |
+            |                                   |
+            |                                   |
+            |            Request #3             |
+Protect     |---------------------------------->| /temp
+with CTX_A  | OSCORE {                          |
+            |  ...                              |
+            |  kid: 0x01                        | Verify
+            | }                                 | with CTX_A
+            | Encrypted Payload {               |
+            |  ...                              |
+            |  Recipient-ID-Ack: 0x42           |
+            |  Application Payload              |
+            | }                                 |
+            |                                   |
+            |            Response #3            |
+            |<----------------------------------| Protect
+            | OSCORE {                          | with CTX_A
+            |  ...                              |
+Verify      | }                                 |
+with CTX_A  | Encrypted Payload {               |
+            |  ...                              |
+            |  Recipient-ID-Ack: 0x78           |
+            |  ...                              |
+            |  Application Payload              |
+            | }                                 |
+            |                                   |
+            |                                   |
+            |                                   |
+            |                                   |
+            |                                   |
+            |            Request #4             |
+Protect     |---------------------------------->| /temp
+with CTX_A  | OSCORE {                          |
+            |  ...                              |
+            |  kid: 0x01                        | Verify
+            | }                                 | with CTX_A
+            | Encrypted Payload {               |
+            |  ...                              |
+            |  Recipient-ID-Ack: 0x42           |
+            |  Application Payload              |
+            | }                                 |
+            |                                   |
+            |                                   | Safe to
+            |                                   | discard
+            |                                   | CTX_A
+            |                                   |
+            |            Response #4            |
+            |<----------------------------------| Protect
+            | OSCORE {                          | with CTX_A
+            |  ...                              |
+Verify      | }                                 |
+with CTX_A  | Encrypted Payload {               |
+            |  ...                              |
+Safe to     |  Recipient-ID-Ack: 0x78           |
+discard     |  ...                              |
+CTX_A       |  Application Payload              |
+            | }                                 |
+            |                                   |
+~~~~~~~~~~~
+{: #fig-id-update-server-init title="Example of the OSCORE ID update procedure initiated with a response message" artwork-align="center"}
+
+## Failure of the OSCORE ID Update Procedure Initiated with a Request Message {#example-client-initiated-id-update-failure}
+
+{{fig-id-update-client-init-failure}} shows an example of the OSCORE ID update procedure, run stand-alone and initiated by the client sending a request message where the procedure fails to complete due to the server not including the Recipient-ID-Ack option or the Recipient-ID in its response messages. On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively. This example assumes that the value of the REPEAT\_TIMER on the client is such that it expires between each request the client sends.
+
+The client repeatedly tries sending requests to the client including the Recipient-ID option, but does not receive acknowledgments in the form of responses containing the Response-ID-Ack option from the server. Thus the client eventually reaches the expiration of its ENDING\_TIMER, aborts the OSCORE ID update procedure, and proceeds to continue communication with normal OSCORE messages.
+
+~~~~~~~~~~~ aasvg
+          Client                             Server
+            |                                   |
+CTX_A {     |                                   | CTX_A {
+ SID = 0x01 |                                   |  SID = 0x00
+ RID = 0x00 |                                   |  RID = 0x01
+}           |                                   | }
+            |                                   |
+            |            Request #1             |
+Protect     |---------------------------------->| /temp
+with CTX_A  | OSCORE {                          |
+            |  ...                              |
+            |  kid: 0x01                        | Verify
+            | }                                 | with CTX_A
+            | Encrypted Payload {               |
+            |  ...                              |
+            |  Recipient-ID: 0x42               |
+            |  ...                              |
+            |  Application Payload              |
+            | }                                 |
+            |                                   |
+            |            Response #1            |
+            |<----------------------------------| Protect
+            | OSCORE {                          | with CTX_A
+            |  ...                              |
+Verify      | }                                 |
+with CTX_A  | Encrypted Payload {               |
+            |  ...                              |
+            |  Application Payload              |
+            | }                                 |
+            |                                   |
+            |                                   |
+            |                                   |
+            |            Request #2             |
+Protect     |---------------------------------->| /temp
+with CTX_A  | OSCORE {                          |
+            |  ...                              |
+            |  kid: 0x01                        | Verify
+            | }                                 | with CTX_A
+            | Encrypted Payload {               |
+            |  ...                              |
+            |  Recipient-ID: 0x42               |
+            |  ...                              |
+            |  Application Payload              |
+            | }                                 |
+            |                                   |
+            |            Response #2            |
+            |<----------------------------------| Protect
+            | OSCORE {                          | with CTX_A
+            |  ...                              |
+Verify      | }                                 |
+with CTX_A  | Encrypted Payload {               |
+            |  ...                              |
+            |  Application Payload              |
+            | }                                 |
+            |                                   |
+            |                                   |
+            |            Request #3             |
+Protect     |---------------------------------->| /temp
+with CTX_A  | OSCORE {                          |
+            |  ...                              |
+            |  kid: 0x01                        | Verify
+            | }                                 | with CTX_A
+            | Encrypted Payload {               |
+            |  ...                              |
+            |  Recipient-ID: 0x42               |
+            |  ...                              |
+            |  Application Payload              |
+            | }                                 |
+            |                                   |
+            |            Response #3            |
+            |<----------------------------------| Protect
+            | OSCORE {                          | with CTX_A
+            |  ...                              |
+Verify      | }                                 |
+with CTX_A  | Encrypted Payload {               |
+            |  ...                              |
+            |  Application Payload              |
+            | }                                 |
+            |                                   |
+ENDING_     |                                   |
+TIMER       |                                   |
+expired     |                                   |
+            |                                   |
+            |            Request #4             |
+Protect     |---------------------------------->| /temp
+with CTX_A  | OSCORE {                          |
+            |  ...                              |
+            |  kid: 0x01                        | Verify
+            | }                                 | with CTX_A
+            | Encrypted Payload {               |
+            |  ...                              |
+            |  Application Payload              |
+            | }                                 |
+            |                                   |
+            |                                   |
+            |                                   |
+            |            Response #4            |
+            |<----------------------------------| Protect
+            | OSCORE {                          | with CTX_A
+            |  ...                              |
+Verify      | }                                 |
+with CTX_A  | Encrypted Payload {               |
+            |  ...                              |
+            |  Application Payload              |
+            | }                                 |
+            |                                   |
+~~~~~~~~~~~
+{: #fig-id-update-client-init-failure title="Example of the OSCORE ID update procedure failing when initiated with a request message" artwork-align="center"}
+
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
+
+## Version -04 to -05 ## {#sec-04-05}
+
+* Editorial updates.
+
+* Add additional message flow examples, including a failure case.
 
 ## Version -03 to -04 ## {#sec-03-04}
 
