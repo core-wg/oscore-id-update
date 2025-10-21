@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-19T01:05:51.312878+00:00",
+  "timestamp": "2025-10-21T01:00:33.881786+00:00",
   "repo": "core-wg/oscore-id-update",
   "labels": [
     {
@@ -119,15 +119,15 @@
       "id": "I_kwDOLZNAsc6O0TFQ",
       "title": "Add more examples, including failure cases",
       "url": "https://github.com/core-wg/oscore-id-update/issues/5",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "rikard-sics",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "We can add more examples for instance:\r\n\r\n- OSCORE ID Update combined with KUDOS where one of them fails to complete\r\n- OSCORE ID Update standalone which fails to complete",
       "createdAt": "2024-07-08T16:30:30Z",
-      "updatedAt": "2025-07-10T10:25:09Z",
-      "closedAt": null,
+      "updatedAt": "2025-10-20T12:10:19Z",
+      "closedAt": "2025-10-20T12:10:19Z",
       "comments": [
         {
           "author": "rikard-sics",
@@ -287,6 +287,22 @@
           "updatedAt": "2025-07-10T10:25:12Z"
         }
       ]
+    },
+    {
+      "number": 12,
+      "id": "I_kwDOLZNAsc7SiU9N",
+      "title": "Consider message counting as alternative to the timers ENDING_TIMER and REPEAT_TIMER",
+      "url": "https://github.com/core-wg/oscore-id-update/issues/12",
+      "state": "OPEN",
+      "author": "rikard-sics",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Perhaps there can be a choice to count messages sent/received instead of relying on timers, depending on what fits best for that particular network/use case.",
+      "createdAt": "2025-10-20T12:13:34Z",
+      "updatedAt": "2025-10-20T12:13:34Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": []
