@@ -5,7 +5,7 @@
 CoRE Working Group                                            R. Höglund
 Internet-Draft                                                 M. Tiloca
 Intended status: Standards Track                                 RISE AB
-Expires: 23 April 2026                                   20 October 2025
+Expires: 3 September 2026                                   2 March 2026
 
 
                       Identifier Update for OSCORE
@@ -60,11 +60,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 April 2026.
+   This Internet-Draft will expire on 3 September 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -104,12 +104,13 @@ Table of Contents
      A.2.  Failure of the OSCORE ID Update Procedure Initiated with a
            Request Message
    Appendix B.  Document Updates
-     B.1.  Version -04 to -05
-     B.2.  Version -03 to -04
-     B.3.  Version -02 to -03
-     B.4.  Version -01 to -02
-     B.5.  Version -00 to -01
-     B.6.  Version -00
+     B.1.  Version -05 to -06
+     B.2.  Version -04 to -05
+     B.3.  Version -03 to -04
+     B.4.  Version -02 to -03
+     B.5.  Version -01 to -02
+     B.6.  Version -00 to -01
+     B.7.  Version -00
    Acknowledgments
    Authors' Addresses
 
@@ -294,8 +295,26 @@ Table of Contents
    the ENDING_TIMER expires, and the procedure times out without
    confirmation:
 
-   *  The offered Recipient ID must be discarded and added to the list
-      of IDs to prevent reuse.
+   As an alternative to maintaining REPEAT_TIMER and ENDING_TIMER, an
+   implementation MAY use a message counter–based mechanism.  Following
+   this approach, the endpoint maintains (1) a repeat counter and (2) a
+   ending counter, both initialized when the procedure starts.  The
+   repeat counter tracks the number of outbound messages sent since the
+   last transmission containing the Recipient ID option and, if
+   applicable, the Recipient-ID-Ack Option.  When the repeat counter
+   reaches a defined threshold, the next outbound message MUST include
+   the Recipient ID option and, if applicable, the Recipient-ID-Ack
+   Option with the last received Recipient ID, and the repeat counter is
+   reset.  The ending counter tracks the total number of outbound
+   messages sent during the procedure.  If successful confirmation has
+   not occurred and the ending counter exceeds a defined maximum, the
+   procedure MUST be considered to have failed.  Upon such failure, the
+   endpoint MUST cease use of CTX_B and continue using CTX_A.
+
+   The counter-based approach is intended to provide behavior equivalent
+   to the timer-based REPEAT_TIMER and ENDING_TIMER, while avoiding
+   reliance on wall-clock time. - The offered Recipient ID must be
+   discarded and added to the list of IDs to prevent reuse.
 
 2.2.  Failure of the ID Update Procedure
 
@@ -776,9 +795,9 @@ Table of Contents
    [I-D.ietf-core-oscore-key-update]
               Höglund, R. and M. Tiloca, "Key Update for OSCORE
               (KUDOS)", Work in Progress, Internet-Draft, draft-ietf-
-              core-oscore-key-update-11, 7 July 2025,
+              core-oscore-key-update-13, 2 March 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              oscore-key-update-11>.
+              oscore-key-update-13>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1090,19 +1109,23 @@ Appendix B.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-B.1.  Version -04 to -05
+B.1.  Version -05 to -06
+
+   *  Consider alternatives to timers.
+
+B.2.  Version -04 to -05
 
    *  Editorial updates.
 
    *  Add additional message flow examples, including a failure case.
 
-B.2.  Version -03 to -04
+B.3.  Version -03 to -04
 
    *  Fixes in presenting the new approach.
 
    *  Early recommendations for initial values of timers.
 
-B.3.  Version -02 to -03
+B.4.  Version -02 to -03
 
    *  Editorial improvements.
 
@@ -1113,13 +1136,13 @@ B.3.  Version -02 to -03
 
    *  Update design more in line with KUDOS.
 
-B.4.  Version -01 to -02
+B.5.  Version -01 to -02
 
    *  Split long section into subsections.
 
    *  Updated references.
 
-B.5.  Version -00 to -01
+B.6.  Version -00 to -01
 
    *  Revised and extended error handling.
 
@@ -1130,7 +1153,7 @@ B.5.  Version -00 to -01
 
    *  Clarifications and editorial improvements.
 
-B.6.  Version -00
+B.7.  Version -00
 
    *  Split out material from Key Update for OSCORE draft into this new
       document.
