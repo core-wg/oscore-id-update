@@ -146,6 +146,9 @@ The procedure succeeds if a peer has received and successfully verified at least
 
 During the procedure a timer, ENDING\_TIMER, is maintained and started when the procedure starts. The initial time of ENDING\_TIMER should be at least 3 times bigger than the initial time of REPEAT\_TIMER. If the ENDING\_TIMER expires, and the procedure times out without confirmation:
 
+As an alternative to maintaining REPEAT\_TIMER and ENDING\_TIMER, an implementation MAY use a message counter–based mechanism. Following this approach, the endpoint maintains (1) a repeat counter and (2) a ending counter, both initialized when the procedure starts. The repeat counter tracks the number of outbound messages sent since the last transmission containing the Recipient ID option and, if applicable, the Recipient-ID-Ack Option. When the repeat counter reaches a defined threshold, the next outbound message MUST include the Recipient ID option and, if applicable, the Recipient-ID-Ack Option with the last received Recipient ID, and the repeat counter is reset. The ending counter tracks the total number of outbound messages sent during the procedure. If successful confirmation has not occurred and the ending counter exceeds a defined maximum, the procedure MUST be considered to have failed. Upon such failure, the endpoint MUST cease use of CTX\_B and continue using CTX\_A.
+
+The counter-based approach is intended to provide behavior equivalent to the timer-based REPEAT_TIMER and ENDING_TIMER, while avoiding reliance on wall-clock time.
 - The offered Recipient ID must be discarded and added to the list of IDs to prevent reuse.
 
 ## Failure of the ID Update Procedure {#update-failure}
@@ -665,6 +668,10 @@ with CTX_A  | Encrypted Payload {               |
 
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
+
+## Version -05 to -06 ## {#sec-05-06}
+
+* Consider alternatives to timers.
 
 ## Version -04 to -05 ## {#sec-04-05}
 
