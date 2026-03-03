@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-03-01T01:41:28.852001+00:00",
+  "timestamp": "2026-03-03T01:24:14.306151+00:00",
   "repo": "core-wg/oscore-id-update",
   "labels": [
     {
@@ -293,15 +293,15 @@
       "id": "I_kwDOLZNAsc7SiU9N",
       "title": "Consider message counting as alternative to the timers ENDING_TIMER and REPEAT_TIMER",
       "url": "https://github.com/core-wg/oscore-id-update/issues/12",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "rikard-sics",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "Perhaps there can be a choice to count messages sent/received instead of relying on timers, depending on what fits best for that particular network/use case.",
       "createdAt": "2025-10-20T12:13:34Z",
-      "updatedAt": "2025-10-20T12:13:34Z",
-      "closedAt": null,
+      "updatedAt": "2026-03-02T19:12:42Z",
+      "closedAt": "2026-03-02T19:12:42Z",
       "comments": []
     }
   ],
