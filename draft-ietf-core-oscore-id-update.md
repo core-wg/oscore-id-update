@@ -67,7 +67,7 @@ As part of the shared Security Context, each peer stores one Sender Context iden
 
 When receiving an OSCORE-protected message, the recipient peer uses its Recipient ID conveyed within the message or otherwise implied, in order to retrieve the correct Security Context and unprotect the message.
 
-These identifiers are sent in plaintext within OSCORE-protected messages and are immutable throughout the lifetime of a Security Context, even in case the two peers migrate to a different network or simply change their addressing information. Therefore, the identifiers can be used to correlate messages that the two peers exchange at different points in time or through different paths, hence allowing to track them with the consequent privacy implications.
+These identifiers are sent in plaintext within OSCORE-protected messages and are immutable throughout the lifetime of a Security Context, even in case the two peers migrate to a different network or simply change their addressing information. Therefore, the identifiers can be used to correlate messages that the two peers exchange at different points in time or through different paths, hence allowing them to be tracked with the consequent privacy implications.
 
 In order to address this issue, this document defines an OSCORE ID update procedure that two peers can use to update their OSCORE Sender and Recipient IDs. For instance, two peers may want to use this procedure before switching to a different network, in order to make it more difficult to understand that their communication is continuing in the new network.
 
@@ -99,7 +99,7 @@ Furthermore, this procedure can be executed stand-alone, or instead seamlessly i
 
 A peer MUST NOT initiate an OSCORE ID update procedure with another peer, if it has another such procedure ongoing with that other peer.
 
-Upon receiving a valid, first ID update message, a peer MUST continue the procedure and send a following ID update message, except in the case any of the conditions for failing or aborting the procedure apply (see {{update-failure}}}).
+Upon receiving a valid, first ID update message, a peer MUST continue the procedure and send a following ID update message, except in the case any of the conditions for failing or aborting the procedure apply (see {{update-failure}}).
 
 ## Workflow of the ID Update Procedure
 
@@ -126,10 +126,10 @@ Once the procedure has started a peer shall follow the instructions below:
 
 **Sending Subsequent Messages**
 
-A peer must send one message with the Recipient ID Option according to the following:
+A peer must send one message with the Recipient-ID Option according to the following:
 
 - A local timer, REPEAT\_TIMER, should be maintained during the procedure. It first starts when the procedure starts. It is RECOMMENDED that the initial time of REPEAT\_TIMER is equal to MAX\_TRANSMIT\_WAIT (see {{Section 4.8.2 of RFC7252}}).
-  - If the timeout expires, the next sent message must include the Recipient ID option and, if applicable, the Recipient-ID-Ack Option with the last received Recipient ID. When that message is sent the timer REPEAT\_TIMER restarts.
+  - If the timeout expires, the next sent message must include the Recipient-ID option and, if applicable, the Recipient-ID-Ack Option with the last received Recipient ID. When that message is sent the timer REPEAT\_TIMER restarts.
 
 ### Procedure Completion
 
@@ -137,7 +137,7 @@ The procedure concludes under one of the following conditions:
 
 **Successful Confirmation**
 
-The procedure succeeds if a peer has received and successfully verified at least three message from the other peer containing the Recipient-ID-Ack Option, and sent at least two messages containing the Recipient-ID-Ack Option. At this point:
+The procedure succeeds if a peer has received and successfully verified at least three messages from the other peer containing the Recipient-ID-Ack Option, and sent at least two messages containing the Recipient-ID-Ack Option. At this point:
 
 - It is safe to delete CTX\_A. This does not mean that CTX\_A has to be deleted at this point.
 - CTX\_B is now considered valid and can be used (e.g., following network migration).
@@ -146,14 +146,16 @@ The procedure succeeds if a peer has received and successfully verified at least
 
 During the procedure a timer, ENDING\_TIMER, is maintained and started when the procedure starts. The initial time of ENDING\_TIMER should be at least 3 times bigger than the initial time of REPEAT\_TIMER. If the ENDING\_TIMER expires, and the procedure times out without confirmation:
 
-As an alternative to maintaining REPEAT\_TIMER and ENDING\_TIMER, an implementation MAY use a message counter–based mechanism. Following this approach, the endpoint maintains (1) a repeat counter and (2) a ending counter, both initialized when the procedure starts. The repeat counter tracks the number of outbound messages sent since the last transmission containing the Recipient ID option and, if applicable, the Recipient-ID-Ack Option. When the repeat counter reaches a defined threshold, the next outbound message MUST include the Recipient ID option and, if applicable, the Recipient-ID-Ack Option with the last received Recipient ID, and the repeat counter is reset. The ending counter tracks the total number of outbound messages sent during the procedure. If successful confirmation has not occurred and the ending counter exceeds a defined maximum, the procedure MUST be considered to have failed. Upon such failure, the endpoint MUST cease use of CTX\_B and continue using CTX\_A.
+- The peer MUST cease use of CTX\_B and continue using CTX\_A.
+- The offered Recipient ID must be discarded and added to the list of IDs to prevent reuse.
+
+As an alternative to maintaining REPEAT\_TIMER and ENDING\_TIMER, an implementation MAY use a message counter–based mechanism. Following this approach, the endpoint maintains (1) a repeat counter and (2) an ending counter, both initialized when the procedure starts. The repeat counter tracks the number of outbound messages sent since the last transmission containing the Recipient-ID option and, if applicable, the Recipient-ID-Ack Option. When the repeat counter reaches a defined threshold, the next outbound message MUST include the Recipient-ID option and, if applicable, the Recipient-ID-Ack Option with the last received Recipient ID, and the repeat counter is reset. The ending counter tracks the total number of outbound messages sent during the procedure. If successful confirmation has not occurred and the ending counter exceeds a defined maximum, the procedure MUST be considered to have failed. Upon such failure, the endpoint MUST cease use of CTX\_B and continue using CTX\_A.
 
 The counter-based approach is intended to provide behavior equivalent to the timer-based REPEAT_TIMER and ENDING_TIMER, while avoiding reliance on wall-clock time.
-- The offered Recipient ID must be discarded and added to the list of IDs to prevent reuse.
 
 ## Failure of the ID Update Procedure {#update-failure}
 
-The following section describes cases where the OSCORE ID update procedure fails, or must to be aborted by one of the peers.
+The following section describes cases where the OSCORE ID update procedure fails, or must be aborted by one of the peers.
 
 Upon receiving a valid first ID update message, a peer MUST abort the ID update procedure, in the following case:
 
@@ -163,15 +165,15 @@ Upon receiving a valid ID update message, a peer MUST abort the ID update proced
 
 * The received ID update message contains a Recipient-ID option with a length that exceeds the maximum length of OSCORE Sender/Recipient IDs for the AEAD algorithm in use for the OSCORE Security Context shared between the peers. This is the case when the length of the Recipient-ID option exceeds the length of the AEAD nonce minus 6 (see {{Section 3.3 of RFC8613}}).
 
-If, after receiving an ID update message as CoAP request, a peer aborts the ID update procedure, the peer MUST also reply to the received ID update request message with a protected 5.03 (Service Unavailable) error response. The error response MUST NOT include the Recipient-ID Option, and its diagnostic payload MAY provide additional information. When receiving the error response, the peer terminates the OSCORE IDs procedure as failed.
+If, after receiving an ID update message as CoAP request, a peer aborts the ID update procedure, the peer MUST also reply to the received ID update request message with a protected 5.03 (Service Unavailable) error response. The error response MUST NOT include the Recipient-ID Option, and its diagnostic payload MAY provide additional information. When receiving the error response, the peer terminates the OSCORE ID update procedure as failed.
 
-When the OSCORE ID update procedure is integrated into the execution of the KUDOS procedure, it is possible that the KUDOS procedure succeeds while the OSCORE ID update procedure fails. In such case, the peers continue their communications using the newly derived OSCORE Security Context CTX\_NEW obtained from the KUDOS procedure, and still use the old Sender and Recipient IDs. That is, any Recipient IDs conveyed in the exchanged Recipient-ID Options is not considered.
+When the OSCORE ID update procedure is integrated into the execution of the KUDOS procedure, it is possible that the KUDOS procedure succeeds while the OSCORE ID update procedure fails. In such case, the peers continue their communications using the newly derived OSCORE Security Context CTX\_NEW obtained from the KUDOS procedure, and still use the old Sender and Recipient IDs. That is, any Recipient IDs conveyed in the exchanged Recipient-ID Options are not considered.
 
 Conversely, the OSCORE ID update procedure may succeed while the KUDOS procedure fails. As long as the peers have exchanged a pair of OSCORE-protected request and response that conveyed their desired new Recipient IDs in the Recipient-ID Option, the peers start using those IDs in their communications.
 
 ## The Recipient-ID Option # {#sec-recipient-id-option}
 
-The Recipient ID-Option defined in this section has the properties summarized in {{table-recipient-id-option}}, which extends Table 4 of {{RFC7252}}. That is, the option is elective, safe to forward, part of the cache key, and not repeatable.
+The Recipient-ID Option defined in this section has the properties summarized in {{table-recipient-id-option}}, which extends Table 4 of {{RFC7252}}. That is, the option is elective, safe to forward, part of the cache key, and not repeatable.
 
 | No.   | C | U | N | R | Name         | Format | Length | Default |
 | TBD24 |   |   |   |   | Recipient-ID | opaque | any    | (none)  |
@@ -191,7 +193,7 @@ The Recipient-ID Option is of class E in terms of OSCORE processing (see {{Secti
 
 ## The Recipient-ID-Ack Option # {#sec-recipient-id-ack-option}
 
-The Recipient ID-Ack-Option defined in this section has the properties summarized in {{table-recipient-id-ack-option}}, which extends Table 4 of {{RFC7252}}. That is, the option is elective, safe to forward, part of the cache key, and not repeatable.
+The Recipient-ID-Ack Option defined in this section has the properties summarized in {{table-recipient-id-ack-option}}, which extends Table 4 of {{RFC7252}}. That is, the option is elective, safe to forward, part of the cache key, and not repeatable.
 
 | No.   | C | U | N | R | Name             | Format | Length | Default |
 | TBD32 |   |   |   |   | Recipient-ID-Ack | opaque | any    | (none)  |
@@ -342,7 +344,7 @@ From this point, following messages exchanges between the peers will include the
 
 Upon receiving, decrypting, and successfully verifying the OSCORE message Response \#3, the client considers 0x78 and 0x42 as the new Sender ID and Recipient ID to use when deriving CTX\_B. Practically, the client can install a new OSCORE Security Context CTX\_B where: i) its Sender ID and Recipient ID are 0x78 and 0x42, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see {{Section 3.2.2 of RFC8613}}); iii) anything else is like in the OSCORE Security Context CTX\_A.
 
-Upon receiving, decrypting, and successfully verifying the OSCORE message Request \#4, the server considers 0x42 and 0x78 as its new Sender ID and Recipient ID to use for CTX\_B. Practically, the server installs a new OSCORE Security Context CTX\_A where: i) its Sender ID and Recipient ID are 0x42 and 0x78, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see {{Section 3.2.2 of RFC8613}}); iii) anything else is like in the OSCORE Security Context CTX\_A.
+Upon receiving, decrypting, and successfully verifying the OSCORE message Request \#4, the server considers 0x42 and 0x78 as its new Sender ID and Recipient ID to use for CTX\_B. Practically, the server installs a new OSCORE Security Context CTX\_B where: i) its Sender ID and Recipient ID are 0x42 and 0x78, respectively; ii) the Sender Sequence Number and the Replay Window are re-initialized (see {{Section 3.2.2 of RFC8613}}); iii) anything else is like in the OSCORE Security Context CTX\_A.
 
 At this point both client and server are in a position to derive CTX\_B already, or wait to do it. Regardless they are both able to start using CTX\_B, e.g., after network migration.
 
@@ -554,7 +556,7 @@ CTX_A       |  Application Payload              |
 
 {{fig-id-update-client-init-failure}} shows an example of the OSCORE ID update procedure, run stand-alone and initiated by the client sending a request message where the procedure fails to complete due to the server not including the Recipient-ID-Ack option or the Recipient-ID in its response messages. On each peer, SID and RID denote the OSCORE Sender ID and Recipient ID of that peer, respectively. This example assumes that the value of the REPEAT\_TIMER on the client is such that it expires between each request the client sends.
 
-The client repeatedly tries sending requests to the client including the Recipient-ID option, but does not receive acknowledgments in the form of responses containing the Response-ID-Ack option from the server. Thus the client eventually reaches the expiration of its ENDING\_TIMER, aborts the OSCORE ID update procedure, and proceeds to continue communication with normal OSCORE messages.
+The client repeatedly tries sending requests to the server including the Recipient-ID option, but does not receive acknowledgments in the form of responses containing the Recipient-ID-Ack option from the server. Thus the client eventually reaches the expiration of its ENDING\_TIMER, aborts the OSCORE ID update procedure, and proceeds to continue communication with normal OSCORE messages.
 
 ~~~~~~~~~~~ aasvg
           Client                             Server
@@ -668,6 +670,10 @@ with CTX_A  | Encrypted Payload {               |
 
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
+
+## Version -06 to -07 ## {#sec-06-07}
+
+* Refinements and fixes.
 
 ## Version -05 to -06 ## {#sec-05-06}
 
