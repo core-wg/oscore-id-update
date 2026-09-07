@@ -5,7 +5,7 @@
 CoRE Working Group                                            R. Höglund
 Internet-Draft                                                 M. Tiloca
 Intended status: Standards Track                                 RISE AB
-Expires: 3 September 2026                                   2 March 2026
+Expires: 11 March 2027                                  7 September 2026
 
 
                       Identifier Update for OSCORE
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 September 2026.
+   This Internet-Draft will expire on 11 March 2027.
 
 Copyright Notice
 
@@ -104,13 +104,14 @@ Table of Contents
      A.2.  Failure of the OSCORE ID Update Procedure Initiated with a
            Request Message
    Appendix B.  Document Updates
-     B.1.  Version -05 to -06
-     B.2.  Version -04 to -05
-     B.3.  Version -03 to -04
-     B.4.  Version -02 to -03
-     B.5.  Version -01 to -02
-     B.6.  Version -00 to -01
-     B.7.  Version -00
+     B.1.  Version -06 to -07
+     B.2.  Version -05 to -06
+     B.3.  Version -04 to -05
+     B.4.  Version -03 to -04
+     B.5.  Version -02 to -03
+     B.6.  Version -01 to -02
+     B.7.  Version -00 to -01
+     B.8.  Version -00
    Acknowledgments
    Authors' Addresses
 
@@ -140,7 +141,7 @@ Table of Contents
    simply change their addressing information.  Therefore, the
    identifiers can be used to correlate messages that the two peers
    exchange at different points in time or through different paths,
-   hence allowing to track them with the consequent privacy
+   hence allowing them to be tracked with the consequent privacy
    implications.
 
    In order to address this issue, this document defines an OSCORE ID
@@ -216,7 +217,7 @@ Table of Contents
    Upon receiving a valid, first ID update message, a peer MUST continue
    the procedure and send a following ID update message, except in the
    case any of the conditions for failing or aborting the procedure
-   apply (see Section 2.2}).
+   apply (see Section 2.2).
 
 2.1.  Workflow of the ID Update Procedure
 
@@ -257,7 +258,7 @@ Table of Contents
 
    *Sending Subsequent Messages*
 
-   A peer must send one message with the Recipient ID Option according
+   A peer must send one message with the Recipient-ID Option according
    to the following:
 
    *  A local timer, REPEAT_TIMER, should be maintained during the
@@ -266,7 +267,7 @@ Table of Contents
       MAX_TRANSMIT_WAIT (see Section 4.8.2 of [RFC7252]).
 
       -  If the timeout expires, the next sent message must include the
-         Recipient ID option and, if applicable, the Recipient-ID-Ack
+         Recipient-ID option and, if applicable, the Recipient-ID-Ack
          Option with the last received Recipient ID.  When that message
          is sent the timer REPEAT_TIMER restarts.
 
@@ -277,7 +278,7 @@ Table of Contents
    *Successful Confirmation*
 
    The procedure succeeds if a peer has received and successfully
-   verified at least three message from the other peer containing the
+   verified at least three messages from the other peer containing the
    Recipient-ID-Ack Option, and sent at least two messages containing
    the Recipient-ID-Ack Option.  At this point:
 
@@ -295,15 +296,20 @@ Table of Contents
    the ENDING_TIMER expires, and the procedure times out without
    confirmation:
 
+   *  The peer MUST cease use of CTX_B and continue using CTX_A.
+
+   *  The offered Recipient ID must be discarded and added to the list
+      of IDs to prevent reuse.
+
    As an alternative to maintaining REPEAT_TIMER and ENDING_TIMER, an
    implementation MAY use a message counter–based mechanism.  Following
-   this approach, the endpoint maintains (1) a repeat counter and (2) a
+   this approach, the endpoint maintains (1) a repeat counter and (2) an
    ending counter, both initialized when the procedure starts.  The
    repeat counter tracks the number of outbound messages sent since the
-   last transmission containing the Recipient ID option and, if
+   last transmission containing the Recipient-ID option and, if
    applicable, the Recipient-ID-Ack Option.  When the repeat counter
    reaches a defined threshold, the next outbound message MUST include
-   the Recipient ID option and, if applicable, the Recipient-ID-Ack
+   the Recipient-ID option and, if applicable, the Recipient-ID-Ack
    Option with the last received Recipient ID, and the repeat counter is
    reset.  The ending counter tracks the total number of outbound
    messages sent during the procedure.  If successful confirmation has
@@ -313,13 +319,12 @@ Table of Contents
 
    The counter-based approach is intended to provide behavior equivalent
    to the timer-based REPEAT_TIMER and ENDING_TIMER, while avoiding
-   reliance on wall-clock time. - The offered Recipient ID must be
-   discarded and added to the list of IDs to prevent reuse.
+   reliance on wall-clock time.
 
 2.2.  Failure of the ID Update Procedure
 
    The following section describes cases where the OSCORE ID update
-   procedure fails, or must to be aborted by one of the peers.
+   procedure fails, or must be aborted by one of the peers.
 
    Upon receiving a valid first ID update message, a peer MUST abort the
    ID update procedure, in the following case:
@@ -344,7 +349,7 @@ Table of Contents
    Unavailable) error response.  The error response MUST NOT include the
    Recipient-ID Option, and its diagnostic payload MAY provide
    additional information.  When receiving the error response, the peer
-   terminates the OSCORE IDs procedure as failed.
+   terminates the OSCORE ID update procedure as failed.
 
    When the OSCORE ID update procedure is integrated into the execution
    of the KUDOS procedure, it is possible that the KUDOS procedure
@@ -352,7 +357,7 @@ Table of Contents
    the peers continue their communications using the newly derived
    OSCORE Security Context CTX_NEW obtained from the KUDOS procedure,
    and still use the old Sender and Recipient IDs.  That is, any
-   Recipient IDs conveyed in the exchanged Recipient-ID Options is not
+   Recipient IDs conveyed in the exchanged Recipient-ID Options are not
    considered.
 
    Conversely, the OSCORE ID update procedure may succeed while the
@@ -363,7 +368,7 @@ Table of Contents
 
 2.3.  The Recipient-ID Option
 
-   The Recipient ID-Option defined in this section has the properties
+   The Recipient-ID Option defined in this section has the properties
    summarized in Table 1, which extends Table 4 of [RFC7252].  That is,
    the option is elective, safe to forward, part of the cache key, and
    not repeatable.
@@ -405,7 +410,7 @@ Table of Contents
 
 2.4.  The Recipient-ID-Ack Option
 
-   The Recipient ID-Ack-Option defined in this section has the
+   The Recipient-ID-Ack Option defined in this section has the
    properties summarized in Table 2, which extends Table 4 of [RFC7252].
    That is, the option is elective, safe to forward, part of the cache
    key, and not repeatable.
@@ -608,7 +613,7 @@ Table of Contents
    Upon receiving, decrypting, and successfully verifying the OSCORE
    message Request #4, the server considers 0x42 and 0x78 as its new
    Sender ID and Recipient ID to use for CTX_B.  Practically, the server
-   installs a new OSCORE Security Context CTX_A where: i) its Sender ID
+   installs a new OSCORE Security Context CTX_B where: i) its Sender ID
    and Recipient ID are 0x42 and 0x78, respectively; ii) the Sender
    Sequence Number and the Replay Window are re-initialized (see
    Section 3.2.2 of [RFC8613]); iii) anything else is like in the OSCORE
@@ -795,9 +800,9 @@ Table of Contents
    [I-D.ietf-core-oscore-key-update]
               Höglund, R. and M. Tiloca, "Key Update for OSCORE
               (KUDOS)", Work in Progress, Internet-Draft, draft-ietf-
-              core-oscore-key-update-13, 2 March 2026,
+              core-oscore-key-update-14, 6 July 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              oscore-key-update-13>.
+              oscore-key-update-14>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -988,9 +993,9 @@ A.2.  Failure of the OSCORE ID Update Procedure Initiated with a Request
    the value of the REPEAT_TIMER on the client is such that it expires
    between each request the client sends.
 
-   The client repeatedly tries sending requests to the client including
+   The client repeatedly tries sending requests to the server including
    the Recipient-ID option, but does not receive acknowledgments in the
-   form of responses containing the Response-ID-Ack option from the
+   form of responses containing the Recipient-ID-Ack option from the
    server.  Thus the client eventually reaches the expiration of its
    ENDING_TIMER, aborts the OSCORE ID update procedure, and proceeds to
    continue communication with normal OSCORE messages.
@@ -1109,23 +1114,27 @@ Appendix B.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-B.1.  Version -05 to -06
+B.1.  Version -06 to -07
+
+   *  Refinements and fixes.
+
+B.2.  Version -05 to -06
 
    *  Consider alternatives to timers.
 
-B.2.  Version -04 to -05
+B.3.  Version -04 to -05
 
    *  Editorial updates.
 
    *  Add additional message flow examples, including a failure case.
 
-B.3.  Version -03 to -04
+B.4.  Version -03 to -04
 
    *  Fixes in presenting the new approach.
 
    *  Early recommendations for initial values of timers.
 
-B.4.  Version -02 to -03
+B.5.  Version -02 to -03
 
    *  Editorial improvements.
 
@@ -1136,13 +1145,13 @@ B.4.  Version -02 to -03
 
    *  Update design more in line with KUDOS.
 
-B.5.  Version -01 to -02
+B.6.  Version -01 to -02
 
    *  Split long section into subsections.
 
    *  Updated references.
 
-B.6.  Version -00 to -01
+B.7.  Version -00 to -01
 
    *  Revised and extended error handling.
 
@@ -1153,7 +1162,7 @@ B.6.  Version -00 to -01
 
    *  Clarifications and editorial improvements.
 
-B.7.  Version -00
+B.8.  Version -00
 
    *  Split out material from Key Update for OSCORE draft into this new
       document.
